@@ -1,0 +1,30 @@
+{
+  "name": "frontend-core",
+  "version": "0.1.0",
+  "description": "It's simple bare bones repository for frontend React developers using BEM",
+  "private": true,
+  "scripts": {
+    "start": "cross-env NODE_ENV=development webpack-dev-server --mode development --open",
+    "dev": "cross-env NODE_ENV=development webpack --mode development",
+    "build": "cross-env NODE_ENV=production webpack --mode production"
+  },
+  "browserslist": "> 0.25%, not dead",
+  "keywords": [
+    "BEM",
+    "html",
+    "pug",
+    "css",
+    "scss",
+    "js",
+    "ts",
+    "tsx",
+    "javascript",
+    "typesctipt",
+    "react",
+    "webpack"
+  ],
+  "author": "NZMinusDev <developer.n.zaytsev@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}
