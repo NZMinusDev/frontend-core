@@ -49,5 +49,28 @@
   "editor.emptySelectionClipboard": false,
   "git.autofetch": true,
   "git.suggestSmartCommit": false,
-  "gitlens.views.repositories.branches.layout": "list"
+  "gitlens.views.repositories.branches.layout": "list",
+  "cSpell.words": [
+    "Espree",
+    "Postcss",
+    "Zaitsev",
+    "autoprefixed",
+    "browserslist",
+    "camelcase",
+    "devtool",
+    "gifsicle",
+    "jpegtran",
+    "mixins",
+    "modificator",
+    "modificators",
+    "narmalize",
+    "optipng",
+    "spritesheet",
+    "webp"
+  ],
+  "cSpell.ignoreWords": [
+    "import",
+    "import normalize",
+    "normalize"
+  ]
 }
