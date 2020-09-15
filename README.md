@@ -1,4 +1,4 @@
-# ![Frontend-core](ReadmeAssets/header.png)
+# ![Frontend-core](header.png)
 
 ## Description
 
