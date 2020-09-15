@@ -1,2 +1,4 @@
 node_modules
-dist
+app/dist
+app/cache
+app/log
