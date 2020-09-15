@@ -1,14 +1,20 @@
 {
   "name": "frontend-core",
-  "version": "0.1.0",
-  "description": "It's simple bare bones repository for frontend React developers using BEM",
+  "version": "0.9.0",
+  "description": "It's simple bare bones repository for frontend developers using BEM",
   "private": true,
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack-dev-server --mode development --open",
-    "dev": "cross-env NODE_ENV=development webpack --mode development",
-    "build": "cross-env NODE_ENV=production webpack --mode production"
+    "start": "cross-env NODE_ENV=development webpack-dev-server --config configs/webpack.config.js --mode development --open",
+    "dev": "cross-env NODE_ENV=development webpack --config configs/webpack.config.js --mode development",
+    "build": "cross-env NODE_ENV=production webpack --config configs/webpack.config.js --mode production",
+    "stats": "cross-env NODE_ENV=development webpack --config configs/webpack.config.js --json > app/log/stats.json && webpack-bundle-analyzer app/log/stats.json",
+    "ext":"code --install-extension Atishay-Jain.All-Autocomplete && code --install-extension CoenraadS.bracket-pair-colorizer && code --install-extension DavidAnson.vscode-markdownlint && code --install-extension dbaeumer.vscode-eslint && code --install-extension eamodio.gitlens && code --install-extension earshinov.sort-lines-by-selection && code --install-extension esbenp.prettier-vscode && code --install-extension formulahendry.auto-complete-tag && code --install-extension gogocrow.webpack-snippets && code --install-extension jock.svg && code --install-extension jumpinjackie.vscode-map-preview && code --install-extension ms-vscode.powershell && code --install-extension PKief.material-icon-theme && code --install-extension ritwickdey.LiveServer && code --install-extension streetsidesoftware.code-spell-checker && code --install-extension teabyii.ayu && code --install-extension wayou.vscode-todo-highlight && code --install-extension xabikos.JavaScriptSnippets"
   },
-  "browserslist": "> 0.2%, not dead, last 2 versions",
+  "browserslist": [
+    "> 0.2%",
+    "not dead",
+    "last 2 versions"
+  ],
   "keywords": [
     "BEM",
     "html",
@@ -19,24 +25,57 @@
     "ts",
     "tsx",
     "javascript",
-    "typesctipt",
-    "react",
+    "typescript",
     "webpack"
   ],
-  "author": "NZMinusDev <developer.n.zaytsev@gmail.com>",
+  "author": "Nikita Zaitsev <developer.n.zaytsev@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/polyfill": "^7.11.5",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-typescript": "^7.10.4",
     "@prettier/plugin-pug": "^1.5.1",
     "@typescript-eslint/eslint-plugin": "^4.1.0",
     "@typescript-eslint/parser": "^4.1.0",
+    "babel-loader": "^8.1.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "cross-env": "^7.0.2",
+    "css-loader": "^4.3.0",
     "eslint": "^7.9.0",
+    "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "file-loader": "^6.1.0",
+    "html-webpack-injector": "^1.1.4",
+    "html-webpack-plugin": "^4.4.1",
+    "image-minimizer-webpack-plugin": "github:webpack-contrib/image-minimizer-webpack-plugin",
+    "imagemin-gifsicle": "^7.0.0",
+    "imagemin-jpegtran": "^7.0.0",
+    "imagemin-optipng": "^8.0.0",
+    "imagemin-svgo": "^8.0.0",
+    "imagemin-webp": "^6.0.0",
+    "obsolete-webpack-plugin": "^0.5.6",
+    "optimize-css-assets-webpack-plugin": "^5.0.4",
+    "postcss-normalize": "^9.0.0",
+    "postcss-preset-env": "^6.7.0",
     "prettier": "^2.1.1",
-    "webpack-cli": "^3.3.12"
+    "pug": "^2.0.4",
+    "pug-loader": "^2.4.0",
+    "sass-loader": "^10.0.2",
+    "style-loader": "^1.2.1",
+    "terser-webpack-plugin": "^4.2.0",
+    "typescript": "^4.0.2",
+    "webpack-bundle-analyzer": "^3.8.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "webpack": "^4.44.1",
-    "typescript": "^4.0.2"
+    "autoprefixer": "^9.8.6",
+    "node-sass": "^4.14.1",
+    "postcss-loader": "^4.0.1",
+    "webpack": "^4.44.1"
   }
 }
