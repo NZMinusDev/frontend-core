@@ -1,0 +1,21 @@
+.menu__item {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  text-decoration: none;
+  background-image: url("@images/backgrounds/test.jpg");
+}
+.nav__item,
+.nav__item--selected {
+  display: inline-block;
+  margin: 0 5px;
+}
+.nav__item a,
+.nav__item--selected a {
+  color: #797e83;
+  font-size: 0.9em;
+  padding: 4px;
+}
+.nav__item--selected a {
+  color: black;
+}
