@@ -4,13 +4,15 @@ module.exports = {
    */
   parser: "@typescript-eslint/parser",
   extends: [
+    // List of recommended rules by https://github.com/iamturns/eslint-config-airbnb-typescript
+    "airbnb-base",
     /**
      * List of recommended rules for TypeScript from "@typescript-eslint" plugin
      */
     "plugin:@typescript-eslint/recommended",
     /**
-     * Disable any linting rule that might interfere with an existing Prettier rule using(eslint-config-prettier).
      * Enables (eslint-plugin-prettier), which run Prettier analysis as part of ESLint.
+     * Disable any linting rule that might interfere with an existing Prettier rule using(eslint-config-prettier).
      * Should be last for override other configs.
      */
     "plugin:prettier/recommended",

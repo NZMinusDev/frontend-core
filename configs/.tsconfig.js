@@ -1,3 +1,4 @@
+//FIXME: This config is unused. For working with TypeScript uses babel preset.
 /*
 Файл "tsconfig.js":
  - устанавливает корневой каталог проекта TypeScript;
