@@ -1,4 +1,4 @@
-# ![Frontend-core](header.png)
+# ![Frontend-core](readme-logo.png)
 
 ## Description
 
