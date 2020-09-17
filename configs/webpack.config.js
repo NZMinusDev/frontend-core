@@ -89,7 +89,7 @@ const plugins = () => {
     // images are converted to WEBP
     new ImageMinimizerPlugin({
       cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
-      filename: "[path]/[name]/[name].webp",
+      filename: isDev ? "[path]/[name]/[name].webp" : "[path]/[name]/[name].[hash].webp",
       keepOriginal: true, // keep compressed image
       minimizerOptions: {
         // Lossless optimization with custom option
@@ -98,7 +98,8 @@ const plugins = () => {
             "imagemin-webp",
             {
               // preset: default //default, photo, picture, drawing, icon and text
-              lossless: true,
+              // lossless: true,
+              nearLossless: 0 // pre compression with lossless mode on
             },
           ],
         ],
@@ -107,7 +108,7 @@ const plugins = () => {
     // original images will compressed lossless
     new ImageMinimizerPlugin({
       cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
-      filename: "[path]/[name]/[name].[ext]",
+      filename: "[path]/[name]/[name].[ext]",//Tip: hashed by assetsLoader (file-loader)
       minimizerOptions: {
         // Lossless optimization with custom option
         plugins: [
