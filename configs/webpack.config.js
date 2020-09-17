@@ -255,6 +255,7 @@ module.exports = {
       "@experiments": path.resolve(PATHS.src_absolute, "./components/experimental/"),
       "@images": path.resolve(PATHS.src_absolute, "./assets/images/"),
       "@contents": path.resolve(PATHS.src_absolute, "./assets/contents/"),
+      "@utils": path.resolve(PATHS.src_absolute, "./utils/"),
     },
     extensions: [".js", ".json", ".ts"],
   },
