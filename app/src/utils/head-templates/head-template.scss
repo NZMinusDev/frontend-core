@@ -1,8 +1,0 @@
-
-/*
- * Main styles which should be imported first on all pages
- */
-
-// include narmalize css using PostcssNormalize plugin for Postcss-loader into webpack
-// Tip: imported rules depending on browserslist in package.json
-@import-normalize;
