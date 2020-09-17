@@ -26,7 +26,7 @@ const PATHS = {
  * @param {String} ext - extension of output bundle files such as js/webp/png
  * @returns {String} - hashed name in production mode and nohashed in another case
  */
-const filename = (name, ext) => (isDev ? `${name}.${ext}` : `${name}.[hash].${ext}`);
+const hashedFileName = (name, ext) => (isDev ? `${name}.${ext}` : `${name}.[hash].${ext}`);
 
 /**
  * loop pages folder and create stuff depending on names of pages.
@@ -62,7 +62,7 @@ class ResultOfTemplatesProcessing {
       this.HTMLWebpackPlugins.push(
         new HTMLWebpackPlugin({
           template: `./pages/${shortNameOfTemplate}/${nameOfTemplate}`,
-          filename: `./${nameOfTemplate.replace(/\.pug/, filename("", "html"))}`,
+          filename: `./${nameOfTemplate.replace(/\.pug/, hashedFileName("", "html"))}`,
           favicon: "./assets/images/ico/favicon.ico",
           // eslint-disable-next-line camelcase
           chunks: [shortNameOfTemplate, shortNameOfTemplate_head],
@@ -89,7 +89,7 @@ const plugins = () => {
     // images are converted to WEBP
     new ImageMinimizerPlugin({
       cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
-      filename: filename("[path]/[name]/[name]", "webp"),
+      filename: hashedFileName("[path]/[name]/[name]", "webp"),
       keepOriginal: true, // keep compressed image
       minimizerOptions: {
         // Lossless optimization with custom option
@@ -197,7 +197,7 @@ const assetsLoaders = (extraLoader) => {
     {
       loader: "file-loader",
       options: {
-        name: filename("[path]/[name]/[name]", "[ext]"),
+        name: hashedFileName("[path]/[name]/[name]", "[ext]"),
       },
     },
   ];
@@ -236,7 +236,7 @@ module.exports = {
   entry: resultOfTemplatesProcessing.entries,
   // Where to put bundles for every entry point
   output: {
-    filename: filename("bundles/[id]/[name]", "js"),
+    filename: hashedFileName("bundles/[id]/[name]", "js"),
     path: PATHS.dist_absolute,
   },
   resolve: {
