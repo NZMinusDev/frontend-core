@@ -21,6 +21,14 @@ const PATHS = {
 };
 
 /**
+ * Useful tool for creating name of files with hash
+ * @param {String} name - what should be before hash
+ * @param {String} ext - extension of output bundle files such as js/webp/png
+ * @returns {String} - hashed name in production mode and nohashed in another case
+ */
+const filename = (name, ext) => (isDev ? `${name}.${ext}` : `${name}.[hash].${ext}`); 
+
+/**
  * loop pages folder and create stuff depending on names of pages.
  * @param {String} templateExtension - extension of pages such as html/pug ...
  */
@@ -54,7 +62,7 @@ class ResultOfTemplatesProcessing {
       this.HTMLWebpackPlugins.push(
         new HTMLWebpackPlugin({
           template: `./pages/${shortNameOfTemplate}/${nameOfTemplate}`,
-          filename: `./${nameOfTemplate.replace(/\.pug/, ".html")}`,
+          filename: `./${nameOfTemplate.replace(/\.pug/, filename("","html"))}`,
           favicon: "./assets/images/ico/favicon.ico",
           // eslint-disable-next-line camelcase
           chunks: [shortNameOfTemplate, shortNameOfTemplate_head],
@@ -69,14 +77,6 @@ class ResultOfTemplatesProcessing {
 const resultOfTemplatesProcessing = new ResultOfTemplatesProcessing("pug");
 
 /**
- * Useful tool for creating output name of files with hash
- * @param {String} ext - extension of output bundle files such as js
- * @returns {String} - output name of files with hash
- */
-const filename = (ext) =>
-  isDev ? `bundles/[id]/[name].${ext}` : `bundles/[id]/[name].[hash].${ext}`;
-
-/**
  * HTMLWebpackPlugin - create html of pages with plug in scripts
  * HTMLWebpackInjector - plugin that simplifies injection of chunks into head and body
  * ImageMinimizerPlugin - Plugin and Loader for webpack to optimize (compress) all images. Make sure ImageMinimizerPlugin place after any plugins that add images or other assets which you want to optimized.
@@ -89,7 +89,7 @@ const plugins = () => {
     // images are converted to WEBP
     new ImageMinimizerPlugin({
       cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
-      filename: isDev ? "[path]/[name]/[name].webp" : "[path]/[name]/[name].[hash].webp",
+      filename: filename("[path]/[name]/[name]","webp"),
       keepOriginal: true, // keep compressed image
       minimizerOptions: {
         // Lossless optimization with custom option
@@ -99,7 +99,7 @@ const plugins = () => {
             {
               // preset: default //default, photo, picture, drawing, icon and text
               // lossless: true,
-              nearLossless: 0 // pre compression with lossless mode on
+              nearLossless: 0, // pre compression with lossless mode on
             },
           ],
         ],
@@ -108,7 +108,7 @@ const plugins = () => {
     // original images will compressed lossless
     new ImageMinimizerPlugin({
       cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
-      filename: "[path]/[name]/[name].[ext]",//Tip: hashed by assetsLoader (file-loader)
+      filename: "[path]/[name]/[name].[ext]", //Tip: hashed by assetsLoader (file-loader)
       minimizerOptions: {
         // Lossless optimization with custom option
         plugins: [
@@ -197,7 +197,7 @@ const assetsLoaders = (extraLoader) => {
     {
       loader: "file-loader",
       options: {
-        name: isDev ? `[path]/[name]/[name].[ext]` : `[path]/[name]/[name].[hash].[ext]`,
+        name: filename("[path]/[name]/[name]","[ext]"),
       },
     },
   ];
@@ -236,7 +236,7 @@ module.exports = {
   entry: resultOfTemplatesProcessing.entries,
   // Where to put bundles for every entry point
   output: {
-    filename: filename("js"),
+    filename: filename("bundles/[id]/[name]", "js"),
     path: PATHS.dist_absolute,
   },
   resolve: {
