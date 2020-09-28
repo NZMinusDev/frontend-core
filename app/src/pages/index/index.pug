@@ -1,8 +1,9 @@
-doctype html
-html(lang="en")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title Document
-  body
-    include ~@common.blocks/containers/menu/menu.pug
+extends ~@pug/layouts/ui-kit.pug
+
+block variables
+  - var lang = 'ru';
+  - var keywords = 'FSD, Frontend, TOXIN, образование, верстка';
+  - var description = 'Цвета и шрифты, используемые в базовом макете сайта TOXIN';
+  - var title = 'Цвета и шрифт';
+
+block content

@@ -1,7 +1,0 @@
-/*
- * Main styles which should be imported first on all pages.
- * Includes narmalize css using PostcssNormalize plugin for Postcss-loader into webpack
- * Tip: imported rules depending on browserslist in package.json
- *TODO: https://github.com/csstools/postcss-normalize/issues/46
- */
- @import "normalize/opinionated";

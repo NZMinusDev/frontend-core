@@ -1,0 +1,15 @@
+//- mixins
+include ~@pug/mixins/head.pug
+
+block variables
+
+doctype html
+html(lang=lang)
+  block head
+    head
+    +meta(keywords, description, title)
+  body
+    include ~@pug/includes/noscript-notification.pug
+    block header
+    block content
+    block footer
