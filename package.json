@@ -59,7 +59,6 @@
     "cross-env": "^7.0.2",
     "css-loader": "^4.3.0",
     "file-loader": "^6.1.0",
-    "html-webpack-injector": "^1.1.4",
     "html-webpack-plugin": "^4.4.1",
     "image-minimizer-webpack-plugin": "github:webpack-contrib/image-minimizer-webpack-plugin",
     "imagemin-gifsicle": "^7.0.0",

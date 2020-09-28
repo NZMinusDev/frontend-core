@@ -2,7 +2,6 @@
 const path = require("path");
 const fs = require("fs");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
-const HTMLWebpackInjector = require("html-webpack-injector");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const Autoprefixer = require("autoprefixer");
 const PostCSSPresetEnv = require("postcss-preset-env");
@@ -49,15 +48,11 @@ class ResultOfTemplatesProcessing {
     namesOfTemplates.forEach((nameOfTemplate) => {
       const shortNameOfTemplate = nameOfTemplate.replace(/\.pug/, "");
       // eslint-disable-next-line camelcase
-      const shortNameOfTemplate_head = `${shortNameOfTemplate}_head`; // name for <head> injecting by HTMLWebpackInjector
 
       this.entries[shortNameOfTemplate] = [
         "@babel/polyfill",
         `./pages/${shortNameOfTemplate}/${shortNameOfTemplate}.decl.ts`,
       ];
-
-      // chunk for <head> injecting
-      this.entries[shortNameOfTemplate_head] = ["./utils/head-templates/head-template.decl.ts"];
 
       this.HTMLWebpackPlugins.push(
         new HTMLWebpackPlugin({
@@ -65,7 +60,7 @@ class ResultOfTemplatesProcessing {
           filename: `./${nameOfTemplate.replace(/\.pug/, hashedFileName("", "html"))}`,
           favicon: "./assets/images/ico/favicon.ico",
           // eslint-disable-next-line camelcase
-          chunks: [shortNameOfTemplate, shortNameOfTemplate_head],
+          chunks: [shortNameOfTemplate],
           minify: {
             collapseWhitespace: isProd,
           },
@@ -78,14 +73,12 @@ const resultOfTemplatesProcessing = new ResultOfTemplatesProcessing("pug");
 
 /**
  * HTMLWebpackPlugin - create html of pages with plug in scripts
- * HTMLWebpackInjector - plugin that simplifies injection of chunks into head and body
  * ImageMinimizerPlugin - Plugin and Loader for webpack to optimize (compress) all images. Make sure ImageMinimizerPlugin place after any plugins that add images or other assets which you want to optimized.
  * CleanWebpackPlugin - clean dist folder before each use
  */
 const plugins = () => {
   return [
     ...resultOfTemplatesProcessing.HTMLWebpackPlugins,
-    new HTMLWebpackInjector(),
     // images are converted to WEBP
     new ImageMinimizerPlugin({
       cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
@@ -108,7 +101,7 @@ const plugins = () => {
     // original images will compressed lossless
     new ImageMinimizerPlugin({
       cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
-      filename: "[path]/[name]/[name].[ext]", //Tip: hashed by assetsLoader (file-loader)
+      filename: "[path]/[name]/[name].[ext]", // Tip: hashed by assetsLoader (file-loader)
       minimizerOptions: {
         // Lossless optimization with custom option
         plugins: [
@@ -133,7 +126,7 @@ const plugins = () => {
 };
 
 /**
- * Loaders contraction that loads autoprefixed normalize css with converting modern CSS into something most browsers can understand and places it into <style> of html
+ * Loaders contraction that loads autoprefixed normalize css with converting modern CSS into something most browsers can understand
  * @param {Object} extra_loader - loader with options for css preprocessor
  * @returns {Array<Object>}
  */
@@ -177,14 +170,12 @@ const jsLoaders = (extraPreset) => {
     babelOptions.presets.push(extraPreset);
   }
 
-  const loaders = [
+  return [
     {
       loader: "babel-loader",
       options: babelOptions,
     },
   ];
-
-  return loaders;
 };
 
 /**
