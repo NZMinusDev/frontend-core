@@ -5,6 +5,7 @@ const HTMLWebpackPlugin = require("html-webpack-plugin");
 const PugPluginAlias = require("pug-alias");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const WrapperPlugin = require("wrapper-webpack-plugin");
 const Autoprefixer = require("autoprefixer");
 const PostCSSPresetEnv = require("postcss-preset-env");
 const PostCSSNormalize = require("postcss-normalize");
@@ -24,9 +25,10 @@ const PATHS = {
 const redefinitionLevels = [
   "library.blocks",
   "common.blocks",
-  "adaptive/mobile.blocks",
+  "adaptive/small-mobile.blocks",
+  "adaptive/large-mobile.blocks",
   "adaptive/tablet.blocks",
-  "adaptive/desktop.blocks",
+  "adaptive/small-desktop.blocks",
   "adaptive/large-desktop.blocks",
   "thematic/main-theme.blocks",
   "experimental/experiment-1.blocks",
@@ -43,10 +45,11 @@ const sharedAliases = {
   "@pug": path.resolve(PATHS.src_absolute, "./pug/"),
   "@library.blocks": path.resolve(PATHS.src_absolute, "./components/library.blocks/"),
   "@common.blocks": path.resolve(PATHS.src_absolute, "./components/common.blocks/"),
-  "@mobile.blocks": path.resolve(PATHS.src_absolute, "./components/mobile.blocks/"),
+  "@small-mobile.blocks": path.resolve(PATHS.src_absolute, "./components/small-mobile.blocks/"),
+  "@large-mobile.blocks": path.resolve(PATHS.src_absolute, "./components/large-mobile.blocks/"),
   "@tablet.blocks": path.resolve(PATHS.src_absolute, "./components/tablet.blocks/"),
-  "@desktop.blocks": path.resolve(PATHS.src_absolute, "./components/desktop.blocks/"),
-  "@large-desktop.blocks": path.resolve(PATHS.src_absolute, "./components/large_desktop.blocks/"),
+  "@small-desktop.blocks": path.resolve(PATHS.src_absolute, "./components/small-desktop.blocks/"),
+  "@large-desktop.blocks": path.resolve(PATHS.src_absolute, "./components/large-desktop.blocks/"),
   "@themes": path.resolve(PATHS.src_absolute, "./components/thematic/"),
   "@experiments": path.resolve(PATHS.src_absolute, "./components/experimental/"),
   "@images": path.resolve(PATHS.src_absolute, "./assets/pictures/images/"),
@@ -116,6 +119,36 @@ const plugins = () => {
     ...resultOfTemplatesProcessing.HTMLWebpackPlugins,
     new MiniCssExtractPlugin({
       filename: hashedFileName("styles/[id]/[name]", "css"),
+    }),
+    new WrapperPlugin({
+      test: /.*small-mobile.*\.css$/,
+      header: "@media (max-width: 599.98px) {",
+      footer: "}",
+    }),
+    new WrapperPlugin({
+      test: /.*large-mobile.*\.css$/,
+      header: "@media (min-width: 600px) {",
+      footer: "}",
+    }),
+    new WrapperPlugin({
+      test: /.*tablet.*\.css$/,
+      header: "@media (min-width: 768px) {",
+      footer: "}",
+    }),
+    new WrapperPlugin({
+      test: /.*small-desktop.*\.css$/,
+      header: "@media (min-width: 992px) {",
+      footer: "}",
+    }),
+    new WrapperPlugin({
+      test: /.*large-desktop.*\.css$/,
+      header: "@media (min-width: 1200px) {",
+      footer: "}",
+    }),
+    new WrapperPlugin({
+      test: /.*themes.*\.css$/,
+      header: "@media (color) {",
+      footer: "}",
     }),
     // images are converted to WEBP
     new ImageMinimizerPlugin({
@@ -256,16 +289,21 @@ const optimization = () => {
       cacheGroups: {
         vendors: {
           test: /[\\/]node_modules[\\/]/,
-          priority: 9, // The optimization will prefer the cache group with a higher priority
+          priority: 10, // The optimization will prefer the cache group with a higher priority
           enforce: true, // always create chunks (ignore: minSize, maxAsyncRequests, ... )
         },
         common: {
           test: /.*\\(common.blocks)|(library.blocks)\\.*/,
+          priority: 9,
+          enforce: true,
+        },
+        "small-mobile": {
+          test: /.*\\adaptive\\small-mobile.blocks\\.*/,
           priority: 8,
           enforce: true,
         },
-        mobile: {
-          test: /.*\\adaptive\\mobile.blocks\\.*/,
+        "large-mobile": {
+          test: /.*\\adaptive\\large-mobile.blocks\\.*/,
           priority: 7,
           enforce: true,
         },
@@ -274,8 +312,8 @@ const optimization = () => {
           priority: 6,
           enforce: true,
         },
-        desktop: {
-          test: /.*\\adaptive\\desktop.blocks\\.*/,
+        "small-desktop": {
+          test: /.*\\adaptive\\small-desktop.blocks\\.*/,
           priority: 5,
           enforce: true,
         },
