@@ -4,6 +4,7 @@ const fs = require("fs");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const PugPluginAlias = require("pug-alias");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const Autoprefixer = require("autoprefixer");
 const PostCSSPresetEnv = require("postcss-preset-env");
 const PostCSSNormalize = require("postcss-normalize");
@@ -113,6 +114,9 @@ const resultOfTemplatesProcessing = new ResultOfTemplatesProcessing();
 const plugins = () => {
   return [
     ...resultOfTemplatesProcessing.HTMLWebpackPlugins,
+    new MiniCssExtractPlugin({
+      filename: hashedFileName("styles/[id]/[name]", "css"),
+    }),
     // images are converted to WEBP
     new ImageMinimizerPlugin({
       cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
@@ -167,7 +171,12 @@ const plugins = () => {
 const cssLoaders = (extraLoader) => {
   const loaders = [
     {
-      loader: "style-loader",
+      loader: MiniCssExtractPlugin.loader,
+      options: {
+        hmr: isDev,
+        // if hmr does not work, this is a forceful method.
+        reloadAll: true,
+      },
     },
     {
       loader: "css-loader",
@@ -387,6 +396,6 @@ module.exports = {
   devServer: {
     port: 4200,
     hot: isDev,
-    watchContentBase: true, // watch html fix
+    watchContentBase: true, // watch html
   },
 };
