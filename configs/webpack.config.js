@@ -2,6 +2,7 @@
 const path = require("path");
 const fs = require("fs");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
+const PugPluginAlias = require("pug-alias");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const Autoprefixer = require("autoprefixer");
 const PostCSSPresetEnv = require("postcss-preset-env");
@@ -19,6 +20,43 @@ const PATHS = {
   dist_absolute: path.resolve(__dirname, "../app/dist/"),
 };
 
+const redefinitionLevels = [
+  "library.blocks",
+  "common.blocks",
+  "adaptive/mobile.blocks",
+  "adaptive/tablet.blocks",
+  "adaptive/desktop.blocks",
+  "adaptive/large-desktop.blocks",
+  "thematic/main-theme.blocks",
+  "experimental/experiment-1.blocks",
+];
+const componentGroups = ["basic", "containers", "primitives", "specific"];
+const bemDeclLevels = [];
+redefinitionLevels.forEach((level) => {
+  componentGroups.forEach((group) => {
+    bemDeclLevels.push(`app/src/components/${level}/${group}/`);
+  });
+});
+
+const sharedAliases = {
+  "@pug": path.resolve(PATHS.src_absolute, "./pug/"),
+  "@library.blocks": path.resolve(PATHS.src_absolute, "./components/library.blocks/"),
+  "@common.blocks": path.resolve(PATHS.src_absolute, "./components/common.blocks/"),
+  "@mobile.blocks": path.resolve(PATHS.src_absolute, "./components/mobile.blocks/"),
+  "@tablet.blocks": path.resolve(PATHS.src_absolute, "./components/tablet.blocks/"),
+  "@desktop.blocks": path.resolve(PATHS.src_absolute, "./components/desktop.blocks/"),
+  "@large-desktop.blocks": path.resolve(PATHS.src_absolute, "./components/large_desktop.blocks/"),
+  "@themes": path.resolve(PATHS.src_absolute, "./components/thematic/"),
+  "@experiments": path.resolve(PATHS.src_absolute, "./components/experimental/"),
+  "@images": path.resolve(PATHS.src_absolute, "./assets/pictures/images/"),
+  "@contents": path.resolve(PATHS.src_absolute, "./assets/pictures/contents/"),
+  "@fonts": path.resolve(PATHS.src_absolute, "./assets/fonts/"),
+  "@utils": path.resolve(PATHS.src_absolute, "./utils/"),
+};
+// returns a new object with the keys mapped using mapFn(key)
+const objectKeyMap = (object, mapFn) =>
+  Object.fromEntries(Object.entries(object).map(([key, value]) => [mapFn(key), value]));
+
 /**
  * Useful tool for creating name of files with hash
  * @param {String} name - what should be before hash
@@ -29,17 +67,16 @@ const hashedFileName = (name, ext) => (isDev ? `${name}.${ext}` : `${name}.[hash
 
 /**
  * loop pages folder and create stuff depending on names of pages.
- * @param {String} templateExtension - extension of pages such as html/pug ...
  */
 class ResultOfTemplatesProcessing {
-  constructor(templateExtension) {
+  constructor() {
     const foldersOfPages = fs.readdirSync(PATHS.srcPages_absolute);
     // get all pug templates from each page folder
     const namesOfTemplates = [].concat(
       ...foldersOfPages.map((folder) =>
         fs
           .readdirSync(`${PATHS.srcPages_absolute}\\${folder}\\`)
-          .filter((filename) => filename.endsWith(`.${templateExtension}`))
+          .filter((filename) => filename.endsWith(`.pug`))
       )
     );
 
@@ -51,25 +88,22 @@ class ResultOfTemplatesProcessing {
 
       this.entries[shortNameOfTemplate] = [
         "@babel/polyfill",
-        `./pages/${shortNameOfTemplate}/${shortNameOfTemplate}.decl.ts`,
+        `./pages/${shortNameOfTemplate}/${shortNameOfTemplate}.ts`,
       ];
 
       this.HTMLWebpackPlugins.push(
         new HTMLWebpackPlugin({
-          template: `./pages/${shortNameOfTemplate}/${nameOfTemplate}`,
+          template: `!!pug-loader!app/src/pages/${shortNameOfTemplate}/${nameOfTemplate}`,
           filename: `./${nameOfTemplate.replace(/\.pug/, hashedFileName("", "html"))}`,
-          favicon: "./assets/images/ico/favicon.ico",
+          favicon: "./assets/pictures/images/ico/favicon.ico",
           // eslint-disable-next-line camelcase
           chunks: [shortNameOfTemplate],
-          minify: {
-            collapseWhitespace: isProd,
-          },
         })
       );
     });
   }
 }
-const resultOfTemplatesProcessing = new ResultOfTemplatesProcessing("pug");
+const resultOfTemplatesProcessing = new ResultOfTemplatesProcessing();
 
 /**
  * HTMLWebpackPlugin - create html of pages with plug in scripts
@@ -232,23 +266,7 @@ module.exports = {
   },
   resolve: {
     // You can use it while using import in css and js
-    alias: {
-      "@library.blocks": path.resolve(PATHS.src_absolute, "./components/library.blocks/"),
-      "@common.blocks": path.resolve(PATHS.src_absolute, "./components/common.blocks/"),
-      "@mobile.blocks": path.resolve(PATHS.src_absolute, "./components/mobile.blocks/"),
-      "@tablet.blocks": path.resolve(PATHS.src_absolute, "./components/tablet.blocks/"),
-      "@desktop.blocks": path.resolve(PATHS.src_absolute, "./components/desktop.blocks/"),
-      "@large-desktop.blocks": path.resolve(
-        PATHS.src_absolute,
-        "./components/large_desktop.blocks/"
-      ),
-      "@themes": path.resolve(PATHS.src_absolute, "./components/thematic/"),
-      "@experiments": path.resolve(PATHS.src_absolute, "./components/experimental/"),
-      "@images": path.resolve(PATHS.src_absolute, "./assets/pictures/images/"),
-      "@contents": path.resolve(PATHS.src_absolute, "./assets/pictures/contents/"),
-      "@fonts": path.resolve(PATHS.src_absolute, "./assets/fonts/"),
-      "@utils": path.resolve(PATHS.src_absolute, "./utils/"),
-    },
+    alias: sharedAliases,
     extensions: [".js", ".json", ".ts"],
   },
   plugins: plugins(),
@@ -256,7 +274,29 @@ module.exports = {
     rules: [
       {
         test: /\.pug$/,
-        loader: "pug-loader",
+        // loader: "pug-loader",
+        use: [
+          {
+            loader: "bemdecl-to-fs-loader",
+            options: {
+              levels: bemDeclLevels,
+              extensions: ["scss", "ts"],
+            }, // Adds scss and ts files of BEM entities to bundle (adds require statements)
+          },
+          { loader: "html2bemdecl-loader" }, // convert HTML to bem DECL format
+          {
+            loader: "pug-plain-loader",
+            options: {
+              plugins: [
+                PugPluginAlias(
+                  objectKeyMap(sharedAliases, (key) => {
+                    return `~${key}`;
+                  })
+                ),
+              ],
+            },
+          }, // convert pug to html in runtime
+        ],
       },
       {
         test: /\.css$/,
