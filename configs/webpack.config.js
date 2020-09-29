@@ -239,9 +239,65 @@ const assetsLoaders = (extraLoader) => {
  */
 const optimization = () => {
   const config = {
+    runtimeChunk: { name: "manifest" },
     splitChunks: {
       // split common imports into separate files
-      chunks: "all",
+      chunks: "all", // == 'initial' && 'async'
+      minChunks: 1,
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: 9, // The optimization will prefer the cache group with a higher priority
+          enforce: true, // always create chunks (ignore: minSize, maxAsyncRequests, ... )
+        },
+        common: {
+          test: /.*\\(common.blocks)|(library.blocks)\\.*/,
+          priority: 8,
+          enforce: true,
+        },
+        mobile: {
+          test: /.*\\adaptive\\mobile.blocks\\.*/,
+          priority: 7,
+          enforce: true,
+        },
+        tablet: {
+          test: /.*\\adaptive\\tablet.blocks\\.*/,
+          priority: 6,
+          enforce: true,
+        },
+        desktop: {
+          test: /.*\\adaptive\\desktop.blocks\\.*/,
+          priority: 5,
+          enforce: true,
+        },
+        "large-desktop": {
+          test: /.*\\adaptive\\large-desktop.blocks\\.*/,
+          priority: 4,
+          enforce: true,
+        },
+        themes: {
+          test: /.*\\thematic\\.*\.blocks.*/,
+          priority: 3,
+          enforce: true,
+        },
+        experiments: {
+          test: /.*\\experimental\\.*\.blocks.*/,
+          priority: 2,
+          enforce: true,
+        },
+        css: {
+          test: /\.css$/,
+          minChunks: 2,
+          priority: 1,
+          enforce: true,
+        },
+        js: {
+          test: /\.js$/,
+          minChunks: 2,
+          priority: 1,
+          enforce: true,
+        },
+      },
     },
   };
 
