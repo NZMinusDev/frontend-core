@@ -60,6 +60,7 @@
     "camelcase",
     "devtool",
     "gifsicle",
+    "inspectpack",
     "jpegtran",
     "mixins",
     "modificator",

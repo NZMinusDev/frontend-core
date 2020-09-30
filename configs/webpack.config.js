@@ -15,6 +15,7 @@ const TerserWebpackPlugin = require("terser-webpack-plugin");
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 const { UnusedFilesWebpackPlugin } = require("unused-files-webpack-plugin");
 const { DuplicatesPlugin } = require("inspectpack/plugin");
+const CircularDependencyPlugin = require("circular-dependency-plugin");
 
 const isDev = process.env.NODE_ENV === "development";
 const isProd = !isDev;
@@ -208,7 +209,12 @@ const webpackPlugins = () => {
     );
   }
 
-  plugins.push(new DuplicatesPlugin(), new UnusedFilesWebpackPlugin(), new CleanWebpackPlugin());
+  plugins.push(
+    new CircularDependencyPlugin(),
+    new DuplicatesPlugin(),
+    new UnusedFilesWebpackPlugin(),
+    new CleanWebpackPlugin()
+  );
 
   return plugins;
 };

@@ -57,6 +57,7 @@
     "autoprefixer": "^9.8.6",
     "babel-loader": "^8.1.0",
     "bemdecl-to-fs-loader": "0.0.4",
+    "circular-dependency-plugin": "^5.2.0",
     "cross-env": "^7.0.2",
     "css-loader": "^4.3.0",
     "file-loader": "^6.1.0",
