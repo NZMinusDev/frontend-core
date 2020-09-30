@@ -101,6 +101,7 @@ class ResultOfTemplatesProcessing {
       this.entries[shortNameOfTemplate] = [
         "@babel/polyfill",
         `./pages/${shortNameOfTemplate}/${shortNameOfTemplate}.ts`,
+        "@csstools/normalize.css/opinionated.css",
       ];
 
       this.HTMLWebpackPlugins.push(
