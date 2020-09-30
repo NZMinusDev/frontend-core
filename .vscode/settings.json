@@ -52,6 +52,7 @@
   "gitlens.views.repositories.branches.layout": "list",
   "cSpell.words": [
     "Espree",
+    "Flexbugs",
     "Postcss",
     "Zaitsev",
     "autoprefixed",
@@ -59,6 +60,7 @@
     "browserslist",
     "camelcase",
     "devtool",
+    "doiuse",
     "gifsicle",
     "inspectpack",
     "jpegtran",
