@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const { HashedModuleIdsPlugin } = require("webpack");
 const path = require("path");
 const fs = require("fs");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
@@ -216,6 +217,11 @@ const webpackPlugins = () => {
     new CircularDependencyPlugin(),
     new DuplicatesPlugin(),
     new UnusedFilesWebpackPlugin(),
+    new HashedModuleIdsPlugin({
+      hashFunction: "md4",
+      hashDigest: "base64",
+      hashDigestLength: 8,
+    }),
     new CleanWebpackPlugin()
   );
 
