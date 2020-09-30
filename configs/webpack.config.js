@@ -13,6 +13,7 @@ const PostCSSNormalize = require("postcss-normalize");
 const OptimizeCssAssetWebpackPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserWebpackPlugin = require("terser-webpack-plugin");
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
+const { UnusedFilesWebpackPlugin } = require("unused-files-webpack-plugin");
 
 const isDev = process.env.NODE_ENV === "development";
 const isProd = !isDev;
@@ -206,7 +207,7 @@ const webpackPlugins = () => {
     );
   }
 
-  plugins.push(new CleanWebpackPlugin());
+  plugins.push(new UnusedFilesWebpackPlugin(), new CleanWebpackPlugin());
 
   return plugins;
 };
