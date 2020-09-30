@@ -14,6 +14,7 @@ const OptimizeCssAssetWebpackPlugin = require("optimize-css-assets-webpack-plugi
 const TerserWebpackPlugin = require("terser-webpack-plugin");
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 const { UnusedFilesWebpackPlugin } = require("unused-files-webpack-plugin");
+const { DuplicatesPlugin } = require("inspectpack/plugin");
 
 const isDev = process.env.NODE_ENV === "development";
 const isProd = !isDev;
@@ -207,7 +208,7 @@ const webpackPlugins = () => {
     );
   }
 
-  plugins.push(new UnusedFilesWebpackPlugin(), new CleanWebpackPlugin());
+  plugins.push(new DuplicatesPlugin(), new UnusedFilesWebpackPlugin(), new CleanWebpackPlugin());
 
   return plugins;
 };
