@@ -60,6 +60,7 @@
     "circular-dependency-plugin": "^5.2.0",
     "cross-env": "^7.0.2",
     "css-loader": "^4.3.0",
+    "doiuse": "^4.2.0",
     "file-loader": "^6.1.0",
     "html-webpack-plugin": "^4.4.1",
     "html2bemdecl-loader": "^1.0.5",

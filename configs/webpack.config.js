@@ -225,6 +225,8 @@ const webpackPlugins = () => {
  * @param {Object} extra_loader - loader with options for css preprocessor
  * @returns {Array<Object>}
  */
+const DoIUse = require("doiuse");
+
 const cssLoaders = (extraLoader) => {
   const loaders = [
     {
@@ -242,7 +244,7 @@ const cssLoaders = (extraLoader) => {
       loader: "postcss-loader",
       options: {
         postcssOptions: {
-          plugins: [Autoprefixer(), PostCSSPresetEnv(), PostCSSNormalize()],
+          plugins: [DoIUse({}), Autoprefixer(), PostCSSPresetEnv(), PostCSSNormalize()],
         },
       },
     },
