@@ -16,6 +16,7 @@ const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 const { UnusedFilesWebpackPlugin } = require("unused-files-webpack-plugin");
 const { DuplicatesPlugin } = require("inspectpack/plugin");
 const CircularDependencyPlugin = require("circular-dependency-plugin");
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 
 const isDev = process.env.NODE_ENV === "development";
 const isProd = !isDev;
@@ -379,7 +380,8 @@ const optimization = () => {
   return config;
 };
 
-module.exports = {
+const smp = new SpeedMeasurePlugin();
+module.exports = smp.wrap({
   // The base directory, an absolute path, for resolving entry points and loaders
   context: PATHS.src_absolute,
   mode: "development",
@@ -459,4 +461,4 @@ module.exports = {
     hot: isDev,
     watchContentBase: true, // watch html
   },
-};
+});
