@@ -7,6 +7,8 @@ const PugPluginAlias = require("pug-alias");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WrapperPlugin = require("wrapper-webpack-plugin");
+const DoIUse = require("doiuse");
+const PostcssFlexbugsFixes = require("postcss-flexbugs-fixes");
 const Autoprefixer = require("autoprefixer");
 const PostCSSPresetEnv = require("postcss-preset-env");
 const PostCSSNormalize = require("postcss-normalize");
@@ -225,7 +227,6 @@ const webpackPlugins = () => {
  * @param {Object} extra_loader - loader with options for css preprocessor
  * @returns {Array<Object>}
  */
-const DoIUse = require("doiuse");
 
 const cssLoaders = (extraLoader) => {
   const loaders = [
@@ -244,7 +245,13 @@ const cssLoaders = (extraLoader) => {
       loader: "postcss-loader",
       options: {
         postcssOptions: {
-          plugins: [DoIUse({}), Autoprefixer(), PostCSSPresetEnv(), PostCSSNormalize()],
+          plugins: [
+            DoIUse({}),
+            PostcssFlexbugsFixes(),
+            Autoprefixer(),
+            PostCSSPresetEnv(),
+            PostCSSNormalize(),
+          ],
         },
       },
     },
