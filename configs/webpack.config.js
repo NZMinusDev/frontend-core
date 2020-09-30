@@ -279,6 +279,7 @@ const jsLoaders = (extraPreset) => {
   const babelOptions = {
     presets: ["@babel/preset-env"],
     plugins: ["@babel/plugin-proposal-class-properties"],
+    cacheDirectory: "./app/cache/webpack__babel",
   };
 
   if (extraPreset) {
