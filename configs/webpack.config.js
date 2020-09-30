@@ -2,6 +2,7 @@
 const path = require("path");
 const fs = require("fs");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
+const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const PugPluginAlias = require("pug-alias");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -100,8 +101,9 @@ class ResultOfTemplatesProcessing {
           template: `!!pug-loader!app/src/pages/${shortNameOfTemplate}/${nameOfTemplate}`,
           filename: `./${nameOfTemplate.replace(/\.pug/, hashedFileName("", "html"))}`,
           favicon: "./assets/pictures/images/ico/favicon.ico",
-          // eslint-disable-next-line camelcase
           chunks: [shortNameOfTemplate],
+          // Tip: pay attention on elements which can be non-working while res loading.
+          scriptLoading: "defer",
         })
       );
     });
@@ -117,6 +119,11 @@ const resultOfTemplatesProcessing = new ResultOfTemplatesProcessing();
 const webpackPlugins = () => {
   const plugins = [
     ...resultOfTemplatesProcessing.HTMLWebpackPlugins,
+    // FIXME: customize it depending on the project. Tip: pay attention to scriptLoading and inject attributes in HTMLWebpackPlugin
+    // https://github.com/numical/script-ext-html-webpack-plugin
+    new ScriptExtHtmlWebpackPlugin({
+      defaultAttribute: "sync",
+    }),
     new MiniCssExtractPlugin({
       filename: hashedFileName("styles/[id]/[name]", "css"),
     }),

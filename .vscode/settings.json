@@ -67,6 +67,7 @@
     "narmalize",
     "nohashed",
     "optipng",
+    "prefetch",
     "spritesheet",
     "webp"
   ],
