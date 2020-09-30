@@ -55,6 +55,7 @@
     "Postcss",
     "Zaitsev",
     "autoprefixed",
+    "bemdecl",
     "browserslist",
     "camelcase",
     "devtool",
@@ -64,6 +65,7 @@
     "modificator",
     "modificators",
     "narmalize",
+    "nohashed",
     "optipng",
     "spritesheet",
     "webp"

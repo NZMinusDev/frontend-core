@@ -114,8 +114,8 @@ const resultOfTemplatesProcessing = new ResultOfTemplatesProcessing();
  * ImageMinimizerPlugin - Plugin and Loader for webpack to optimize (compress) all images. Make sure ImageMinimizerPlugin place after any plugins that add images or other assets which you want to optimized.
  * CleanWebpackPlugin - clean dist folder before each use
  */
-const plugins = () => {
-  return [
+const webpackPlugins = () => {
+  const plugins = [
     ...resultOfTemplatesProcessing.HTMLWebpackPlugins,
     new MiniCssExtractPlugin({
       filename: hashedFileName("styles/[id]/[name]", "css"),
@@ -150,50 +150,58 @@ const plugins = () => {
       header: "@media (color) {",
       footer: "}",
     }),
-    // images are converted to WEBP
-    new ImageMinimizerPlugin({
-      cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
-      filename: hashedFileName("[path]/[name]/[name]", "webp"),
-      keepOriginal: true, // keep compressed image
-      minimizerOptions: {
-        // Lossless optimization with custom option
-        plugins: [
-          [
-            "imagemin-webp",
-            {
-              // preset: default //default, photo, picture, drawing, icon and text
-              // lossless: true,
-              nearLossless: 0, // pre compression with lossless mode on
-            },
-          ],
-        ],
-      },
-    }),
-    // original images will compressed lossless
-    new ImageMinimizerPlugin({
-      cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
-      filename: "[path]/[name]/[name].[ext]", // Tip: hashed by assetsLoader (file-loader)
-      minimizerOptions: {
-        // Lossless optimization with custom option
-        plugins: [
-          ["gifsicle", { interlaced: true }],
-          ["jpegtran", { progressive: true }],
-          ["optipng", { optimizationLevel: 5 }],
-          [
-            "svgo",
-            {
-              plugins: [
-                {
-                  removeViewBox: false,
-                },
-              ],
-            },
-          ],
-        ],
-      },
-    }),
-    new CleanWebpackPlugin(),
   ];
+
+  if (isProd) {
+    plugins.push(
+      // images are converted to WEBP
+      new ImageMinimizerPlugin({
+        cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
+        filename: hashedFileName("[path]/[name]/[name]", "webp"),
+        keepOriginal: true, // keep compressed image
+        minimizerOptions: {
+          // Lossless optimization with custom option
+          plugins: [
+            [
+              "imagemin-webp",
+              {
+                // preset: default //default, photo, picture, drawing, icon and text
+                // lossless: true,
+                nearLossless: 0, // pre compression with lossless mode on
+              },
+            ],
+          ],
+        },
+      }),
+      // original images will compressed lossless
+      new ImageMinimizerPlugin({
+        cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
+        filename: "[path]/[name]/[name].[ext]", // Tip: hashed by assetsLoader (file-loader)
+        minimizerOptions: {
+          // Lossless optimization with custom option
+          plugins: [
+            ["gifsicle", { interlaced: true }],
+            ["jpegtran", { progressive: true }],
+            ["optipng", { optimizationLevel: 5 }],
+            [
+              "svgo",
+              {
+                plugins: [
+                  {
+                    removeViewBox: false,
+                  },
+                ],
+              },
+            ],
+          ],
+        },
+      })
+    );
+  }
+
+  plugins.push(new CleanWebpackPlugin());
+
+  return plugins;
 };
 
 /**
@@ -372,7 +380,7 @@ module.exports = {
     alias: sharedAliases,
     extensions: [".js", ".json", ".ts"],
   },
-  plugins: plugins(),
+  plugins: webpackPlugins(),
   module: {
     rules: [
       {
