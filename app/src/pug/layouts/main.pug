@@ -5,12 +5,15 @@ include ~@pug/mixins/noscript-notification.pug
 block variables
 
 doctype html
-html(lang=lang)
+html(lang="ru")
   head
-    block head
     +meta(keywords, description, title)
+    block scripts
   body
-    +noscript()
-    block header
-    block content
-    block footer
+    +noscript
+    header
+      block header
+    main
+      block content
+    footer
+      block footer
