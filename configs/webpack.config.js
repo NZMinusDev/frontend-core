@@ -7,6 +7,7 @@ const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const PugPluginAlias = require("pug-alias");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const DartSASS = require("sass");
 const WrapperPlugin = require("wrapper-webpack-plugin");
 const DoIUse = require("doiuse");
 const PostcssFlexbugsFixes = require("postcss-flexbugs-fixes");
@@ -470,7 +471,17 @@ module.exports = smp.wrap({
       },
       {
         test: /\.s[ac]ss$/,
-        use: cssLoaders({ loader: "sass-loader" }),
+        use: cssLoaders({
+          loader: "sass-loader",
+          options: {
+            // Prefer `dart-sass` instead `node-sass`
+            implementation: DartSASS,
+            /* compilation faster with fiber on */
+            sassOptions: {
+              fiber: true,
+            },
+          },
+        }),
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/,
