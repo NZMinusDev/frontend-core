@@ -1,6 +1,6 @@
 {
   "name": "frontend-core",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "It's simple bare bones repository for frontend developers using BEM",
   "private": true,
   "scripts": {
@@ -23,7 +23,6 @@
     "scss",
     "js",
     "ts",
-    "tsx",
     "javascript",
     "typescript",
     "webpack"
