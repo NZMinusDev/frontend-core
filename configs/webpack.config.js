@@ -100,7 +100,7 @@ class ResultOfTemplatesProcessing {
       this.HTMLWebpackPlugins.push(
         new HTMLWebpackPlugin({
           template: `!!pug-loader!app/src/pages/${shortNameOfTemplate}/${nameOfTemplate}`,
-          filename: `./${nameOfTemplate.replace(/\.pug/, hashedFileName("", "html"))}`,
+          filename: `./${nameOfTemplate.replace(/\.pug/, "html")}`,
           favicon: "./assets/pictures/images/ico/favicon.ico",
           chunks: [shortNameOfTemplate],
           // Tip: for 'defer' use pay attention on elements which can be non-working while res loading.
@@ -440,7 +440,7 @@ const optimization = () => {
   return config;
 };
 
-const smp = new SpeedMeasurePlugin();// measures speed of each plugin in bundling
+const smp = new SpeedMeasurePlugin(); // measures speed of each plugin in bundling
 module.exports = smp.wrap({
   // The base directory, an absolute path, for resolving entry points and loaders
   context: PATHS.src_absolute,
