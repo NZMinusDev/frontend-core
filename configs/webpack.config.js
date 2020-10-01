@@ -473,11 +473,11 @@ module.exports = smp.wrap({
         use: cssLoaders({ loader: "sass-loader" }),
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
+        test: /\.(jpe?g|png|gif|svg)$/,
         use: assetsLoaders(),
       },
       {
-        test: /\.(ttf|woff|woff2|eot)$/,
+        test: /\.(ttf|otf|woff|woff2|eot)$/,
         use: assetsLoaders(),
       },
       {
