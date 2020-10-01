@@ -74,9 +74,29 @@
     "spritesheet",
     "webp"
   ],
-  "cSpell.ignoreWords": [
-    "import",
-    "import normalize",
-    "normalize"
-  ]
+  "cSpell.ignoreWords": ["import", "import normalize", "normalize"],
+  "path-autocomplete.extensionOnImport": true,
+  "path-autocomplete.includeExtension": true,
+  "path-autocomplete.excludedItems": {
+    "**/*.js": { "when": "**/*.ts" },
+    "**/*.map": { "when": "**" },
+    "**/{.git,node_modules}": { "when": "**" }
+  },
+  "path-autocomplete.pathMappings": {
+    "@pug": "${folder}/app/src/pug",
+    "@library.blocks": "${folder}/app/src/components/library.blocks/",
+    "@common.blocks": "${folder}/app/src//components/common.blocks/",
+    "@small-mobile.blocks": "${folder}/app/src/components/small-mobile.blocks/",
+    "@large-mobile.blocks": "${folder}/app/src/components/large-mobile.blocks/",
+    "@tablet.blocks": "${folder}/app/src/components/tablet.blocks/",
+    "@small-desktop.blocks": "${folder}/app/src/components/small-desktop.blocks/",
+    "@large-desktop.blocks": "${folder}/app/src/components/large-desktop.blocks/",
+    "@themes": "${folder}/app/src/components/thematic/",
+    "@experiments": "${folder}/app/src/components/experimental/",
+    "@images": "${folder}/app/src/assets/pictures/images/",
+    "@contents": "${folder}/app/src/assets/pictures/contents/",
+    "@fonts": "${folder}/app/src/assets/fonts/",
+    "@utils": "${folder}/app/src/utils/"
+  },
+  "path-autocomplete.enableFolderTrailingSlash": true
 }

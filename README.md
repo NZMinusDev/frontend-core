@@ -219,19 +219,20 @@ You can see explanation [here](https://en.bem.info/methodology/redefinition-leve
    2. PowerShell.
    3. Ayu.
    4. Material Icon Theme.
-   5. Auto Complete Tag.
-   6. Bracket Pair Colorizer.
-   7. Code Spell Checker.
-   8. TODO Highlight.
-   9. ESLint.
-   10. Prettier - Code formatter.
-   11. VSCode Map Preview.
-   12. SVG.
-   13. markdownlint.
-   14. Sort Lines by Selection.
-   15. Live Server.
-   16. JavaScript (ES6) code snippets.
-   17. Webpack Snippets.
+   5. Path Autocomplete.
+   6. Auto Complete Tag.
+   7. Bracket Pair Colorizer.
+   8. Code Spell Checker.
+   9. TODO Highlight.
+   10. ESLint.
+   11. Prettier - Code formatter.
+   12. VSCode Map Preview.
+   13. SVG.
+   14. markdownlint.
+   15. Sort Lines by Selection.
+   16. Live Server.
+   17. JavaScript (ES6) code snippets.
+   18. Webpack Snippets.
 3. Preprocessors which speed up work:
    1. Pug.
    2. SCSS.
