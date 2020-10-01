@@ -98,5 +98,6 @@
     "@fonts": "${folder}/app/src/assets/fonts/",
     "@utils": "${folder}/app/src/utils/"
   },
+  "path-autocomplete.triggerOutsideStrings": true,
   "path-autocomplete.enableFolderTrailingSlash": true
 }
