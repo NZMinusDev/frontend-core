@@ -42,12 +42,6 @@ const redefinitionLevels = [
   "experimental/experiment-1.blocks",
 ];
 const componentGroups = ["basic", "containers", "primitives", "specific"];
-const bemDeclLevels = [];
-redefinitionLevels.forEach((level) => {
-  componentGroups.forEach((group) => {
-    bemDeclLevels.push(`app/src/components/${level}/${group}/`);
-  });
-});
 
 const sharedAliases = {
   "@pug": path.resolve(PATHS.src_absolute, "./pug/"),
@@ -96,7 +90,6 @@ class ResultOfTemplatesProcessing {
     this.HTMLWebpackPlugins = [];
     namesOfTemplates.forEach((nameOfTemplate) => {
       const shortNameOfTemplate = nameOfTemplate.replace(/\.pug/, "");
-      // eslint-disable-next-line camelcase
 
       this.entries[shortNameOfTemplate] = [
         "@babel/polyfill",
@@ -110,7 +103,7 @@ class ResultOfTemplatesProcessing {
           filename: `./${nameOfTemplate.replace(/\.pug/, hashedFileName("", "html"))}`,
           favicon: "./assets/pictures/images/ico/favicon.ico",
           chunks: [shortNameOfTemplate],
-          // Tip: pay attention on elements which can be non-working while res loading.
+          // Tip: for 'defer' use pay attention on elements which can be non-working while res loading.
           scriptLoading: "defer",
         })
       );
@@ -120,9 +113,16 @@ class ResultOfTemplatesProcessing {
 const resultOfTemplatesProcessing = new ResultOfTemplatesProcessing();
 
 /**
- * HTMLWebpackPlugin - create html of pages with plug in scripts
+ * HTMLWebpackPlugin - create html of pages with plug in scripts.
+ * ScriptExtHtmlWebpackPlugin - adds to <script> tag attributes depending on RegExp.
+ * MiniCssExtractPlugin - extract css into separate files.
+ * WrapperPlugin - wrap output css depending on RegExp.
  * ImageMinimizerPlugin - Plugin and Loader for webpack to optimize (compress) all images. Make sure ImageMinimizerPlugin place after any plugins that add images or other assets which you want to optimized.
- * CleanWebpackPlugin - clean dist folder before each use
+ * CircularDependencyPlugin - scan bundles to alert about circular dependencies.
+ * DuplicatesPlugin - scan bundles to alert about duplicate resources from node_modules.
+ * UnusedFilesWebpackPlugin - scan bundles to alert about UnusedFiles.
+ * HashedModuleIdsPlugin - replace webpack number links to character links.
+ * CleanWebpackPlugin - clean dist folder before each use.
  */
 const webpackPlugins = () => {
   const plugins = [
@@ -230,11 +230,53 @@ const webpackPlugins = () => {
 };
 
 /**
- * Loaders contraction that loads autoprefixed normalize css with converting modern CSS into something most browsers can understand
- * @param {Object} extra_loader - loader with options for css preprocessor
+ * Loaders contraction for templates.
+ * @param {Array<String>} includedFilesExtensions - extensions for including into bundles from components' resources; example: ["scss", "ts"].
+ */
+const templatesLoaders = (includedFilesExtensions = ["scss", "ts"]) => {
+  const bemDeclLevels = [];
+  redefinitionLevels.forEach((level) => {
+    componentGroups.forEach((group) => {
+      bemDeclLevels.push(`app/src/components/${level}/${group}/`);
+    });
+  });
+
+  return [
+    {
+      // Adds files of BEM entities to bundle (adds require statements)
+      loader: "bemdecl-to-fs-loader",
+      options: {
+        levels: bemDeclLevels,
+        extensions: includedFilesExtensions,
+      },
+    },
+    {
+      // convert HTML to bem DECL format
+      loader: "html2bemdecl-loader",
+    },
+    {
+      // convert pug to html in runtime
+      loader: "pug-plain-loader",
+      options: {
+        plugins: [
+          PugPluginAlias(
+            objectKeyMap(sharedAliases, (key) => {
+              return `~${key}`;
+            })
+          ),
+        ],
+      },
+    },
+  ];
+};
+
+/**
+ * Loaders contraction that loads autoprefixed normalize css with converting modern CSS into something most browsers can understand.
+ * DoIUse - alerts for unsupported css features, depending on browserslist.
+ * PostcssFlexbugsFixes - fix some flex bugs in old browsers.
+ * @param {Object} extra_loader - loader with options for css preprocessor.
  * @returns {Array<Object>}
  */
-
 const cssLoaders = (extraLoader) => {
   const loaders = [
     {
@@ -322,6 +364,7 @@ const assetsLoaders = (extraLoader) => {
  */
 const optimization = () => {
   const config = {
+    // extract manifest from all entries
     runtimeChunk: { name: "manifest" },
     splitChunks: {
       // split common imports into separate files
@@ -397,7 +440,7 @@ const optimization = () => {
   return config;
 };
 
-const smp = new SpeedMeasurePlugin();
+const smp = new SpeedMeasurePlugin();// measures speed of each plugin in bundling
 module.exports = smp.wrap({
   // The base directory, an absolute path, for resolving entry points and loaders
   context: PATHS.src_absolute,
@@ -419,29 +462,7 @@ module.exports = smp.wrap({
     rules: [
       {
         test: /\.pug$/,
-        // loader: "pug-loader",
-        use: [
-          {
-            loader: "bemdecl-to-fs-loader",
-            options: {
-              levels: bemDeclLevels,
-              extensions: ["scss", "ts"],
-            }, // Adds scss and ts files of BEM entities to bundle (adds require statements)
-          },
-          { loader: "html2bemdecl-loader" }, // convert HTML to bem DECL format
-          {
-            loader: "pug-plain-loader",
-            options: {
-              plugins: [
-                PugPluginAlias(
-                  objectKeyMap(sharedAliases, (key) => {
-                    return `~${key}`;
-                  })
-                ),
-              ],
-            },
-          }, // convert pug to html in runtime
-        ],
+        use: templatesLoaders(),
       },
       {
         test: /\.css$/,
