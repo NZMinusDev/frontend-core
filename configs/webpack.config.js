@@ -8,6 +8,7 @@ const PugPluginAlias = require("pug-alias");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const DartSASS = require("sass");
+const fibers = require("fibers");
 const WrapperPlugin = require("wrapper-webpack-plugin");
 const DoIUse = require("doiuse");
 const PostcssFlexbugsFixes = require("postcss-flexbugs-fixes");
@@ -478,7 +479,7 @@ module.exports = smp.wrap({
             implementation: DartSASS,
             /* compilation faster with fiber on */
             sassOptions: {
-              fiber: true,
+              fiber: fibers,
             },
           },
         }),
