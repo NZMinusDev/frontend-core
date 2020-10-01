@@ -218,7 +218,7 @@ const webpackPlugins = () => {
   plugins.push(
     new CircularDependencyPlugin(),
     new DuplicatesPlugin(),
-    new UnusedFilesWebpackPlugin(),
+    new UnusedFilesWebpackPlugin({ patterns: ["**/*.scss", "**/*.ts"] }),
     new HashedModuleIdsPlugin({
       hashFunction: "md4",
       hashDigest: "base64",
