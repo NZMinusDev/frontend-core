@@ -350,6 +350,7 @@ const assetsLoaders = (extraLoader) => {
       loader: "file-loader",
       options: {
         name: hashedFileName("[path]/[name]", "[ext]"),
+        publicPath: "./../../", // assets base dir -> css file will use this path in output css as link to asset (redirect from ./styles folder/chunk folder/ to dist folder)
       },
     },
   ];
@@ -459,7 +460,6 @@ module.exports = smp.wrap({
   output: {
     filename: hashedFileName("bundles/[id]/[name]", "js"),
     path: PATHS.dist_absolute,
-    publicPath: `${PATHS.dist_absolute}/`,
   },
   resolve: {
     // You can use it while using import in css and js
