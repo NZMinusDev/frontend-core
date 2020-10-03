@@ -174,7 +174,7 @@ const webpackPlugins = () => {
       // images are converted to WEBP
       new ImageMinimizerPlugin({
         cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
-        filename: hashedFileName("[path]/[name]/[name]", "webp"),
+        filename: "[path]/[name].webp", // Tip: hashed by assetsLoader (file-loader)
         keepOriginal: true, // keep compressed image
         minimizerOptions: {
           // Lossless optimization with custom option
@@ -193,7 +193,7 @@ const webpackPlugins = () => {
       // original images will compressed lossless
       new ImageMinimizerPlugin({
         cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
-        filename: "[path]/[name]/[name].[ext]", // Tip: hashed by assetsLoader (file-loader)
+        filename: "[path]/[name].[ext]", // Tip: hashed by assetsLoader (file-loader)
         minimizerOptions: {
           // Lossless optimization with custom option
           plugins: [
@@ -349,7 +349,7 @@ const assetsLoaders = (extraLoader) => {
     {
       loader: "file-loader",
       options: {
-        name: hashedFileName("[path]/[name]/[name]", "[ext]"),
+        name: hashedFileName("[path]/[name]", "[ext]"),
       },
     },
   ];
@@ -373,6 +373,12 @@ const optimization = () => {
       chunks: "all", // == 'initial' && 'async'
       minChunks: 1,
       cacheGroups: {
+        normalize: {
+          test: /.*\\normalizeCSS\\.*\.css$/,
+          minChunks: 1,
+          priority: 11,
+          enforce: true,
+        },
         vendors: {
           test: /[\\/]node_modules[\\/]/,
           priority: 10, // The optimization will prefer the cache group with a higher priority
@@ -453,6 +459,7 @@ module.exports = smp.wrap({
   output: {
     filename: hashedFileName("bundles/[id]/[name]", "js"),
     path: PATHS.dist_absolute,
+    publicPath: `${PATHS.dist_absolute}/`,
   },
   resolve: {
     // You can use it while using import in css and js
