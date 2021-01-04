@@ -1,0 +1,14 @@
+@use "@utils/devTools/devTools.scss";
+
+.form-field {
+  color: devTools.getColor(color__dark-shade, 0.25);
+  border: var(--border);
+  border-radius: var(--border-radius-size);
+
+  &:hover,
+  &:focus,
+  &:focus-within {
+    color: devTools.getColor(color__dark-shade, 0.75);
+    border: var(--border-hover);
+  }
+}

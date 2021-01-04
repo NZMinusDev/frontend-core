@@ -1,0 +1,42 @@
+.footer__list-checkbox {
+  display: none;
+
+  & + .footer__list {
+    max-height: 1em;
+    overflow: hidden;
+    transition: max-height linear 0.3s;
+  }
+
+  &:checked + .footer__list {
+    max-height: 32em;
+
+    & > *:first-child {
+      &:after {
+        content: "\e5ce";
+      }
+    }
+  }
+}
+
+.footer__list {
+  display: grid;
+  grid-row-gap: 1.571428571428571em;
+  justify-items: center;
+  margin-top: 4px;
+
+  & > *:first-child {
+    display: flex;
+    align-items: center;
+
+    &:after {
+      content: "\e5cf";
+      font-family: "Material Icons";
+      font-size: 1rem;
+      color: inherit;
+    }
+  }
+
+  & > a {
+    line-height: 1.166780587833219em;
+  }
+}

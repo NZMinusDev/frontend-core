@@ -1,0 +1,17 @@
+@use "@utils/devTools/devTools.scss";
+
+.sign-in-layout {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  padding-top: 19px/14px * 1em;
+  padding-bottom: 19px/14px * 1em;
+
+  @include devTools.backgroundAutoCarousel(
+    "@images/backgrounds/room4.png" "@images/backgrounds/room3.png"
+  );
+}
+
+.sign-in-layout__card_hidden {
+  display: none;
+}

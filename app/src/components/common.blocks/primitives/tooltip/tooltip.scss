@@ -1,0 +1,55 @@
+.tooltip {
+  $TOOLTIP_ICON_SIZE: 1.428571428571429em;
+  $TOOLTIP_ARROW_SIZE: 0.3571428571428571em;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: $TOOLTIP_ICON_SIZE;
+  height: $TOOLTIP_ICON_SIZE;
+  position: relative;
+  border: 1px solid black;
+  border-radius: 100%;
+  background-color: transparent;
+  cursor: pointer;
+
+  //Tooltip text container
+  &:before {
+    content: attr(data-content);
+    top: $TOOLTIP_ARROW_SIZE + $TOOLTIP_ICON_SIZE;
+    padding: 0.5em 1em;
+    color: white;
+    background-color: black;
+    border-radius: 4px;
+  }
+
+  //Tooltip arrow
+  &:after {
+    content: "";
+    top: $TOOLTIP_ICON_SIZE;
+    border-bottom: $TOOLTIP_ARROW_SIZE solid black;
+    border-right: $TOOLTIP_ARROW_SIZE solid transparent;
+    border-left: $TOOLTIP_ARROW_SIZE solid transparent;
+  }
+
+  //Setting up the transition
+  &:before,
+  &:after {
+    transition: all 0.5s ease; //speed of closing
+    opacity: 0;
+
+    position: absolute;
+    pointer-events: none;
+    z-index: 10;
+    text-align: center;
+  }
+
+  //Triggering the transition
+  &:focus:before,
+  &:focus:after,
+  &:hover:before,
+  &:hover:after {
+    transition: all 0.75s ease; //speed of opening
+    opacity: 1;
+  }
+}

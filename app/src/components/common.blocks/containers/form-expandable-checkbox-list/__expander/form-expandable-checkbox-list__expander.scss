@@ -1,0 +1,22 @@
+.form-expandable-checkbox-list__expander {
+  position: relative;
+
+  & > label {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  & > input {
+    display: none;
+
+    &:checked {
+      & + .form-expandable-checkbox-list__expand-icon:after {
+        content: "\e5ce";
+      }
+
+      & ~ .form-expandable-checkbox-list__list {
+        max-height: 32em;
+      }
+    }
+  }
+}

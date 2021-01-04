@@ -1,0 +1,14 @@
+.footer__logo {
+  grid-area: logo;
+  align-self: self-start;
+  display: flex;
+  align-items: center;
+  font-size: 1.285714285714286em;
+  line-height: 1.285714285714286em;
+
+  .logo {
+    width: 2.222222222222222em;
+    height: 2.222222222222222em;
+    margin-right: 0.6944444444444444em;
+  }
+}

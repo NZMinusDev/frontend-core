@@ -1,0 +1,41 @@
+$BASIC_SIZE: 3.428571428571429em; //48px/14px, 14px - <body> template font-size
+$BORDER_WIDTH: 3px;
+
+.logo {
+  display: inline-block;
+  position: relative;
+  width: $BASIC_SIZE;
+  height: $BASIC_SIZE;
+  border-radius: 100%;
+  background: transparent;
+  border: $BORDER_WIDTH solid black;
+
+  $curve-y: 18.35px / 48px * 100%;
+  $curve-x: 11.29px / 48px * 100%;
+  $left-curve-size: (14.12px - $BORDER_WIDTH) / 48px * 100%;
+  &:before {
+    content: "";
+    position: absolute;
+    top: $curve-y;
+    left: $curve-x;
+    width: calc(#{$BORDER_WIDTH} + #{$left-curve-size});
+    height: calc(#{$BORDER_WIDTH} + #{$left-curve-size});
+    border-top: $BORDER_WIDTH solid black;
+    border-right: $BORDER_WIDTH solid black;
+    border-top-right-radius: 100%;
+  }
+
+  $right-curve-width: (10.94px - $BORDER_WIDTH) / 48px * 100%;
+  $right-curve-height: (7.09px - $BORDER_WIDTH) / 48px * 100%;
+  &:after {
+    content: "";
+    position: absolute;
+    top: $curve-y;
+    right: $curve-x;
+    width: calc(#{$BORDER_WIDTH} + #{$right-curve-width});
+    height: calc(#{$BORDER_WIDTH} + #{$right-curve-height});
+    border-top: $BORDER_WIDTH solid black;
+    border-left: $BORDER_WIDTH solid black;
+    border-top-left-radius: 100%;
+  }
+}

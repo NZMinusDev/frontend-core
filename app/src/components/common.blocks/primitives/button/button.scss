@@ -1,0 +1,12 @@
+@use "./variables.scss";
+
+.button {
+  min-width: 2em;
+  min-height: 2em;
+  height: variables.$HEIGHT;
+  border-radius: calc(#{variables.$HEIGHT} / 2) / 50%;
+  padding-left: variables.$X_PADDING;
+  padding-right: variables.$X_PADDING;
+  text-transform: uppercase;
+  white-space: nowrap;
+}

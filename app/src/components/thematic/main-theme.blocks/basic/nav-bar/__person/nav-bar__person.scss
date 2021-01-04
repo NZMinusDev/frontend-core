@@ -1,0 +1,5 @@
+@use "@utils/devTools/devTools.scss";
+
+.nav-bar__person {
+  color: devTools.getColor(color__dark-shade, 0.5);
+}

@@ -1,0 +1,54 @@
+include ./__item-quantity-list/form-dropdown__item-quantity-list.pug
+include ./__datepicker/form-dropdown__datepicker.pug
+include ~@common.blocks/primitives/apply-control/apply-control.pug
+//- name: name of component hidden input
+//- type: "date" | "item-quantity"
+//- id?: id of dropdown button
+//- class?: class for component bem mix: such as positioning functionality
+//- isFilter?: {boolean} - if true, input change event will reload page with chosen value(get method), default is false
+//- label?: text of label
+//- output?: "single" | "plural", default is "single"
+//- placeholder?: text of placeholder
+//- Additional for type "date":
+//-   selected-dates?: {ISODateString | ISODateString,ISODateString,...} - initial dates(date), for several values use ','; example: "2020-11-18T21:00:00.000Z" or 2020-11-18T21:00:00.000Z,2020-11-20T21:00:00.000Z; tip: if output is 'plural' -> you should write 2 dates
+//-   isAltField?: {boolean} - mark dropdown as field that uses a different calendar
+//-   altFields?: {string} - selector of bonded alt fields
+//- Additional for type: item-quantity
+  //- openMod?: "toggle" | "fold" | "apply", default is "toggle"
+  //- groups: {groupName1:{selectionText: string, textPlural: string},groupName2:selectionText: string, textPlural: string,...}, example: { guests: { selectionText: 'гость', textPlural: 'гостя' }, младенцы: { selectionText: 'младенец', textPlural: 'младенцев' } }
+  //- list: {itemName1: {default: number, min: number, max: number, group?: groupName2},itemName1: {default: number, min: number, max: number, group?: groupName1},...}, example:{ взрослые: { default: 0, min: 0, max: 1 / 0, group: 'гости' }, дети: { default: 0, min: 0, max: 1 / 0, group: 'гости' }, младенцы: { default: 0, min: 0, max: 1 / 0} }; - if group is unset the itemName will be used instead
+mixin form-dropdown
+  -
+    const output = attributes.output ? attributes.output : "single";
+    const isFilter = attributes.isFilter ? attributes.isFilter + '' : null;
+    const openMod = attributes.openMod ? attributes.openMod : "toggle";
+  .form-dropdown(class=attributes.class)
+    if attributes.label
+      h3.form-label
+        label(for=attributes.id)= attributes.label
+    .form-field
+      label.icon.form-dropdown__expand-icon(for=attributes.id)
+      case attributes.type
+        when "date"
+          +form-dropdown__datepicker(
+            name=attributes.name,
+            id=attributes.id,
+            isFilter=isFilter,
+            isAltField=attributes.isAltField,
+            altFields=attributes.altFields,
+            data-range=output === 'plural' ? true : false,
+            placeholder=attributes.placeholder,
+            selected-dates=attributes['selected-dates']
+          )
+        when "item-quantity"
+          +form-dropdown__item-quantity-list(
+            name=attributes.name,
+            id=attributes.id,
+            class=`form-dropdown__item-quantity-list_openMod-${openMod}`,
+            isFilter=isFilter,
+            placeholder=attributes.placeholder,
+            groups=attributes.groups,
+            list=attributes.list
+          )
+            if openMod === "apply"
+              +apply-control.form-dropdown__link-btns

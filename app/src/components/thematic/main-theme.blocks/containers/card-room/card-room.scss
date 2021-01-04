@@ -1,0 +1,6 @@
+@use "@utils/devTools/devTools.scss";
+
+.card-room {
+  box-shadow: 0px 0.7142857142857143em 1.428571428571429em
+    devTools.getColor(color__dark-shade, 0.05);
+}

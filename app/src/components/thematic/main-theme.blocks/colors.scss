@@ -1,0 +1,19 @@
+@use "@utils/devTools/devTools.scss";
+
+:root {
+  --color__dark-shade: 31, 32, 65;
+  --color__primary: 188, 156, 255;
+  --color__primary_additional: 139, 164, 249;
+  --color__secondary: 111, 207, 151;
+  --color__secondary_additional: 102, 210, 234;
+}
+
+h1,
+h2,
+h3 {
+  color: devTools.getColor(color__dark-shade, 1);
+}
+
+body {
+  color: devTools.getColor(color__dark-shade, 0.75);
+}

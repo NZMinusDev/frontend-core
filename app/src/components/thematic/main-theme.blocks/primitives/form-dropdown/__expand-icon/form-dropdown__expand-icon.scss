@@ -1,0 +1,9 @@
+@use "@utils/devTools/devTools.scss";
+
+*:focus > .form-dropdown__expand-icon,
+*:hover > .form-dropdown__expand-icon,
+*:focus-within > .form-dropdown__expand-icon {
+  &:after {
+    color: devTools.getColor(color__dark-shade, 0.75);
+  }
+}

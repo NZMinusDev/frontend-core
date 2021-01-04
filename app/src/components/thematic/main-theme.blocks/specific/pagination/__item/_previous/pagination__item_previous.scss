@@ -1,0 +1,9 @@
+@use "@thematic/main-theme.blocks/gradients.scss";
+
+.pagination__item_previous {
+  background: gradients.secondary(1);
+
+  a {
+    font-size: 2em;
+  }
+}

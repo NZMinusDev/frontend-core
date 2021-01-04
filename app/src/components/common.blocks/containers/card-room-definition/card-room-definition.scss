@@ -1,0 +1,10 @@
+.card-room-definition {
+  grid:
+    "room-title day-payment"
+    "arrival-date-dropdown departure-date-dropdown"
+    "guests-single-apply guests-single-apply"
+    "payment-rates payment-rates"
+    "total-payment total-payment"
+    "submit-btn submit-btn" / 1fr 1fr;
+  grid-row-gap: 0.7142857142857143em;
+}

@@ -1,0 +1,36 @@
+include ~@common.blocks/containers/slideshow/slideshow.pug
+include ~@common.blocks/containers/form-rate-button/form-rate-button.pug
+
+//- id: id of card
+//- class: class for component bem mix: such as positioning functionality
+//- href: {string} - link to room's page
+//- name: {string} - name of slideshow's radio group
+//- paths: {Array<string>} - paths for images
+//- room-number: {number} - number of room
+//- room-grade: {string} - grade of room
+//- payment-amount: {number} - daily cost
+//- rate: {number} - initial rating
+//- comments-amount: {number} - amount of comments about room
+mixin card-room
+  -
+    const CURRENCY = "₽";
+
+    const roomNumberSentence = `№ ${attributes["room-number"].toLocaleString()}`;
+    const paymentAmountSentence = `${attributes['payment-amount'].toLocaleString()}${CURRENCY}<span class="normal-weight-text"> в сутки</span>`;
+    const commentsAmountSentence = `${attributes['comments-amount'].toLocaleString()}<span class="normal-weight-text"> Отзывов</span>`;
+  a.card-base.card-room(id=attributes.id, class=attributes.class, href=attributes.href)
+    +slideshow.card-room__slideshow(name=attributes.name + '__slideshow', paths=attributes.paths)
+    .card-room__room-data
+      .card-room__data-row
+        .card-room__room-title
+          h2.card-room__room-number= roomNumberSentence
+          h3.card-room__room-grade= attributes['room-grade']
+        h3.card-room__day-payment!= paymentAmountSentence
+      .card-room__data-row
+        +form-rate-button.card-room__room-rating(
+          length=5,
+          rate=attributes.rate,
+          name=attributes.name + '__rating',
+          disabled
+        )
+        h3.card-room__room-comments!= commentsAmountSentence

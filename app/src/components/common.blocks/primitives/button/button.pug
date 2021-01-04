@@ -1,0 +1,29 @@
+//- id: id of button
+//- class: class for component bem mix: such as positioning functionality or size
+//- type - same as button's type: button|reset|submit
+//- name - same as button's name
+//- value - same as button's value
+//- modClass: "filled" | "bordered" | "icon-link" | "link"
+//- form - same as button's form (form id)
+//- formaction - same as button's formaction (file's url)
+//- formmethod - same as button's formmethod (get | post)
+//- formtarget - same as button's formtarget (<имя окна> | _blank | _self | _parent | _top)
+//- disabled - same as button's disabled
+mixin button
+  -
+    var modClass = attributes.modClass ? 'button_is' + attributes.modClass[0].toUpperCase() + attributes.modClass.slice(1) : 'button_isFilled';
+  button.button(
+    id=attributes.id,
+    class=attributes.class,
+    type=attributes.type,
+    name=attributes.type == 'submit' ? attributes.name || 'submit' : '',
+    value=attributes.value,
+    class=modClass,
+    form=attributes.form,
+    formaction=attributes.formaction,
+    formmethod=attributes.formmethod,
+    formtarget=attributes.formtarget,
+    disabled=attributes.disabled
+  )= attributes.value
+    if attributes.modClass == "link"
+      .icon

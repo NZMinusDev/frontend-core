@@ -1,0 +1,8 @@
+@use "@utils/devTools/devTools.scss";
+
+.card-room__day-payment {
+  &,
+  & .normal-weight-text {
+    color: devTools.getColor(color__dark-shade, 0.5);
+  }
+}

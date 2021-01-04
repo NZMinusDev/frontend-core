@@ -1,0 +1,28 @@
+@use "@utils/devTools/devTools.scss";
+
+@use "@thematic/main-theme.blocks/gradients.scss";
+
+.form-like-button__button {
+  border: var(--border);
+
+  &:checked {
+    background: linear-gradient(180deg, white, white) padding-box, gradients.primary(1) border-box;
+  }
+
+  &:before,
+  &:after {
+    font-size: 0.4167rem;
+    color: devTools.getColor(color__dark-shade, 0.25);
+  }
+  &:before {
+    line-height: 0.354167rem;
+  }
+  &:after {
+    line-height: 0.5rem;
+  }
+
+  &:checked:before,
+  &:checked:after {
+    color: devTools.getColor(color__primary, 1);
+  }
+}

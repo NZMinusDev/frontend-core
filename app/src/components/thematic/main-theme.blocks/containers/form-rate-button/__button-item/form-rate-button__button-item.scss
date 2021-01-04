@@ -1,0 +1,11 @@
+@use "@utils/devTools/devTools.scss";
+
+@use "@thematic/main-theme.blocks/gradients.scss";
+
+.form-rate-button__button-item {
+  & + .icon {
+    &:after {
+      @include devTools.gradientFont(gradients.primary(1));
+    }
+  }
+}

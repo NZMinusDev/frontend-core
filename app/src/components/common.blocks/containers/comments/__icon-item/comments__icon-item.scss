@@ -1,0 +1,9 @@
+.comments__icon-item {
+  width: 3.428571428571429em;
+
+  & > img {
+    grid-area: icon;
+    border: 2px solid white;
+    border-radius: 100%;
+  }
+}

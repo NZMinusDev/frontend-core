@@ -91,7 +91,7 @@
     "@tablet.blocks": "${folder}/app/src/components/tablet.blocks/",
     "@small-desktop.blocks": "${folder}/app/src/components/small-desktop.blocks/",
     "@large-desktop.blocks": "${folder}/app/src/components/large-desktop.blocks/",
-    "@themes": "${folder}/app/src/components/thematic/",
+    "@thematic": "${folder}/app/src/components/thematic/",
     "@experiments": "${folder}/app/src/components/experimental/",
     "@images": "${folder}/app/src/assets/pictures/images/",
     "@contents": "${folder}/app/src/assets/pictures/contents/",
@@ -99,5 +99,6 @@
     "@utils": "${folder}/app/src/utils/"
   },
   "path-autocomplete.triggerOutsideStrings": true,
-  "path-autocomplete.enableFolderTrailingSlash": true
+  "path-autocomplete.enableFolderTrailingSlash": true,
+  "editor.tabSize": 2
 }

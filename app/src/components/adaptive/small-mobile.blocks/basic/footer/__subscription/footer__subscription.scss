@@ -1,0 +1,5 @@
+.footer__subscription {
+  grid-area: subscription;
+  grid: "label" "description" "text-field";
+  grid-row-gap: 1.5em;
+}

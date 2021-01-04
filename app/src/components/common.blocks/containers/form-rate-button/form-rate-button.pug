@@ -1,0 +1,30 @@
+//- id: id of rate buttons' container
+//- class: class for component bem mix: such as positioning functionality
+//- label: text of label
+//- name: name of group
+//- length: number of stars
+//- rate: init rate amount
+//- titles:Array<string> - stars titles(hints)
+//- disabled: same as fieldset disabled (disable all buttons)
+mixin form-rate-button
+  .form-rate-button(id=attributes.id, class=attributes.class)
+    if attributes.label
+      h3.form-label
+        label(for=attributes.id)= attributes.label
+    -
+      var rateLength = attributes.length;
+      var counter = rateLength;
+      const titles = attributes.titles || ['очень плохо', 'плохо', 'нормально', 'хорошо', 'очень хорошо'];
+    fieldset.form-rate-button__rating(disabled=attributes.disabled)
+      while counter > 0
+        - var checked = counter == attributes.rate ? 'checked' : null;
+        - var currentID = attributes.name + '_' + counter;
+        input.form-rate-button__button-item(
+          id=currentID,
+          type="radio",
+          name=attributes.name,
+          checked=checked,
+          value=counter
+        )
+        label.icon(for=currentID, title=titles[counter - 1])= counter + ' starts'
+        - counter--;

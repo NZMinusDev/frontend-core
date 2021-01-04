@@ -1,0 +1,8 @@
+.nav-bar__expand-icon {
+  position: relative;
+  width: 1.714285714285714em;
+
+  &:after {
+    content: "\e5cf";
+  }
+}

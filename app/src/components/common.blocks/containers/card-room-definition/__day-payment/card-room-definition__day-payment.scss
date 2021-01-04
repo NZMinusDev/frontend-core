@@ -1,0 +1,12 @@
+.card-room-definition__day-payment {
+  grid-area: day-payment;
+  place-self: end;
+  font-size: 1em;
+  line-height: 1.285714285714286em;
+
+  .normal-weight-text {
+    font-weight: normal;
+    text-transform: initial;
+    font-size: 0.8571428571428571em;
+  }
+}

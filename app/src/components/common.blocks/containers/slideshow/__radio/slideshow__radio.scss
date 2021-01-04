@@ -1,0 +1,39 @@
+.slideshow__radio {
+  width: 0.5357142857142857em;
+  height: 0.5357142857142857em;
+  position: absolute;
+  bottom: 1.071428571428571em;
+  right: 0; //redefined in pug template using style attr
+  z-index: 2;
+  appearance: none;
+  border: 1px solid white;
+  border-radius: 100%;
+
+  &:checked {
+    background-color: white;
+
+    //current picture
+    & + .slideshow__switcher + .slideshow__picture {
+      display: block;
+      opacity: 1;
+    }
+
+    // switcher to next picture
+    & ~ .slideshow__switcher ~ .slideshow__switcher ~ .slideshow__switcher {
+      display: inline-block;
+      right: 0;
+      transform: matrix(-1, 0, 0, 1, 0, 0);
+
+      //another switchers
+      & ~ .slideshow__switcher {
+        display: none;
+      }
+    }
+
+    // switcher to previous picture
+    & + .slideshow__switcher {
+      display: inline-block;
+      left: 0;
+    }
+  }
+}

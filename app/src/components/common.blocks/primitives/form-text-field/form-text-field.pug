@@ -1,0 +1,39 @@
+//- attributes.id - id for input field inside component
+//- attributes.class - class for component bem mix: such as positioning functionality
+//- isFilter: {boolean} - if true, input change event will reload page with chosen value(get method)
+//- attributes.label - text for label
+//- attributes.type - type of field for validation: 'email' | 'password' | 'date' 
+//- attributes.name - name of input field
+//- attributes.value - init value of field
+//- attributes.placeholder - placeholder text
+//- autofocus - just add it for it works
+//- materialIcon - material icon name for submit btn in field
+mixin form-text-field
+  -
+    const ALLOWED_INPUTMASK_TYPES = ['text', 'search', 'tel', 'url', 'password'];
+    const ALLOWED_INPUTMODE_ATTRIBUTE = ['none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'];
+    const RESERVED_PLACEHOLDERS = {email:"Email", password:"Пароль", date:"ДД.ММ.ГГГГ"};
+
+    const componentClassModificator = attributes.type ? 'form-text-field_is' + attributes.type[0].toUpperCase() + attributes.type.slice(1) : '';
+    let inputMaskType = ALLOWED_INPUTMASK_TYPES.find(type => type==attributes.type);
+    let inputModeAttr = ALLOWED_INPUTMODE_ATTRIBUTE.find(type => type==attributes.type);
+    inputMaskType == inputMaskType || "text";
+    inputModeAttr == inputModeAttr || "text";
+
+  .form-text-field(class=componentClassModificator, class=attributes.class)
+    if attributes.label
+      h3.form-label
+        label(for=attributes.id)= attributes.label
+    .form-field
+      input.form-text-field__input(
+        id=attributes.id,
+        isFilter=attributes.isFilter ? attributes.isFilter + '' : null,
+        type=inputMaskType,
+        inputmode=inputModeAttr,
+        name=attributes.name,
+        placeholder=RESERVED_PLACEHOLDERS[attributes.type] || attributes.placeholder,
+        value=attributes.value,
+        autofocus=attributes.autofocus
+      )
+      if attributes.materialIcon
+        button.icon.form-text-field__link-icon(type="submit", data-icon=attributes.materialIcon)

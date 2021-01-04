@@ -1,0 +1,42 @@
+include ~@common.blocks/primitives/form-dropdown/form-dropdown.pug
+include ~@common.blocks/primitives/button/button.pug
+
+//- id: {string} - id of card
+//- class: {string} - class for component bem mix: such as positioning functionality
+//- name: {string} - name of <form>, also it is used such prefix for names of inner forms
+//- action: {string} - form action
+//- method: {"get" | "post"} - form method
+//- target: {("_self"|null)|"_blank"|"_parent"|"_top"} - form target
+mixin card-pick-room
+  form.card-base.card-pick-room(
+    id=attributes.id,
+    class=attributes.class,
+    name=attributes.name,
+    action=attributes.action,
+    method=attributes.method || 'get',
+    target=attributes.target
+  )
+    h1.card-pick-room__title Найдём номера под ваши пожелания
+    +form-dropdown.card-pick-room__arrival-date-dropdown(
+      label="Прибытие",
+      name=`${attributes.name}-arrival`,
+      type="date",
+      output="plural",
+      altFields=`.card-pick-room__departure-date-dropdown [name=${attributes.name}-departure]`
+    )
+    +form-dropdown.card-pick-room__departure-date-dropdown(
+      label="Выезд",
+      name=`${attributes.name}-departure`,
+      type="date",
+      isAltField
+    )
+    +form-dropdown.card-pick-room__guests-single-apply(
+      name=`${attributes.name}-guests`,
+      type="item-quantity",
+      label="Гости",
+      placeholder="Сколько гостей",
+      openMod="apply",
+      groups={ гости: { selectionText: 'гость', textPlural: 'гостя' }, младенцы: { selectionText: 'младенец', textPlural: 'младенцев' } },
+      list={ взрослые: { default: 0, min: 0, max: 1 / 0, group: 'гости' }, дети: { default: 0, min: 0, max: 1 / 0, group: 'гости' }, младенцы: { default: 0, min: 0, max: 1 / 0 } }
+    )
+    +button.card-pick-room__submit-btn(type="submit", value="Подобрать номер", modClass="link")

@@ -1,0 +1,13 @@
+@use "@utils/devTools/devTools.scss";
+
+@use "@thematic/main-theme.blocks/gradients.scss";
+
+.form-dropdown__datepicker-btn {
+  color: devTools.getColor(color__dark-shade, 0.75);
+
+  &:hover,
+  &:focus,
+  &:focus-within {
+    color: inherit;
+  }
+}

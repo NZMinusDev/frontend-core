@@ -1,0 +1,9 @@
+.card-room__room-rating {
+  margin-bottom: -0.2857142857142857em;
+
+  // disable interaction
+  .form-rate-button__button-item + .icon {
+    cursor: initial;
+    pointer-events: none;
+  }
+}

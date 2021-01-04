@@ -1,0 +1,35 @@
+mixin form-dropdown__item-quantity-list
+  -
+    let total = "";
+    let counter = 0;
+    for (let key in attributes.list){
+      if (counter > 0) total += ",";
+      total+=attributes.list[key].default;
+      counter++;
+    }
+  input.form-dropdown__list-input(
+    name=attributes.name,
+    type="hidden",
+    value=total,
+    isFilter=attributes.isFilter
+  )
+  button.iqdropdown.form-dropdown__item-quantity-list(id=attributes.id, class=attributes.class, type="button")
+    p.iqdropdown-selection(data-placeholder=attributes.placeholder || '')
+    .iqdropdown-menu(data-groups=attributes.groups)
+      each limits, item in attributes.list
+        input.form-dropdown__option-input(
+          type="hidden",
+          name=attributes.name + '-' + item,
+          value=limits.default
+        )
+        .iqdropdown-menu-option(
+          data-id=item,
+          data-defaultcount=limits.default,
+          data-mincount=limits.min,
+          data-maxcount=limits.max,
+          data-group=limits.group
+        ) 
+          div
+            h3.iqdropdown-itemItem= item
+      if block
+        block

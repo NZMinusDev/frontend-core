@@ -1,0 +1,8 @@
+.color-sample__name {
+  grid-area: name;
+
+  &:after {
+    content: attr(data-color);
+    display: block;
+  }
+}

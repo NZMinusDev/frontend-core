@@ -1,0 +1,75 @@
+@use "sass:list";
+
+/*
+ * get color by css var color name with defining opacity
+ * color-name {string} - css var name of color without '--'
+ * opacity {number} - css opacity
+ */
+// Tip: color-names define in your theme :root using css var for dynamic changing of colors purpose
+@function getColor($color-name, $opacity: 1) {
+  @return rgba(var(--#{$color-name}), #{$opacity});
+}
+
+/*
+ * Adjustable size depending on the user's device, if you need upper or lower border for fixed value - use this function in @media (max-width/min-width) in your project and point out the same $pcSize for default value
+ * pcSize {number} - size in larger(your template width) state
+ * mobSize {number} - size in smaller(page width 320px) state
+ * templateWidth {number} - width of larger template in figma or smth else
+ */
+@function getLiquidSize($pcSize: 10, $mobSize: 5, $templateWidth: 1440) {
+  $addSize: $pcSize - $mobSize;
+  $maxWidth: $templateWidth - 320;
+  @return calc(#{$mobSize + px} + #{$addSize} * ((100vw - 320px) / #{$maxWidth}));
+}
+
+@mixin centerAbsPosition {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+@mixin ellipsisText() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@mixin gradientFont($background) {
+  color: transparent;
+  background: $background;
+  background-clip: text;
+}
+
+/*
+* $imagesPaths: {string string ...} - scss list using space between img paths
+*/
+@mixin backgroundAutoCarousel($imagesPaths) {
+  $backgroundImages: "";
+  $index: 0;
+  @each $path in $imagesPaths {
+    @if $index != 0 {
+      $backgroundImages: $backgroundImages + ",";
+    }
+    $index: $index + 1;
+    $backgroundImages: $backgroundImages + url($path);
+  }
+
+  background: white no-repeat fixed;
+  background-image: #{$backgroundImages};
+  background-size: cover;
+  animation: change-image #{list.length($imagesPaths) * 6s} linear infinite;
+
+  @keyframes change-image {
+    $index: 0;
+    @each $path in $imagesPaths {
+      $keyframe: #{100 / list.length($imagesPaths) * $index * 1%};
+      #{$keyframe} {
+        background-image: url($path);
+      }
+      $index: $index + 1;
+    }
+    100% {
+      background-image: url(list.nth($imagesPaths, 1));
+    }
+  }
+}

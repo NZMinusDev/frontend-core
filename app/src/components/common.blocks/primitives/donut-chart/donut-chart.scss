@@ -1,0 +1,8 @@
+.donut-chart {
+  display: grid;
+  $chartWidth: #{120px / 14px * 1em};
+  grid:
+    "label label"
+    "chart bullet-list" 1fr / #{$chartWidth} 1fr;
+  grid-column-gap: #{30px / 14px * 1em};
+}

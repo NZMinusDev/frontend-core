@@ -1,0 +1,35 @@
+@use "@utils/devTools/devTools.scss";
+
+.form-like-button__button {
+  appearance: none;
+  display: flex;
+  width: 2.857142857142857em;
+  height: 1.428571428571429em;
+  border: 1px black;
+  border-radius: 25% / 50%;
+  cursor: pointer;
+
+  &:before,
+  &:after {
+    width: 50%;
+    position: relative;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+  }
+
+  &:before {
+    content: "\e87e";
+    font-family: "Material Icons";
+    text-align: center;
+    color: black;
+  }
+  &:checked:before {
+    content: "\e87d";
+  }
+
+  &:after {
+    content: attr(data-counter);
+    @include devTools.ellipsisText;
+  }
+}

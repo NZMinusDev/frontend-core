@@ -1,0 +1,30 @@
+.form-checkbox-buttons__button-item {
+  appearance: none;
+  position: relative;
+  display: inline-block;
+  width: 1.428571428571429em;
+  height: 1.428571428571429em;
+  border: 1px solid black;
+  cursor: pointer;
+
+  &:before {
+    $border-width: 2px;
+    content: "";
+    width: calc(#{$border-width} + 20%);
+    height: calc(#{$border-width} + 30%);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    border-bottom: $border-width solid black;
+    border-right: $border-width solid black;
+    opacity: 0;
+    transform: rotate(45deg);
+  }
+
+  &:checked:before {
+    opacity: 1;
+  }
+}

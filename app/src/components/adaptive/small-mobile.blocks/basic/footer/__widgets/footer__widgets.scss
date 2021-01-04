@@ -1,0 +1,9 @@
+.footer__widgets {
+  grid-area: widgets;
+  display: grid;
+  grid: "logo" "description" "navigation" "about" "support" "subscription";
+  grid-row-gap: 1.142857142857143em;
+  justify-items: center;
+  padding-top: 7.142857142857143em;
+  padding-bottom: 7.142857142857143em;
+}

@@ -1,0 +1,95 @@
+include ~@common.blocks/primitives/form-dropdown/form-dropdown.pug
+include ~@common.blocks/primitives/button/button.pug
+
+//- id: id of card
+//- class: class for component bem mix: such as positioning functionality
+//- name: {string} - name of <form>, also it is used such prefix for names of inner forms
+//- action: form action
+//- method: form method - default is 'get'
+//- target: {("_self"|null)|"_blank"|"_parent"|"_top"} - form target
+//- room-number: {number} - number of room
+//- room-grade: {string} - grade of room
+//- payment-amount: {number} - daily cost
+//- selected-dates?: {ISODateString,ISODateString} - initial dates; example: "2020-11-18T21:00:00.000Z,2020-11-20T21:00:00.000Z";
+//- guests-groups: {groupName1:{selectionText: string, textPlural: string},groupName2:selectionText: string, textPlural: string,...}, example: { guests: { selectionText: 'гость', textPlural: 'гостя' }, младенцы: { selectionText: 'младенец', textPlural: 'младенцев' } }
+//- guests-list: {itemName1: {default: number, min: number, max: number, group?: groupName2},itemName1: {default: number, min: number, max: number, group?: groupName1},...}, example:{ взрослые: { default: 0, min: 0, max: 1 / 0, group: 'гости' }, дети: { default: 0, min: 0, max: 1 / 0, group: 'гости' }, младенцы: { default: 0, min: 0, max: 1 / 0} }; - if group is unset the itemName will be used instead 
+//- services-payment: {number} - amount of services payment
+//- services-sale: {number} - amount of services sale
+//- additional-services-payment: {number} - amount of additional services payment
+mixin card-room-definition
+  -
+    const CURRENCY = "₽";
+
+    const roomNumberSentence = `№ ${attributes["room-number"].toLocaleString()}`;
+    const paymentAmountSentence = `${attributes['payment-amount'].toLocaleString()}${CURRENCY}<span class="normal-weight-text"> в сутки</span>`;
+
+    const servicesSaleAmount = attributes['services-sale'];
+    const servicesPaymentAmount = attributes['services-payment'] - attributes['services-sale'];
+    const servicesSaleSentence = servicesSaleAmount ? `скидка ${servicesSaleAmount.toLocaleString()}${CURRENCY}`: "";
+    const servicesPayment = {
+      sentence:`Сбор за услуги: ${servicesSaleSentence}`, amount:servicesPaymentAmount 
+    };
+
+    const additionalServicesPayment = {
+      sentence:"Сбор за дополнительные услуги", amount:attributes['additional-services-payment'] 
+    };
+  form.card-base.card-room-definition(
+    id=attributes.id,
+    class=attributes.class,
+    name=attributes.name,
+    action=attributes.action,
+    method=attributes.method || 'get',
+    target=attributes.target
+  )
+    .card-room-definition__room-title
+      h1.card-room-definition__room-number= roomNumberSentence
+      h3.card-room-definition__room-grade= attributes['room-grade']
+    h3.card-room-definition__day-payment(data-amount-js=attributes['payment-amount'])!= paymentAmountSentence
+    +form-dropdown.card-room-definition__arrival-date-dropdown(
+      label="Прибытие",
+      name=`${attributes.name}-arrival`,
+      type="date",
+      output="plural",
+      selected-dates=attributes['selected-dates'],
+      altFields=`.card-room-definition__departure-date-dropdown [name=${attributes.name}-departure]`
+    )
+    +form-dropdown.card-room-definition__departure-date-dropdown(
+      label="Выезд",
+      name=`${attributes.name}-departure`,
+      type="date",
+      isAltField
+    )
+    +form-dropdown.card-room-definition__guests-single-apply(
+      name=`${attributes.name}-guests`,
+      type="item-quantity",
+      label="Гости",
+      placeholder="Сколько гостей",
+      openMod="apply",
+      groups=attributes['guests-groups'],
+      list=attributes['guests-list']
+    )
+    .card-room-definition__payment-rates
+      p.card-room-definition__payment-item.card-room-definition__total-day-payment
+        span.card-room-definition__payment-sentence
+        span.card-room-definition__payment-amount
+      p.card-room-definition__payment-item.card-room-definition__services-payment
+        span.card-room-definition__payment-sentence= servicesPayment.sentence
+          span.tooltip.card-room-definition__payment-tooltip(
+            data-content="Подсказка к сборам за услуги"
+          ) i
+        span.card-room-definition__payment-amount(data-amount-js=servicesPayment.amount)= `${servicesPayment.amount.toLocaleString()}${CURRENCY}`
+      p.card-room-definition__payment-item.card-room-definition__additional-services-payment
+        span.card-room-definition__payment-sentence= additionalServicesPayment.sentence
+          span.tooltip.card-room-definition__payment-tooltip(
+            data-content="Подсказка к сборам за дополнительные услуги"
+          ) i
+        span.card-room-definition__payment-amount(data-amount-js=additionalServicesPayment.amount)= `${additionalServicesPayment.amount.toLocaleString()}${CURRENCY}`
+    h2.card-room-definition__payment-item.card-room-definition__total-payment
+      span Итого
+      .text-separator
+      span.card-room-definition__total-payment-amount
+    +button.card-room-definition__submit-btn(
+      type="submit",
+      value="Забронировать",
+      modClass="link"
+    )

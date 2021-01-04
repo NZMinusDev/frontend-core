@@ -1,0 +1,29 @@
+include ~@common.blocks/primitives/form-text-field/form-text-field.pug
+include ~@common.blocks/primitives/button/button.pug
+
+//- id: id of card
+//- class: class for component bem mix: such as positioning functionality
+//- name: {string} - name of <form>, also it is used such prefix for names of inner forms
+//- action - form action
+//- method - form method
+//- target: {("_self"|null)|"_blank"|"_parent"|"_top"} - form target
+//- href: {string} - redirect href for page of registration
+mixin card-entering
+  form.card-base.card-entering(
+    id=attributes.id,
+    class=attributes.class,
+    name=attributes.name,
+    action=attributes.action,
+    method=attributes.method || 'post',
+    target=attributes.target
+  )
+    h1.card-entering__title Войти
+    +form-text-field.card-entering__email-field(type="email", name=`${attributes.name}-email`)
+    +form-text-field.card-entering__password-field(
+      type="password",
+      name=`${attributes.name}-password`
+    )
+    +button.card-entering__link-btn(type="submit", value="Войти", modClass="link")
+    p.card-entering__caption-of-redirect-to-registration Нет аккаунта на Toxin?
+    a.card-entering__switch-btn(href=attributes.href)
+      +button(type="button", value="Создать", modClass="bordered")

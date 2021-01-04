@@ -1,0 +1,13 @@
+.cards-layout {
+  $gap: 2.857142857142857em;
+  grid:
+    "pick-room room-definition calendar"
+    ". room-definition ." $gap
+    "registration room-definition card-luxury-room"
+    "registration . card-luxury-room" $gap
+    "registration entering card-luxury-room"
+    "registration entering ." $gap
+    "registration entering card-common-room";
+  grid-row-gap: initial;
+  grid-column-gap: $gap;
+}

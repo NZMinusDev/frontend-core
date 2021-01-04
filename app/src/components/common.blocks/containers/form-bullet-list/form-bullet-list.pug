@@ -1,0 +1,26 @@
+//- items: Array<string> // if just use list
+//- items: {// if mod=="rich"
+//-   label1:{icon:"material icon name", description:string},
+//-   label2:{icon:"material icon name", description:string}
+//- }
+//- mod?: "rich" | null
+//- label?: {tag: text}, example: {h2: "my label"}
+//- id?: id of list's container
+//- class?: class for component bem mix: such as positioning functionality
+
+mixin form-bullet-list
+  -
+    const modClass = attributes.mod ? 'form-bullet-list_' + attributes.mod : null;
+    const labelKey = attributes.label ? Object.keys(attributes.label)[0] : null;
+  .form-bullet-list(id=attributes.id, class=modClass, class=attributes.class)
+    if labelKey
+      #{labelKey}.form-label.form-bullet-list__label
+        label(for=attributes.id)= attributes.label[labelKey]
+    ul.form-bullet-list__list
+      each item, key in attributes.items
+        case attributes.mod
+          when "rich"
+            li.form-bullet-list__item(data-icon=item.icon)= key
+              p.form-bullet-list__description= item.description
+          default
+            li.form-bullet-list__item= item

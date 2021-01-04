@@ -1,14 +1,15 @@
 {
   "name": "frontend-core",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "It's simple bare bones repository for frontend developers using BEM",
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --config configs/webpack.config.js --mode development --open",
     "dev": "cross-env NODE_ENV=development webpack --config configs/webpack.config.js --mode development",
     "build": "cross-env NODE_ENV=production webpack --config configs/webpack.config.js --mode production",
-    "stats": "cross-env NODE_ENV=development webpack --config configs/webpack.config.js --json > app/log/stats.json && webpack-bundle-analyzer app/log/stats.json",
-    "ext": "code --install-extension ionutvmi.path-autocomplete && code --install-extension CoenraadS.bracket-pair-colorizer && code --install-extension DavidAnson.vscode-markdownlint && code --install-extension dbaeumer.vscode-eslint && code --install-extension eamodio.gitlens && code --install-extension earshinov.sort-lines-by-selection && code --install-extension esbenp.prettier-vscode && code --install-extension formulahendry.auto-complete-tag && code --install-extension gogocrow.webpack-snippets && code --install-extension jock.svg && code --install-extension jumpinjackie.vscode-map-preview && code --install-extension ms-vscode.powershell && code --install-extension PKief.material-icon-theme && code --install-extension ritwickdey.LiveServer && code --install-extension streetsidesoftware.code-spell-checker && code --install-extension teabyii.ayu && code --install-extension wayou.vscode-todo-highlight && code --install-extension xabikos.JavaScriptSnippets"
+    "stats": "cross-env NODE_ENV=development webpack --config configs/webpack.config.js --json > app/log/stats.json",
+    "analyze": "webpack-bundle-analyzer app/log/stats.json",
+    "ext": "code --install-extension ionutvmi.path-autocomplete && code --install-extension pranaygp.vscode-css-peek && code --install-extension CoenraadS.bracket-pair-colorizer && code --install-extension DavidAnson.vscode-markdownlint && code --install-extension dbaeumer.vscode-eslint && code --install-extension eamodio.gitlens && code --install-extension earshinov.sort-lines-by-selection && code --install-extension esbenp.prettier-vscode && code --install-extension formulahendry.auto-complete-tag && code --install-extension gogocrow.webpack-snippets && code --install-extension jock.svg && code --install-extension jumpinjackie.vscode-map-preview && code --install-extension ms-vscode.powershell && code --install-extension PKief.material-icon-theme && code --install-extension ritwickdey.LiveServer && code --install-extension streetsidesoftware.code-spell-checker && code --install-extension teabyii.ayu && code --install-extension wayou.vscode-todo-highlight && code --install-extension xabikos.JavaScriptSnippets && code --install-extension wix.vscode-import-cost && code --install-extension ecmel.vscode-html-css && code --install-extension wallabyjs.quokka-vscode && code --install-extension wmaurer.change-case && code --install-extension kisstkondoros.vscode-gutter-preview"
   },
   "browserslist": [
     "> 0.2%",
@@ -53,6 +54,8 @@
     "@babel/polyfill": "^7.11.5",
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-typescript": "^7.10.4",
+    "@fortawesome/fontawesome-free": "^5.15.1",
+    "@types/jquery": "^3.5.2",
     "autoprefixer": "^9.8.6",
     "babel-loader": "^8.1.0",
     "bemdecl-to-fs-loader": "0.0.4",
@@ -70,8 +73,12 @@
     "imagemin-optipng": "^8.0.0",
     "imagemin-svgo": "^8.0.0",
     "imagemin-webp": "^6.0.0",
+    "inputmask": "^5.0.5",
     "inspectpack": "^4.5.2",
+    "jquery": "^3.5.1",
+    "lodash-es": "^4.17.15",
     "mini-css-extract-plugin": "^0.11.2",
+    "moment": "^2.29.1",
     "optimize-css-assets-webpack-plugin": "^5.0.4",
     "postcss-flexbugs-fixes": "^4.2.1",
     "postcss-loader": "^4.0.1",
@@ -90,6 +97,7 @@
     "unused-files-webpack-plugin": "^3.4.0",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
+    "webpack-images-resizer": "^0.1.2",
     "wrapper-webpack-plugin": "^2.1.0"
   }
 }

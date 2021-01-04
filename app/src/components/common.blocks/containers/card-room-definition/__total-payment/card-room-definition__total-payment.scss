@@ -1,0 +1,12 @@
+.card-room-definition__total-payment {
+  grid-area: total-payment;
+  margin-top: 1.428571428571429em;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-column-gap: 0.2631578947368421em;
+  align-items: baseline;
+
+  .text-separator {
+    border-bottom: 1px dashed black;
+  }
+}

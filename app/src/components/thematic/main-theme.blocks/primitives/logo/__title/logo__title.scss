@@ -1,0 +1,5 @@
+@use "@utils/devTools/devTools.scss";
+
+.logo__title {
+  color: devTools.getColor(color__dark-shade, 1);
+}

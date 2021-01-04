@@ -1,0 +1,5 @@
+@use "@thematic/main-theme.blocks/gradients.scss";
+
+.pagination__item_active {
+  background: gradients.primary(1);
+}

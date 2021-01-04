@@ -1,0 +1,23 @@
+.form-rate-button__button-item {
+  display: none;
+
+  & + .icon {
+    position: relative;
+    float: right;
+    width: 1em;
+    height: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+
+    // default: bordered
+    &:after {
+      content: "\e83a";
+    }
+  }
+
+  // selected: filled
+  &:checked ~ .icon:after {
+    content: "\f0ec";
+  }
+}

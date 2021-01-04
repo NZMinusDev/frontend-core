@@ -1,0 +1,34 @@
+mixin nav-bar__navigation-list
+  -
+    function bubbleActiveStatus(items, activeKey) {
+      for (let key in items) {
+        if (Object.hasOwnProperty.call(items, key)) {
+          if (items[key].items) {
+            if(bubbleActiveStatus(items[key].items, activeKey)){
+              items[key].active = "active";
+            }
+          }
+          if (key === activeKey || items[key].active) {
+            items[key].active = "active";
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+    bubbleActiveStatus(attributes.items, attributes.active);
+  ul.nav-bar__navigation-list
+    each itemSettings, itemName in attributes.items
+      if itemSettings.items
+        li.nav-bar__navigation-item(
+          class=itemSettings.items ? 'nav-bar__navigation-item_isDropdown' : '',
+          class=itemSettings.active ? 'nav-bar__navigation-item_isActive' : ''
+        )= itemName
+          .icon.nav-bar__expand-icon
+          +nav-bar__navigation-list(items=itemSettings.items)
+      else
+        a.nav-bar__navigation-item(
+          href=itemSettings.href,
+          class=itemSettings.active ? 'nav-bar__navigation-item_isActive' : ''
+        )
+          li(class=itemSettings.items ? 'nav-bar__navigation-item_isDropdown' : '')= itemName

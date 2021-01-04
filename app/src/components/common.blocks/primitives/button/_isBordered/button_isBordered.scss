@@ -1,0 +1,16 @@
+@use "./../variables.scss";
+
+.button_isBordered {
+  $BORDER_WIDTH: 2px;
+  border: #{$BORDER_WIDTH} solid transparent;
+  padding-left: calc(#{variables.$X_PADDING} - #{$BORDER_WIDTH});
+  padding-right: calc(#{variables.$X_PADDING} - #{$BORDER_WIDTH});
+  background: linear-gradient(180deg, rgba(169, 169, 169, 1), rgba(169, 169, 169, 1)) padding-box,
+    linear-gradient(180deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1)) border-box;
+
+  &:hover {
+    background: linear-gradient(180deg, rgba(169, 169, 169, 0.5), rgba(169, 169, 169, 0.5))
+        padding-box,
+      linear-gradient(180deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)) border-box;
+  }
+}

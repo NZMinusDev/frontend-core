@@ -1,0 +1,69 @@
+extends ~@pug/layouts/ui-kit-layout.pug
+
+//- components
+include ~@common.blocks/containers/card-pick-room/card-pick-room.pug
+include ~@common.blocks/containers/card-registration/card-registration.pug
+include ~@common.blocks/containers/card-entering/card-entering.pug
+include ~@common.blocks/containers/card-room-definition/card-room-definition.pug
+include ~@common.blocks/containers/card-room/card-room.pug
+include ~@common.blocks/primitives/card-datepicker/card-datepicker.pug
+
+block variables
+  - var keywords = 'FSD, Frontend, TOXIN, образование, верстка';
+  - var description = 'Карточки, используемые в базовом макете сайта TOXIN';
+  - var title = 'Карточки';
+
+block content
+  - const MS_IN_DAY = 1000 * 60 * 60 * 24;
+  main.cards-layout.ui-kit-container
+    +card-pick-room#card-pick-room.cards-layout__pick-room(
+      name="pick-room",
+      action="",
+      method=""
+    )
+    +card-registration#card-registration.cards-layout__registration(
+      name="registration",
+      action="",
+      method="",
+      href=""
+    )
+    +card-entering#card-entering.cards-layout__entering(name="entering", action="", method="")
+    +card-room-definition#card-room-definition.cards-layout__room-definition(
+      name="room-definition",
+      action="",
+      room-number=888,
+      room-grade="Люкс",
+      payment-amount=9990,
+      selected-dates="2019-08-19,2019-08-23",
+      guests-groups={ гости: { selectionText: 'гость', textPlural: 'гостя' }, младенцы: { selectionText: 'младенец', textPlural: 'младенцев' } },
+      guests-list={ взрослые: { default: 2, min: 0, max: 1 / 0, group: 'гости' }, дети: { default: 1, min: 0, max: 1 / 0, group: 'гости' }, младенцы: { default: 0, min: 0, max: 1 / 0 } },
+      services-payment=2179,
+      services-sale=2179,
+      additional-services-payment=300
+    )
+    +card-room#card-room-luxury.cards-layout__card-luxury-room(
+      href="#room-luxury",
+      name="room-luxury",
+      paths=['assets/pictures/contents/rooms/luxury/888/888.png', 'assets/pictures/contents/rooms/common/840/840.png', 'assets/pictures/contents/rooms/luxury/888/888.png', 'assets/pictures/contents/rooms/common/840/840.png'],
+      room-number=888,
+      room-grade="Люкс",
+      payment-amount=9990,
+      rate=5,
+      comments-amount=145
+    )
+    +card-room#card-room-common.cards-layout__card-common-room(
+      href="#room-common",
+      name="room-common",
+      paths=['assets/pictures/contents/rooms/common/840/840.png', 'assets/pictures/contents/rooms/luxury/888/888.png', 'assets/pictures/contents/rooms/common/840/840.png', 'assets/pictures/contents/rooms/luxury/888/888.png'],
+      room-number=840,
+      payment-amount=9900,
+      rate=4,
+      comments-amount=65
+    )
+    - const CARD_DATEPICKER_SELECTED_DATES = new Date(Date.now() + MS_IN_DAY).toISOString() + ',' + new Date(Date.now() + MS_IN_DAY * 4).toISOString();
+    +card-datepicker#card-datepicker.cards-layout__datepicker(
+      isFilter,
+      name="card-datepicker",
+      selected-dates=CARD_DATEPICKER_SELECTED_DATES,
+      data-range
+    )

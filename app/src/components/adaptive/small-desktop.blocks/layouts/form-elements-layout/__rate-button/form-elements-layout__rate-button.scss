@@ -1,0 +1,8 @@
+.form-elements-layout__rate-button {
+  grid-area: rate-button;
+  display: grid;
+  grid-template-columns: 10em 1fr;
+  place-content: end start;
+  place-items: end start;
+  margin-bottom: 15px/320px * 100%;
+}

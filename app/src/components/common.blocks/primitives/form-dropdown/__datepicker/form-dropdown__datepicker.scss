@@ -1,0 +1,24 @@
+.form-dropdown__datepicker-btn {
+  width: 100%;
+  z-index: 1;
+  text-align: inherit;
+  text-indent: inherit;
+}
+
+.form-dropdown__datepicker {
+  text-indent: initial;
+
+  /* lib redefinition */
+  .datepicker-inline {
+    position: absolute;
+    top: 3.54em;
+  }
+}
+
+.form-dropdown__calendar-js {
+  margin: 0px -1px;
+  cursor: initial;
+}
+.form-dropdown__calendar_isHidden-js {
+  display: none;
+}

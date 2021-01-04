@@ -1,0 +1,9 @@
+.form-dropdown__expand-icon {
+  top: 0;
+  right: 0;
+  width: 3.142857142857143em;
+
+  &:after {
+    content: "\e5cf";
+  }
+}

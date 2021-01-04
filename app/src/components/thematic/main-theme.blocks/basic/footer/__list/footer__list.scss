@@ -1,0 +1,10 @@
+@use "@utils/devTools/devTools.scss";
+
+.footer__list {
+  & > *:not(:first-child) {
+    color: devTools.getColor(color__dark-shade, 0.5);
+  }
+  & > .footer__description {
+    color: devTools.getColor(color__dark-shade, 0.75);
+  }
+}

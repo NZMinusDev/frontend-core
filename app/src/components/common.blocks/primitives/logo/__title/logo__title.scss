@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "ToxinLogoFont";
+  src: url("./fonts/ToxinLogoFont.woff") format("woff"), url("./fonts/ToxinLogoFont.eot"),
+    url("./fonts/ToxinLogoFont.eot?#iefix") format("embedded-opentype"),
+    url("./fonts/ToxinLogoFont.ttf") format("truetype"),
+    url("./fonts/ToxinLogoFont.svg#ToxinLogoFont") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.logo__title {
+  font-family: "ToxinLogoFont";
+}

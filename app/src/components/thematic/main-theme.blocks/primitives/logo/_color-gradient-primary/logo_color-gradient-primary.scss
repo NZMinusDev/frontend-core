@@ -1,0 +1,20 @@
+@use "@utils/devTools/devTools.scss";
+
+@use "@thematic/main-theme.blocks/gradients.scss";
+
+.logo_color-gradient-primary {
+  &,
+  &:before,
+  &:after {
+    border-color: transparent;
+  }
+
+  &,
+  &:before {
+    background: linear-gradient(180deg, white, white) padding-box, gradients.primary(1) border-box;
+  }
+
+  &:after {
+    background: linear-gradient(180deg, white, white) padding-box, gradients.secondary(1) border-box;
+  }
+}

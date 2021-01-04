@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { HashedModuleIdsPlugin } = require("webpack");
+const { HashedModuleIdsPlugin, ProvidePlugin, ContextReplacementPlugin } = require("webpack");
 const path = require("path");
 const fs = require("fs");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
@@ -18,6 +18,7 @@ const PostCSSNormalize = require("postcss-normalize");
 const OptimizeCssAssetWebpackPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserWebpackPlugin = require("terser-webpack-plugin");
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
+const WebpackImagesResizer = require("webpack-images-resizer");
 const { UnusedFilesWebpackPlugin } = require("unused-files-webpack-plugin");
 const { DuplicatesPlugin } = require("inspectpack/plugin");
 const CircularDependencyPlugin = require("circular-dependency-plugin");
@@ -29,6 +30,7 @@ const isProd = !isDev;
 const PATHS = {
   src_absolute: path.resolve(__dirname, "../app/src/"),
   srcPages_absolute: path.resolve(__dirname, "../app/src/pages/"),
+  srcPictures_absolute: path.resolve(__dirname, "../app/src/assets/pictures/"),
   dist_absolute: path.resolve(__dirname, "../app/dist/"),
 };
 
@@ -43,7 +45,7 @@ const redefinitionLevels = [
   "thematic/main-theme.blocks",
   "experimental/experiment-1.blocks",
 ];
-const componentGroups = ["basic", "containers", "primitives", "specific"];
+const componentGroups = ["basic", "containers", "primitives", "specific", "layouts"];
 
 const sharedAliases = {
   "@pug": path.resolve(PATHS.src_absolute, "./pug/"),
@@ -54,7 +56,7 @@ const sharedAliases = {
   "@tablet.blocks": path.resolve(PATHS.src_absolute, "./components/tablet.blocks/"),
   "@small-desktop.blocks": path.resolve(PATHS.src_absolute, "./components/small-desktop.blocks/"),
   "@large-desktop.blocks": path.resolve(PATHS.src_absolute, "./components/large-desktop.blocks/"),
-  "@themes": path.resolve(PATHS.src_absolute, "./components/thematic/"),
+  "@thematic": path.resolve(PATHS.src_absolute, "./components/thematic/"),
   "@experiments": path.resolve(PATHS.src_absolute, "./components/experimental/"),
   "@images": path.resolve(PATHS.src_absolute, "./assets/pictures/images/"),
   "@contents": path.resolve(PATHS.src_absolute, "./assets/pictures/contents/"),
@@ -95,15 +97,16 @@ class ResultOfTemplatesProcessing {
 
       this.entries[shortNameOfTemplate] = [
         "@babel/polyfill",
+        "./utils/global/global.decl.ts",
         `./pages/${shortNameOfTemplate}/${shortNameOfTemplate}.ts`,
-        "./utils/normalizeCSS/normalize.css",
+        "./components/thematic/main-theme.blocks/main-theme.scss",
       ];
 
       this.HTMLWebpackPlugins.push(
         new HTMLWebpackPlugin({
           template: `!!pug-loader!app/src/pages/${shortNameOfTemplate}/${nameOfTemplate}`,
           filename: `./${nameOfTemplate.replace(/\.pug/, ".html")}`,
-          favicon: "./assets/pictures/images/ico/favicon.ico",
+          favicon: "./assets/ico/favicon.ico",
           chunks: [shortNameOfTemplate],
           // Tip: for 'defer' use pay attention on elements which can be non-working while res loading.
           scriptLoading: "defer",
@@ -115,15 +118,66 @@ class ResultOfTemplatesProcessing {
 const resultOfTemplatesProcessing = new ResultOfTemplatesProcessing();
 
 /**
+ * Get all inner files in directory
+ * @param {string} dir path to dir
+ * @param {Array<string>} _files private param of files path for recursion
+ * @return {Array<string>} array of files' paths
+ */
+const getFilesDeep = (dir, _files) => {
+  // eslint-disable-next-line no-param-reassign
+  _files = _files || [];
+  const files = fs.readdirSync(dir);
+
+  files.forEach((val, i) => {
+    const name = path.resolve(dir, files[i]);
+    if (fs.statSync(name).isDirectory()) {
+      getFilesDeep(name, _files);
+    } else {
+      _files.push(name);
+    }
+  });
+
+  return _files;
+};
+/**
+ * Map list for append suffix to each element
+ * @param {Array<string>} list absolute paths of images
+ * @param {string} suffix suffix of files in list to append
+ * @param {string} base - path to base src folder when located folder of images
+ * @returns {Array{src:string,dest:String}} WebpackImagesResizer 'list' option
+ */
+const listOfSourceImagesMapping = (list, suffix, base = PATHS.src_absolute) => {
+  return list.map((filePath) => {
+    const relativeFromDistFullPath = filePath.slice(base.length);
+    const relativeFromDistPath = relativeFromDistFullPath.split(".")[0];
+    const fileExt = relativeFromDistFullPath.split(".")[1];
+
+    return {
+      src: filePath,
+      dest: `${relativeFromDistPath}-${suffix}.${fileExt}`,
+    };
+  });
+};
+let listOfSourceImages320 = getFilesDeep(PATHS.srcPictures_absolute);
+const listOfSourceImages640 = listOfSourceImagesMapping(listOfSourceImages320, "640");
+const listOfSourceImages960 = listOfSourceImagesMapping(listOfSourceImages320, "960");
+const listOfSourceImages1920 = listOfSourceImagesMapping(listOfSourceImages320, "1920");
+listOfSourceImages320 = listOfSourceImagesMapping(listOfSourceImages320, "320");
+// FIXME: change it depending on your design template for proper scaling images
+const designWidth = 1440;
+/**
  * HTMLWebpackPlugin - create html of pages with plug in scripts.
  * ScriptExtHtmlWebpackPlugin - adds to <script> tag attributes depending on RegExp.
  * MiniCssExtractPlugin - extract css into separate files.
  * WrapperPlugin - wrap output css depending on RegExp.
+ * ProvidePlugin - Automatically load modules instead of having to import or require them everywhere.
  * ImageMinimizerPlugin - Plugin and Loader for webpack to optimize (compress) all images. Make sure ImageMinimizerPlugin place after any plugins that add images or other assets which you want to optimized.
+ * WebpackImagesResizer - resizes images.
  * CircularDependencyPlugin - scan bundles to alert about circular dependencies.
  * DuplicatesPlugin - scan bundles to alert about duplicate resources from node_modules.
  * UnusedFilesWebpackPlugin - scan bundles to alert about UnusedFiles.
  * HashedModuleIdsPlugin - replace webpack number links to character links.
+ * ContextReplacementPlugin - exclude unused locales from moment.js
  * CleanWebpackPlugin - clean dist folder before each use.
  */
 const webpackPlugins = () => {
@@ -139,7 +193,7 @@ const webpackPlugins = () => {
     }),
     new WrapperPlugin({
       test: /.*small-mobile.*\.css$/,
-      header: "@media (max-width: 599.98px) {",
+      header: "@media (min-width: 0px) {",
       footer: "}",
     }),
     new WrapperPlugin({
@@ -163,33 +217,54 @@ const webpackPlugins = () => {
       footer: "}",
     }),
     new WrapperPlugin({
-      test: /.*themes.*\.css$/,
+      test: /.*thematic.*\.css$/,
       header: "@media (color) {",
       footer: "}",
+    }),
+    new ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery",
+    }),
+    // FIXME: this plugin keeps compillation from end, doesn't know why
+    new WebpackImagesResizer(listOfSourceImages320, {
+      // 4:3 - QVGA
+      width: designWidth > 320 ? `${(320 / designWidth) * 100}%` : "100%",
+    }),
+    new WebpackImagesResizer(listOfSourceImages640, {
+      // 16:9 - nHD
+      width: designWidth > 640 ? `${(640 / designWidth) * 100}%` : "100%",
+    }),
+    new WebpackImagesResizer(listOfSourceImages960, {
+      // 16:9 - qHD
+      width: designWidth > 960 ? `${(960 / designWidth) * 100}%` : "100%",
+    }),
+    new WebpackImagesResizer(listOfSourceImages1920, {
+      // 16:9 - Full HD
+      width: designWidth > 1920 ? `${(1920 / designWidth) * 100}%` : "100%",
+    }),
+    // images are converted to WEBP
+    new ImageMinimizerPlugin({
+      cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
+      filename: "[path]/[name].webp", // Tip: hashed by assetsLoader (file-loader)
+      keepOriginal: true, // keep compressed image
+      minimizerOptions: {
+        // Lossless optimization with custom option
+        plugins: [
+          [
+            "imagemin-webp",
+            {
+              // preset: default //default, photo, picture, drawing, icon and text
+              // lossless: true,
+              nearLossless: 0, // pre compression with lossless mode on
+            },
+          ],
+        ],
+      },
     }),
   ];
 
   if (isProd) {
     plugins.push(
-      // images are converted to WEBP
-      new ImageMinimizerPlugin({
-        cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
-        filename: "[path]/[name].webp", // Tip: hashed by assetsLoader (file-loader)
-        keepOriginal: true, // keep compressed image
-        minimizerOptions: {
-          // Lossless optimization with custom option
-          plugins: [
-            [
-              "imagemin-webp",
-              {
-                // preset: default //default, photo, picture, drawing, icon and text
-                // lossless: true,
-                nearLossless: 0, // pre compression with lossless mode on
-              },
-            ],
-          ],
-        },
-      }),
       // original images will compressed lossless
       new ImageMinimizerPlugin({
         cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
@@ -212,19 +287,20 @@ const webpackPlugins = () => {
             ],
           ],
         },
-      })
+      }),
+      new DuplicatesPlugin() // writes data in stats.json as plain text, shouldn't be in dev mod
     );
   }
 
   plugins.push(
     new CircularDependencyPlugin(),
-    new DuplicatesPlugin(),
     new UnusedFilesWebpackPlugin({ patterns: ["**/*.scss", "**/*.ts"] }),
     new HashedModuleIdsPlugin({
       hashFunction: "md4",
       hashDigest: "base64",
       hashDigestLength: 8,
     }),
+    new ContextReplacementPlugin(/moment[/\\]locale$/, /es-us|ru/),
     new CleanWebpackPlugin()
   );
 
@@ -235,7 +311,7 @@ const webpackPlugins = () => {
  * Loaders contraction for templates.
  * @param {Array<String>} includedFilesExtensions - extensions for including into bundles from components' resources; example: ["scss", "ts"].
  */
-const templatesLoaders = (includedFilesExtensions = ["scss", "ts"]) => {
+const templatesLoaders = (includedFilesExtensions = ["css", "js", "scss", "ts"]) => {
   const bemDeclLevels = [];
   redefinitionLevels.forEach((level) => {
     componentGroups.forEach((group) => {
@@ -349,7 +425,7 @@ const assetsLoaders = (extraLoader) => {
     {
       loader: "file-loader",
       options: {
-        name: hashedFileName("[path]/[name]", "[ext]"),
+        name: "[path]/[name].[ext]",
         publicPath: "./../../", // assets base dir -> css file will use this path in output css as link to asset (redirect from ./styles folder/chunk folder/ to dist folder)
       },
     },
@@ -374,19 +450,23 @@ const optimization = () => {
       chunks: "all", // == 'initial' && 'async'
       minChunks: 1,
       cacheGroups: {
-        normalize: {
-          test: /.*\\normalizeCSS\\.*\.css$/,
-          minChunks: 1,
-          priority: 11,
+        global: {
+          test: /.*\\utils\\global\\.*/,
+          priority: 12,
           enforce: true,
         },
         vendors: {
           test: /[\\/]node_modules[\\/]/,
-          priority: 10, // The optimization will prefer the cache group with a higher priority
+          priority: 11, // The optimization will prefer the cache group with a higher priority
           enforce: true, // always create chunks (ignore: minSize, maxAsyncRequests, ... )
         },
+        lib: {
+          test: /.*\\library.blocks\\.*/,
+          priority: 10,
+          enforce: true,
+        },
         common: {
-          test: /.*\\(common.blocks)|(library.blocks)\\.*/,
+          test: /.*\\common.blocks\\.*/,
           priority: 9,
           enforce: true,
         },
@@ -415,7 +495,7 @@ const optimization = () => {
           priority: 4,
           enforce: true,
         },
-        themes: {
+        thematic: {
           test: /.*\\thematic\\.*\.blocks.*/,
           priority: 3,
           enforce: true,
@@ -449,7 +529,9 @@ const optimization = () => {
   return config;
 };
 
-const smp = new SpeedMeasurePlugin(); // measures speed of each plugin in bundling
+// measures speed of each plugin in bundling
+// writes data in stats.json as plain text, shouldn't be in dev mod
+const smp = new SpeedMeasurePlugin({ disable: isDev });
 module.exports = smp.wrap({
   // The base directory, an absolute path, for resolving entry points and loaders
   context: PATHS.src_absolute,

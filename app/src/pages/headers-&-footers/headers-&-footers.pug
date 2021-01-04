@@ -1,0 +1,17 @@
+extends ~@pug/layouts/ui-kit-layout.pug
+
+//- components
+include ~@common.blocks/basic/nav-bar/nav-bar.pug
+include ~@common.blocks/basic/footer/footer.pug
+
+block variables
+  - var keywords = 'FSD, Frontend, TOXIN, образование, верстка';
+  - var description = 'Футеры и хедеры, используемые в базовом макете сайта TOXIN';
+  - var title = 'Футеры и хедеры';
+
+block content
+  main.headers-footers-layout
+    +nav-bar(active="О нас")
+    +nav-bar(active="Соглашение 3-1-1", status="confirmed", personName="Юлий Цезарь")
+    +footer
+    +footer(type="creative")

@@ -1,0 +1,54 @@
+@use "@utils/devTools/devTools.scss";
+
+@font-face {
+  font-family: "Quicksand";
+  src: local("Quicksand"), url("@fonts/quicksand-regular/quicksand-regular.woff") format("woff"),
+    url("@fonts/quicksand-regular/quicksand-regular.eot"),
+    url("@fonts/quicksand-regular/quicksand-regular.otf") format("opentype"),
+    url("@fonts/quicksand-regular/quicksand-regular.ttf") format("truetype"),
+    url("@fonts/quicksand-regular/quicksand-regular.svg") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Montserrat";
+  src: local("Montserrat"), url("@fonts/montserrat-regular/montserrat-regular.woff") format("woff"),
+    url("@fonts/montserrat-regular/montserrat-regular.eot"),
+    url("@fonts/montserrat-regular/montserrat-regular.otf") format("opentype"),
+    url("@fonts/montserrat-regular/montserrat-regular.ttf") format("truetype"),
+    url("@fonts/montserrat-regular/montserrat-regular.svg") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --font__h1: 700 1rem / 1.25rem "Quicksand";
+  --font__h2: 700 0.79167rem / 0.9895833rem "Quicksand";
+  --font__h3: 700 0.5rem / 0.6095833rem "Montserrat";
+  --font__body: 400 0.5833rem / 1rem "Montserrat";
+}
+
+html {
+  font-size: devTools.getLiquidSize(24, 18);
+}
+
+h1,
+h2 {
+  font-weight: 700;
+}
+h1 {
+  font: var(--font__h1);
+}
+h2 {
+  font: var(--font__h2);
+}
+
+h3 {
+  font: var(--font__h3);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+body {
+  font: var(--font__body);
+  font-weight: 400;
+}

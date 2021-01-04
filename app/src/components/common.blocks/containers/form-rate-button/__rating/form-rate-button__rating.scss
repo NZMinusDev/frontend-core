@@ -1,0 +1,18 @@
+.form-rate-button__rating {
+  display: inline;
+
+  //after selected by hover: filled
+  & > .icon:hover:after,
+  & > .icon:hover ~ .icon:after {
+    content: "\f0ec";
+  }
+
+  //before selected by hover: filled
+  & > .form-rate-button__button-item:checked + .icon:hover:after,
+  & > .form-rate-button__button-item:checked + .icon:hover ~ .icon:after,
+  & > .form-rate-button__button-item:checked ~ .icon:hover:after,
+  & > .form-rate-button__button-item:checked ~ .icon:hover ~ .icon:after,
+  & > .icon:hover ~ .form-rate-button__button-item:checked ~ .icon:after {
+    content: "\f0ec";
+  }
+}

@@ -1,0 +1,15 @@
+@use "@utils/devTools/devTools.scss";
+
+@use "@thematic/main-theme.blocks/gradients.scss";
+
+.form-radio-buttons__button-item {
+  border: var(--border);
+
+  &:checked {
+    border-color: devTools.getColor(color__primary, 1);
+  }
+
+  &:before {
+    background-image: gradients.primary(1);
+  }
+}

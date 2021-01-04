@@ -1,0 +1,20 @@
+//- name: {string} - name of input
+//- id?: {string} - id of component
+//- class?: {string} - class for component bem mix: such as positioning functionality
+//- isFilter?: {boolean} - if true, apply button will reload page with chosen value(get method)
+//- selected-dates?: {ISODateString | ISODateString,ISODateString,...} - initial dates(date), for several values use ','; example: "2020-11-18T21:00:00.000Z" or 2020-11-18T21:00:00.000Z,
+//- data-range?: {boolean|number} - lib argument, enable range functionality
+mixin card-datepicker
+  input(
+    type="hidden",
+    name=attributes.name,
+    value=attributes['selected-dates'],
+    isFilter=attributes.isFilter ? attributes.isFilter + '' : null
+  )
+  .datepicker-here.card-datepicker(
+    id=attributes.id,
+    class=attributes.class,
+    data-range=attributes['data-range'] ? attributes['data-range'] + '' : null,
+    data-multiple-dates-separator=" - ",
+    data-alt-fields=attributes.altFields
+  )

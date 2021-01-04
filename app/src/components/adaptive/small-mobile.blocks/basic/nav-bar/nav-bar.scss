@@ -1,0 +1,6 @@
+.nav-bar {
+  display: grid;
+  grid: "logo" "navigation" "login" auto / auto;
+  grid-row-gap: 1.428571428571429em;
+  justify-items: center;
+}

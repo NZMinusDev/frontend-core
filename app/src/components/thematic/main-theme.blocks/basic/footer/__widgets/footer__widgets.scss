@@ -1,0 +1,5 @@
+@use "@utils/devTools/devTools.scss";
+
+.footer__widgets {
+  box-shadow: 0px 1px 0px devTools.getColor(color__dark-shade, 0.1);
+}

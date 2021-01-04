@@ -1,0 +1,14 @@
+@use "@thematic/main-theme.blocks/gradients.scss";
+
+.form-checkbox-buttons__button-item {
+  border: var(--border);
+  border-radius: var(--border-radius-size);
+
+  &:checked {
+    background: linear-gradient(180deg, white, white) padding-box, gradients.primary(1) border-box;
+  }
+
+  &:before {
+    border-image: gradients.primary(1) 2;
+  }
+}

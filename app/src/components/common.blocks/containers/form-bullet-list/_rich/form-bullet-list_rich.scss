@@ -1,0 +1,32 @@
+.form-bullet-list_rich {
+  .form-bullet-list__item {
+    grid:
+      "icon label" auto
+      "icon description" auto / auto 1fr;
+
+    &:not(:first-child) {
+      margin-top: 1.428571428571429em;
+    }
+
+    &:not(:last-child) {
+      padding-bottom: 1.428571428571429em;
+      border-bottom: 1px solid black;
+    }
+
+    &:before {
+      content: attr(data-icon);
+      font-family: "Material Icons";
+      background: transparent;
+      grid-area: icon;
+      margin-top: initial;
+      margin-right: 0.2083333333333333em;
+      width: initial;
+      height: initial;
+      border-radius: initial;
+    }
+
+    .form-bullet-list__description {
+      grid-area: description;
+    }
+  }
+}

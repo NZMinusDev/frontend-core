@@ -1,0 +1,13 @@
+.card-base {
+  width: 27.14285714285714em;
+  height: fit-content;
+  display: grid;
+  align-items: center;
+
+  gap: 1.428571428571429em;
+  padding: 2.142857142857143em;
+  padding-top: 2.857142857142857em;
+
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background-color: white;
+}

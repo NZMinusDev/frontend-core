@@ -1,0 +1,216 @@
+extends ~@pug/layouts/ui-kit-layout.pug
+
+//- components
+include ~@common.blocks/primitives/form-text-field/form-text-field.pug
+include ~@common.blocks/primitives/form-dropdown/form-dropdown.pug
+include ~@common.blocks/primitives/form-range-slider/form-range-slider.pug
+include ~@common.blocks/containers/form-checkbox-buttons/form-checkbox-buttons.pug
+include ~@common.blocks/containers/form-radio-buttons/form-radio-buttons.pug
+include ~@common.blocks/primitives/form-toggle/form-toggle.pug
+include ~@common.blocks/primitives/form-like-button/form-like-button.pug
+include ~@common.blocks/containers/form-rate-button/form-rate-button.pug
+include ~@common.blocks/primitives/button/button.pug
+include ~@common.blocks/specific/pagination/pagination.pug
+include ~@common.blocks/containers/form-expandable-checkbox-list/form-expandable-checkbox-list.pug
+include ~@common.blocks/containers/form-bullet-list/form-bullet-list.pug
+include ~@common.blocks/containers/comments/comments.pug
+
+block variables
+  - var keywords = 'FSD, Frontend, TOXIN, образование, верстка';
+  - var description = 'Формы, используемые в базовом макете сайта TOXIN';
+  - var title = 'Формы';
+
+block content
+  form(method="get")
+    main.form-elements-layout.ui-kit-container
+      - const MS_IN_DAY = 1000 * 60 * 60 * 24;
+      +form-text-field#text-field-default.form-elements-layout__text-field-default(
+        label="text field",
+        type="email",
+        name="email"
+      )
+      +form-text-field#text-field-hover.form-elements-layout__text-field-hover(
+        label="text field",
+        name="text",
+        value="This is pretty awesome",
+        placeholder="Text",
+        autofocus
+      )
+      +form-dropdown#dropdown.form-elements-layout__dropdown(
+        name="guests",
+        type="item-quantity",
+        label="dropdown",
+        isFilter,
+        placeholder="Сколько гостей",
+        openMod="apply",
+        groups={ гости: { selectionText: 'гость', textPlural: 'гостя' }, младенцы: { selectionText: 'младенец', textPlural: 'младенцев' } },
+        list={ взрослые: { default: 0, min: 0, max: 1 / 0, group: 'гости' }, дети: { default: 0, min: 0, max: 1 / 0, group: 'гости' }, младенцы: { default: 0, min: 0, max: 1 / 0 } }
+      )
+      +form-text-field#masked-text-field.form-elements-layout__masked-text-field(
+        label="masked text field",
+        type="date",
+        name="masked-form-date"
+      )
+      .form-elements-layout__date-dropdown
+        +form-dropdown#date-dropdown-default(
+          name="date1",
+          type="date",
+          isFilter,
+          label="date dropdown"
+        )
+        +form-dropdown#date-dropdown-filled(
+          name="date2",
+          type="date",
+          isFilter,
+          label="date dropdown",
+          selected-dates="2019-08-19"
+        )
+      -
+        const tomorrow = new Date(Date.now() + MS_IN_DAY).toISOString();
+        const dayAfterTomorrow = new Date(Date.now() + MS_IN_DAY * 4).toISOString();
+      +form-dropdown#filter-date-dropdown.form-elements-layout__filter-date-dropdown(
+        name="filter-date",
+        type="date",
+        isFilter,
+        label="filter date dropdown",
+        output="plural",
+        selected-dates=`${tomorrow},${dayAfterTomorrow}`
+      )
+      +form-text-field#subscription-text-field.form-elements-layout__subscription-text-field(
+        label="subscription text field",
+        type="email",
+        name="subscription-form-text-field",
+        materialIcon="arrow_forward"
+      )
+      +form-checkbox-buttons#checkbox-buttons.form-elements-layout__checkbox-buttons(
+        isFilter,
+        label="checkbox buttons",
+        buttons={ isSmoking: { id: 'isSmokingCheckbox', itemLabel: 'Можно курить' }, isWithPets: { id: 'isWithPetsCheckbox', itemLabel: 'Можно с питомцами', checked: 'checked' }, isGuests: { id: 'isGuestsCheckbox', itemLabel: 'Можно пригласить гостей (до 10 человек)', checked: 'checked' } }
+      )
+      +form-radio-buttons#radio-buttons.form-elements-layout__radio-buttons(
+        name="gender",
+        buttons={ isMale: { id: 'isMaleRadio', itemLabel: 'Мужчина', checked: 'checked' }, isFemale: { id: 'isFemaleRadio', itemLabel: 'Женщина' } },
+        isFilter,
+        label="radio buttons"
+      )
+      .form-elements-layout__toggle
+        +form-toggle#toggle-checked(
+          label="toggle",
+          name="specialOffer1",
+          itemLabel="Получать спецпредложения",
+          checked
+        )
+        +form-toggle#toggle-default(
+          name="specialOffer2",
+          itemLabel="Получать спецпредложения"
+        )
+      .form-elements-layout__like-button
+        h3.form-label.form-elements-layout__like-button-label like button
+        +form-like-button#like-button-default(name="likes1", counter="2")
+        +form-like-button#like-button-checked(name="likes2", counter="12", checked)
+      .form-elements-layout__rate-button
+        +form-rate-button#rate-button-parted(label="rate button", name="rate1", length=5, rate=4)
+        +form-rate-button#rate-button-full(name="rate2", length=5, rate=5)
+      +form-range-slider#range-slider.form-elements-layout__range-slider(
+        name="price",
+        range={ min: 341, max: 15454 },
+        start=[5000, 10000],
+        isFilter,
+        label="range slider"
+      )
+      .form-elements-layout__button-fill
+        h3 buttons
+        div
+        +button#button-fill-default(type="button", value="click me", modClass="filled")
+        +button#button-fill-hovered(type="button", value="click me", modClass="filled")
+      .form-elements-layout__button-empty
+        +button#button-empty-default(type="button", value="click me", modClass="bordered")
+        +button#button-empty-hovered(type="button", value="click me", modClass="bordered")
+      .form-elements-layout__button-icon-link
+        +button#button-icon-link-default(type="button", value="click me", modClass="icon-link")
+        +button#button-icon-link-hovered(
+          type="button",
+          value="click me",
+          modClass="icon-link"
+        )
+      +button#button-long.form-elements-layout__button-long(
+        type="submit",
+        value="перейти к оплате",
+        modClass="link"
+      )
+      .form-elements-layout__pagination
+        h3.form-label pagination
+        +pagination#pagination(
+          page=1,
+          displayed=12,
+          total=179,
+          text="вариантов аренды",
+          hrefPrefix="?page="
+        )
+      +form-dropdown#dropdown-default-plural.form-elements-layout__dropdown-default-plural(
+        name="facilities1",
+        type="item-quantity",
+        isFilter,
+        label="dropdown",
+        output="plural",
+        openMod="fold",
+        groups={ спальни: { selectionText: 'спальня', textPlural: 'спальни' }, кровати: { selectionText: 'кровать', textPlural: 'кровати' }, 'ванные комнаты': { selectionText: 'ванная комната', textPlural: 'ванные комнаты' } },
+        list={ спальни: { default: 2, min: 1, max: 3 }, кровати: { default: 2, min: 1, max: 3 }, 'ванные комнаты': { default: 0, min: 0, max: 2 } }
+      )
+      +form-dropdown#dropdown-expanded-plural.form-elements-layout__dropdown-expanded-plural(
+        name="facilities2",
+        type="item-quantity",
+        label="dropdown",
+        output="plural",
+        openMod="fold",
+        groups={ спальни: { selectionText: 'спальня', textPlural: 'спальни' }, кровати: { selectionText: 'кровать', textPlural: 'кровати' }, 'ванные комнаты': { selectionText: 'ванная комната', textPlural: 'ванные комнаты' } },
+        list={ спальни: { default: 2, min: 1, max: 3 }, кровати: { default: 2, min: 1, max: 3 }, 'ванные комнаты': { default: 0, min: 0, max: 2 } }
+      )
+      +form-dropdown#dropdown-expanded-apply.form-elements-layout__dropdown-expanded-apply(
+        name="guests1",
+        type="item-quantity",
+        isFilter,
+        label="dropdown",
+        placeholder="Сколько гостей",
+        openMod="apply",
+        groups={ гости: { selectionText: 'гость', textPlural: 'гостя' }, младенцы: { selectionText: 'младенец', textPlural: 'младенцев' } },
+        list={ взрослые: { default: 0, min: 0, max: 1 / 0, group: 'гости' }, дети: { default: 0, min: 0, max: 1 / 0, group: 'гости' }, младенцы: { default: 0, min: 0, max: 1 / 0 } }
+      )
+      +form-dropdown#dropdown-expanded-clear-apply.form-elements-layout__dropdown-expanded-clear-apply(
+        name="guests2",
+        type="item-quantity",
+        isFilter,
+        label="dropdown",
+        placeholder="Сколько гостей",
+        openMod="apply",
+        groups={ гости: { selectionText: 'гость', textPlural: 'гостя' }, младенцы: { selectionText: 'младенец', textPlural: 'младенцев' } },
+        list={ взрослые: { default: 2, min: 0, max: 1 / 0, group: 'гости' }, дети: { default: 1, min: 0, max: 1 / 0, group: 'гости' }, младенцы: { default: 0, min: 0, max: 1 / 0 } }
+      )
+      .form-elements-layout__expandable-checkbox-list
+        +form-expandable-checkbox-list#expandable-checkbox-list-default(
+          label="expandable checkbox list",
+          buttons={}
+        )
+        +form-expandable-checkbox-list#expandable-checkbox-list-expanded(
+          isFilter,
+          label="expandable checkbox list",
+          buttons={ breakfast: { id: 'breakfastCheckbox', itemLabel: 'Завтрак' }, desk: { id: 'deskCheckbox', itemLabel: 'Письменный стол', checked: 'checked' }, feedingChair: { id: 'feedingChairCheckbox', itemLabel: 'Стол для кормления', checked: 'checked' }, cot: { id: 'cotCheckbox', itemLabel: 'Кроватка', checked: 'checked' }, tv1: { id: 'tv1Checkbox', itemLabel: 'Телевизор' }, shampoo1: { id: 'shampoo1Checkbox', itemLabel: 'Шампунь' }, tv2: { id: 'tv2Checkbox', itemLabel: 'Телевизор' }, shampoo2: { id: 'shampoo2Checkbox', itemLabel: 'Шампунь' } },
+          checked
+        )
+      +form-checkbox-buttons#rich-checkbox-buttons.form-elements-layout__rich-checkbox-buttons(
+        isFilter,
+        label="rich checkbox buttons",
+        mod="rich",
+        buttons={ wideCorridor: { id: 'wideCorridorCheckbox', itemLabel: 'Широкий коридор', description: 'Ширина коридоров в номере не менее 91 см.' }, assistantForTheDisabled: { id: 'assistantForTheDisabledCheckbox', itemLabel: 'Помощник для инвалидов', description: 'На 1 этаже вас встретит специалист  и проводит до номера.' } }
+      )
+      +form-bullet-list#bullet-list.form-elements-layout__bullet-list(
+        label={ h3: 'bullet list' },
+        items=['Нельзя с питомцами', 'Без вечеринок и мероприятий', 'Время прибытия — после 13:00, а выезд до 12:00']
+      )
+      +form-bullet-list#rich-bullet-list.form-elements-layout__logo-comfort(
+        mod="rich",
+        items={ Комфорт: { icon: 'insert_emoticon', description: 'Шумопоглощающие стены' }, Удобство: { icon: 'location_city', description: 'Окно в каждой из спален' } }
+      )
+      +comments#comment.form-elements-layout__comment(
+        items={ comment1: { personName: 'Мурад Сарафанов', iconPath: 'assets/pictures/contents/personas/1/1.png', date: '2020-10-21T17:00:00', content: 'Великолепный матрас на кровати в основной спальне! А пуфик вообще потрясающий. И стены, действительно, шумоподавляющие. Выкрикивал комплименты повару — никто не жаловался из соседей.', likeButtonCounter: 12, isLikeButtonChecked: 'checked' } }
+      )

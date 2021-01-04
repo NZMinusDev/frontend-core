@@ -1,0 +1,24 @@
+extends ~@pug/layouts/main.pug
+
+block variables
+  - var lang = 'ru';
+  - var keywords = 'FSD, Frontend, TOXIN, образование, верстка';
+  - var description = 'Навигация по сверстанным макетам страниц';
+  - var title = 'Навигация по страницам';
+
+block header
+block content
+  h1 Добро пожаловать на страницу навигации
+  p Здесь представлены сверстанные страницы, выбирай любую.
+  nav
+    ul
+      a(href="./colors-&-type.html") 
+        li Colors & Type
+      a(href="./form-elements.html") 
+        li Form Elements
+      a(href="./cards.html") 
+        li Cards
+      a(href="./headers-&-footers.html") 
+        li Headers & Footers
+      a(href="./sign-in.html") 
+        li Registration and Sign in

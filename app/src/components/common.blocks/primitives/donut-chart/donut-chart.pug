@@ -1,0 +1,50 @@
+include ~@common.blocks/containers/form-bullet-list/form-bullet-list.pug
+
+//- items: {title1: number, title2: number, ...} - data partitions, numbers is [0;1], the first number isn't 0, up to 5 items
+//- dataName: {string} - name of data
+//- list?: {boolean} - append list with designations
+//- label?: {tag: text}, example: {h2: "my label"}
+//- type?: "bordered"
+//- id?: {string} - id of component
+//- class?: {string} - class for component bem mix: such as positioning functionality
+
+mixin donut-chart
+  -
+    const labelKey = attributes.label ? Object.keys(attributes.label)[0] : null;
+
+    let total = 0;
+    for (const key in attributes.items) {
+      if (Object.hasOwnProperty.call(attributes.items, key)) {
+        total += attributes.items[key];
+      }
+    }
+
+    const bulletItems = [];
+    let chartsRatio = [];
+    for (const key in attributes.items) {
+      if (Object.hasOwnProperty.call(attributes.items, key)) {
+        bulletItems.push(key);
+        chartsRatio.push(attributes.items[key]/total);
+      }
+    }
+  .donut-chart(id=attributes.id, class=attributes.class)
+    if labelKey
+      #{labelKey}.form-label.donut-chart__label
+        label(for=attributes.id)= attributes.label[labelKey]
+    .donut-chart__chart
+      -
+        const ROUND = 360;
+        const GAP_DEGREE = chartsRatio.length > 1 ? 3 : 0;
+        let startVal = 0;
+        let endVal = 0;
+      each ratio in chartsRatio
+        - endVal += ratio !== 0 ? ratio * ROUND : 0;
+        .donut-chart__slice(
+          style=`--start:${startVal + GAP_DEGREE / 2 + 'deg'}; --end:${endVal - GAP_DEGREE / 2 + 'deg'};`
+        )
+        - startVal += ratio !== 0 ? ratio * ROUND : 0;
+      .donut-chart__counter
+        h1.donut-chart__data-amount= total
+        h3.donut-chart__data-name= attributes.dataName
+    if attributes.list
+      +form-bullet-list.donut-chart__bullet-list(items=bulletItems)

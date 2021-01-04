@@ -1,0 +1,6 @@
+@use "@utils/devTools/devTools.scss";
+
+.tooltip {
+  color: devTools.getColor(color__dark-shade, 0.25);
+  border: var(--border);
+}

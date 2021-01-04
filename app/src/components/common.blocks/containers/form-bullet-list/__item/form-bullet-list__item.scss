@@ -1,0 +1,20 @@
+.form-bullet-list__item {
+  display: grid;
+  grid: "icon content";
+  justify-content: start;
+
+  &:not(:first-child) {
+    margin-top: 0.7142857142857143em;
+  }
+
+  &:before {
+    content: "";
+    display: inline-block;
+    margin-top: 0.5em;
+    margin-right: 0.7142857142857143em;
+    width: 0.7142857142857143em;
+    height: 0.7142857142857143em;
+    background: rgba(0, 0, 0, 1);
+    border-radius: 100%;
+  }
+}

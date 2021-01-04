@@ -1,0 +1,27 @@
+.icon {
+  display: inline-block;
+  width: 100%; /* desired width */
+  position: absolute;
+  user-select: none;
+  cursor: pointer;
+
+  &:before {
+    content: "";
+    display: block;
+    padding-top: 100%; /* 1:1 Aspect Ratio */
+  }
+
+  &:after {
+    content: "\e813";
+    font-family: "Material Icons";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    text-indent: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
