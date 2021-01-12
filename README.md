@@ -103,7 +103,7 @@ _* - inside the directories, there are additional folders for each individual re
    2. The normalization of the initial styles through [Normalize.css](https://necolas.github.io/normalize.css/) for each page based on the browsers specified as supported.
    3. No need to remember a bunch of css prefixes and what properties are supported where thanks to [PostCSS Preset Env](https://github.com/csstools/postcss-preset-env) and [Autoprefixer](https://www.npmjs.com/package/autoprefixer).
    4. [Modern JavaScript, today](https://babeljs.io/).
-   5. Compression of images, scripts, styles, html in production mode. Note: Each image will also have a**. webp* * clone, which further reduces the final size.
+   5. Compression of images, scripts, styles, html in production mode. Note: Each image will also have a**. webp* * clone, which further reduces the final size and only the necessary elements will be taken from the script modules, and not the code of the entire module.
    6. There is no need to write relative paths for import when there are excellent aliases for the most popular paths in development.
    7. During development, when changing pug/cs/ts, the result is immediately visible without manual reboots and builds.
    8. During the build, webpack will notify you if: there are circular dependencies, libraries of different versions are connected, there are unused files, there are css properties that browsers do not support. Displays the speed of source processing at each stage of the build.
@@ -114,7 +114,7 @@ _* - inside the directories, there are additional folders for each individual re
    1. fontawesome-free and material-icons-regular;
    2. jquery to support old projects;
    3. inputmask for form validation;
-   4. lodash-es to supplement the js standard.
+   4. lodash-es to supplement the js standard. Tip: you should use only import of lodash-es(moreover, when importing, only care about the readability and strictness of the code, and not the optimization of the weight) instead of common lodash because ES6+ module syntax is supported by terser for optimization.
 7. Custom Tools:
    1. Basic pug layers and mixins;
    2. scss and ts shortcuts.
