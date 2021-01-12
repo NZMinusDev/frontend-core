@@ -67,7 +67,7 @@
     "file-loader": "^6.1.0",
     "html-webpack-plugin": "^4.4.1",
     "html2bemdecl-loader": "^1.0.5",
-    "image-minimizer-webpack-plugin": "github:webpack-contrib/image-minimizer-webpack-plugin",
+    "image-minimizer-webpack-plugin": "github:webpack-contrib/image-minimizer-webpack-plugin#semver:^1.0.0",
     "imagemin-gifsicle": "^7.0.0",
     "imagemin-jpegtran": "^7.0.0",
     "imagemin-optipng": "^8.0.0",

@@ -246,7 +246,7 @@ const webpackPlugins = () => {
     new ImageMinimizerPlugin({
       cache: "./app/cache/webpack__ImageMinimizerPlugin", // Enable file caching and set path to cache directory
       filename: "[path]/[name].webp", // Tip: hashed by assetsLoader (file-loader)
-      keepOriginal: true, // keep compressed image
+      deleteOriginalAssets: false, // keep compressed image
       minimizerOptions: {
         // Lossless optimization with custom option
         plugins: [
