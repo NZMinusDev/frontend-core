@@ -241,7 +241,7 @@ export const dropdownsWithIQList = Array.from(dropdowns).filter((dropdown) => {
 }) as Array<ToxinIQDropdownElement>;
 
 // Component modifiers
-export abstract class ToxinIQDropdownOpenModModifier extends PluginCreation.ChangerOfComponentListeners {
+export abstract class ToxinIQDropdownOpenModModifier extends PluginCreation.PluginDecorator {
   constructor(
     toxinIQDropdown: ToxinIQDropdown,
     listeners: Array<PluginCreation.ListenersByPlugin>

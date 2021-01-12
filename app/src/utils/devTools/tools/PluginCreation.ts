@@ -7,7 +7,7 @@ export interface ListenersByPlugin {
   listener: (this: Element, ev: HTMLElementEventMap[keyof HTMLElementEventMap]) => any;
   options?: boolean | AddEventListenerOptions;
 }
-export abstract class ChangerOfComponentListeners {
+export abstract class PluginDecorator {
   protected plugin: Plugin;
   protected listeners: Array<ListenersByPlugin>;
 
