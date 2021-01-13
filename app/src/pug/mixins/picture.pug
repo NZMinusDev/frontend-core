@@ -4,8 +4,9 @@
 //- Tip: split your picture and inner img styles
 mixin picture
   -
-    const filePath = attributes.path.split(".")[0];
-    const fileExt = attributes.path.split(".")[1];
+    const fullPath = attributes.path;
+    const filePath = fullPath.substring(0, fullPath.lastIndexOf('.')) || fullPath;
+    const fileExt = fullPath.substring(fullPath.lastIndexOf('.') + 1, fullPath.length) || fullPath;
   picture(class=attributes.class)
     //- FIXME: suffixed webp images doesn't work with devServer, don't know why; building is ok and the another img formats the same ok;
     source(type="image/webp", srcset=filePath + '.webp 1x')
