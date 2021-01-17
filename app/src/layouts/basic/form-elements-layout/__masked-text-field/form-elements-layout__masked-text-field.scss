@@ -1,0 +1,8 @@
+.form-elements-layout__masked-text-field {
+  @media print, screen and (min-width: 992px) {
+    & {
+      grid-area: masked-text-field;
+      margin-top: 3px/320px * 100%;
+    }
+  }
+}

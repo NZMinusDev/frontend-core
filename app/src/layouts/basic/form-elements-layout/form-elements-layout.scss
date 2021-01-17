@@ -1,0 +1,35 @@
+.form-elements-layout {
+  @media print, screen and (min-width: 0px) {
+    & {
+      display: grid;
+      grid-row-gap: 3em;
+      width: 75%;
+      margin: auto;
+      justify-content: center;
+    }
+  }
+
+  @media print, screen and (min-width: 992px) {
+    & {
+      grid:
+        "text-field-default . checkbox-buttons . range-slider" 6em
+        "text-field-hover . checkbox-buttons . button-fill" 6em
+        "dropdown . radio-buttons . button-empty" 6em
+        "masked-text-field . toggle . button-icon-link" 4.428571428571429em
+        "masked-text-field . toggle . button-long" 3.142857142857143em
+        "date-dropdown . like-button . pagination" 6em
+        "filter-date-dropdown . rate-button . pagination" 7.857142857142857em
+        "subscription-text-field . . . ." 6em
+        ". . . . ." 6.857142857142857em
+        "dropdown-default-plural . dropdown-expanded-apply . dropdown-expanded-clear-apply" 4.571428571428571em
+        "dropdown-expanded-plural . dropdown-expanded-apply . dropdown-expanded-clear-apply" 12.96857142857143em
+        ". . . . ." 3.571428571428571em
+        "expandable-checkbox-list . rich-checkbox-buttons . bullet-list" 19.42857142857143em
+        ". . . . ." 7.142857142857143em
+        "logo-comfort . comment comment comment" 10.85714285714286em / 22.85714285714286em 9em 22.85714285714286em 5.142857142857143em 22.85714285714286em;
+      grid-row-gap: initial;
+      width: initial;
+      margin: initial;
+    }
+  }
+}

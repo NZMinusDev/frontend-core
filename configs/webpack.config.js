@@ -3,10 +3,9 @@ const { HashedModuleIdsPlugin, ProvidePlugin, ContextReplacementPlugin } = requi
 const path = require("path");
 const fs = require("fs");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
-const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
-const PugPluginAlias = require("pug-alias");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MediaQueryPlugin = require("media-query-plugin");
 const DartSASS = require("sass");
 const fibers = require("fibers");
 const WrapperPlugin = require("wrapper-webpack-plugin");
@@ -35,27 +34,19 @@ const PATHS = {
 };
 
 const redefinitionLevels = [
-  "library.blocks",
-  "common.blocks",
-  "adaptive/small-mobile.blocks",
-  "adaptive/large-mobile.blocks",
-  "adaptive/tablet.blocks",
-  "adaptive/small-desktop.blocks",
-  "adaptive/large-desktop.blocks",
-  "thematic/main-theme.blocks",
-  "experimental/experiment-1.blocks",
+  "layouts",
+  "components/library.blocks",
+  "components/common.blocks",
+  "components/thematic/main-theme.blocks",
+  "components/experimental/experiment-1.blocks",
 ];
-const componentGroups = ["basic", "containers", "primitives", "specific", "layouts"];
+const componentGroups = ["basic", "containers", "primitives", "specific"];
 
 const sharedAliases = {
   "@pug": path.resolve(PATHS.src_absolute, "./pug/"),
+  "@layouts": path.resolve(PATHS.src_absolute, "./layouts/"),
   "@library.blocks": path.resolve(PATHS.src_absolute, "./components/library.blocks/"),
   "@common.blocks": path.resolve(PATHS.src_absolute, "./components/common.blocks/"),
-  "@small-mobile.blocks": path.resolve(PATHS.src_absolute, "./components/small-mobile.blocks/"),
-  "@large-mobile.blocks": path.resolve(PATHS.src_absolute, "./components/large-mobile.blocks/"),
-  "@tablet.blocks": path.resolve(PATHS.src_absolute, "./components/tablet.blocks/"),
-  "@small-desktop.blocks": path.resolve(PATHS.src_absolute, "./components/small-desktop.blocks/"),
-  "@large-desktop.blocks": path.resolve(PATHS.src_absolute, "./components/large-desktop.blocks/"),
   "@thematic": path.resolve(PATHS.src_absolute, "./components/thematic/"),
   "@experiments": path.resolve(PATHS.src_absolute, "./components/experimental/"),
   "@images": path.resolve(PATHS.src_absolute, "./assets/pictures/images/"),
@@ -63,9 +54,6 @@ const sharedAliases = {
   "@fonts": path.resolve(PATHS.src_absolute, "./assets/fonts/"),
   "@utils": path.resolve(PATHS.src_absolute, "./utils/"),
 };
-// returns a new object with the keys mapped using mapFn(key)
-const objectKeyMap = (object, mapFn) =>
-  Object.fromEntries(Object.entries(object).map(([key, value]) => [mapFn(key), value]));
 
 /**
  * Useful tool for creating name of files with hash
@@ -105,11 +93,11 @@ class ResultOfTemplatesProcessing {
       this.HTMLWebpackPlugins.push(
         new HTMLWebpackPlugin({
           template: `!!pug-loader!app/src/pages/${shortNameOfTemplate}/${nameOfTemplate}`,
-          filename: `./${nameOfTemplate.replace(/\.pug/, ".html")}`,
+          filename: hashedFileName(`./${shortNameOfTemplate}`, "html"),
           favicon: "./assets/ico/favicon.ico",
+          inject: false, // see ~@layouts/basic/main-layout/main-layout.pug
           chunks: [shortNameOfTemplate],
           // Tip: for 'defer' use pay attention on elements which can be non-working while res loading.
-          scriptLoading: "defer",
         })
       );
     });
@@ -167,7 +155,7 @@ listOfSourceImages320 = listOfSourceImagesMapping(listOfSourceImages320, "320");
 const designWidth = 1440;
 /**
  * HTMLWebpackPlugin - create html of pages with plug in scripts.
- * ScriptExtHtmlWebpackPlugin - adds to <script> tag attributes depending on RegExp.
+ * MediaQueryPlugin - extract css media into separate files
  * MiniCssExtractPlugin - extract css into separate files.
  * WrapperPlugin - wrap output css depending on RegExp.
  * ProvidePlugin - Automatically load modules instead of having to import or require them everywhere.
@@ -183,42 +171,25 @@ const designWidth = 1440;
 const webpackPlugins = () => {
   const plugins = [
     ...resultOfTemplatesProcessing.HTMLWebpackPlugins,
-    // FIXME: customize it depending on the project. Tip: pay attention to scriptLoading and inject attributes in HTMLWebpackPlugin
-    // https://github.com/numical/script-ext-html-webpack-plugin
-    new ScriptExtHtmlWebpackPlugin({
-      defaultAttribute: "sync",
+    new MediaQueryPlugin({
+      include: true,
+      queries: {
+        "print, screen and (min-width: 0px)": "small-mobile",
+        "print, screen and (min-width: 600px)": "large-mobile",
+        "print, screen and (min-width: 768px)": "tablet",
+        "print, screen and (min-width: 992px)": "small-desktop",
+        "print, screen and (min-width: 1200px)": "large-desktop",
+        "print, screen and (color)": "thematic",
+      },
     }),
     new MiniCssExtractPlugin({
-      filename: hashedFileName("styles/[id]/[name]", "css"),
+      //FIXME: can't use styles/[name]/[name] cause of MediaQueryPlugin interpolation bug
+      filename: hashedFileName("styles/[name]/style", "css"),
     }),
-    new WrapperPlugin({
-      test: /.*small-mobile.*\.css$/,
-      header: "@media (min-width: 0px) {",
-      footer: "}",
-    }),
-    new WrapperPlugin({
-      test: /.*large-mobile.*\.css$/,
-      header: "@media (min-width: 600px) {",
-      footer: "}",
-    }),
-    new WrapperPlugin({
-      test: /.*tablet.*\.css$/,
-      header: "@media (min-width: 768px) {",
-      footer: "}",
-    }),
-    new WrapperPlugin({
-      test: /.*small-desktop.*\.css$/,
-      header: "@media (min-width: 992px) {",
-      footer: "}",
-    }),
-    new WrapperPlugin({
-      test: /.*large-desktop.*\.css$/,
-      header: "@media (min-width: 1200px) {",
-      footer: "}",
-    }),
+    // FIXME: make it works before MediaQueryPlugin for extracting wrapped content
     new WrapperPlugin({
       test: /.*thematic.*\.css$/,
-      header: "@media (color) {",
+      header: "@media print, screen and (color) {",
       footer: "}",
     }),
     new ProvidePlugin({
@@ -315,7 +286,7 @@ const templatesLoaders = (includedFilesExtensions = ["css", "js", "scss", "ts"])
   const bemDeclLevels = [];
   redefinitionLevels.forEach((level) => {
     componentGroups.forEach((group) => {
-      bemDeclLevels.push(`app/src/components/${level}/${group}/`);
+      bemDeclLevels.push(`app/src/${level}/${group}/`);
     });
   });
 
@@ -333,17 +304,12 @@ const templatesLoaders = (includedFilesExtensions = ["css", "js", "scss", "ts"])
       loader: "html2bemdecl-loader",
     },
     {
-      // convert pug to html in runtime
-      loader: "pug-plain-loader",
-      options: {
-        plugins: [
-          PugPluginAlias(
-            objectKeyMap(sharedAliases, (key) => {
-              return `~${key}`;
-            })
-          ),
-        ],
-      },
+      // convert template function to html
+      loader: "./utils/webpack/loaders/pug-loader.ts",
+    },
+    {
+      // convert pug to template function
+      loader: "pug-loader",
     },
   ];
 };
@@ -367,6 +333,9 @@ const cssLoaders = (extraLoader) => {
     },
     {
       loader: "css-loader",
+    },
+    {
+      loader: MediaQueryPlugin.loader,
     },
     {
       loader: "postcss-loader",
@@ -468,31 +437,6 @@ const optimization = () => {
         common: {
           test: /.*\\common.blocks\\.*/,
           priority: 9,
-          enforce: true,
-        },
-        "small-mobile": {
-          test: /.*\\adaptive\\small-mobile.blocks\\.*/,
-          priority: 8,
-          enforce: true,
-        },
-        "large-mobile": {
-          test: /.*\\adaptive\\large-mobile.blocks\\.*/,
-          priority: 7,
-          enforce: true,
-        },
-        tablet: {
-          test: /.*\\adaptive\\tablet.blocks\\.*/,
-          priority: 6,
-          enforce: true,
-        },
-        "small-desktop": {
-          test: /.*\\adaptive\\small-desktop.blocks\\.*/,
-          priority: 5,
-          enforce: true,
-        },
-        "large-desktop": {
-          test: /.*\\adaptive\\large-desktop.blocks\\.*/,
-          priority: 4,
           enforce: true,
         },
         thematic: {

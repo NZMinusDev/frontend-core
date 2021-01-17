@@ -1,0 +1,16 @@
+.footer_creative {
+  @media print, screen and (min-width: 0px) {
+    & {
+      position: relative;
+      right: 0;
+      left: 0;
+      margin: auto;
+      width: 768 / 1440 * 100%;
+      padding-top: 8.571428571428571em;
+      padding-bottom: 8.571428571428571em;
+      grid: "logo" "copyright" "icons";
+      grid-row-gap: 1.428571428571429em;
+      justify-items: center;
+    }
+  }
+}

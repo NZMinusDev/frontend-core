@@ -1,0 +1,17 @@
+.nav-bar__navigation-item {
+  @media print, screen and (min-width: 0px) {
+    & {
+      text-align: center;
+    }
+  }
+  @media print, screen and (min-width: 992px) {
+    & {
+      text-align: left;
+      margin-right: 1.428571428571429em;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-extends ~@pug/layouts/ui-kit-layout.pug
+extends ~@layouts/basic/ui-kit-layout/ui-kit-layout.pug
 
 //- components
 include ~@common.blocks/containers/card-pick-room/card-pick-room.pug
@@ -44,7 +44,7 @@ block content
     +card-room#card-room-luxury.cards-layout__card-luxury-room(
       href="#room-luxury",
       name="room-luxury",
-      paths=['assets/pictures/contents/rooms/luxury/888/888.png', 'assets/pictures/contents/rooms/common/840/840.png', 'assets/pictures/contents/rooms/luxury/888/888.png', 'assets/pictures/contents/rooms/common/840/840.png'],
+      paths=[htmlWebpackPlugin ? require('./../../assets/pictures/contents/rooms/luxury/888/888.png').default : '', htmlWebpackPlugin ? require('./../../assets/pictures/contents/rooms/common/840/840.png').default : '', htmlWebpackPlugin ? require('./../../assets/pictures/contents/rooms/luxury/888/888.png').default : '', htmlWebpackPlugin ? require('./../../assets/pictures/contents/rooms/common/840/840.png').default : ''],
       room-number=888,
       room-grade="Люкс",
       payment-amount=9990,
@@ -54,7 +54,7 @@ block content
     +card-room#card-room-common.cards-layout__card-common-room(
       href="#room-common",
       name="room-common",
-      paths=['assets/pictures/contents/rooms/common/840/840.png', 'assets/pictures/contents/rooms/luxury/888/888.png', 'assets/pictures/contents/rooms/common/840/840.png', 'assets/pictures/contents/rooms/luxury/888/888.png'],
+      paths=[htmlWebpackPlugin ? require('./../../assets/pictures/contents/rooms/common/840/840.png').default : '', htmlWebpackPlugin ? require('./../../assets/pictures/contents/rooms/luxury/888/888.png').default : '', htmlWebpackPlugin ? require('./../../assets/pictures/contents/rooms/common/840/840.png').default : '', htmlWebpackPlugin ? require('./../../assets/pictures/contents/rooms/luxury/888/888.png').default : ''],
       room-number=840,
       payment-amount=9900,
       rate=4,

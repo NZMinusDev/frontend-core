@@ -1,0 +1,7 @@
+.footer__copyright {
+  @media print, screen and (min-width: 0px) {
+    & {
+      grid-area: copyright;
+    }
+  }
+}

@@ -1,0 +1,7 @@
+.cards-layout__card-luxury-room {
+  @media print, screen and (min-width: 992px) {
+    & {
+      grid-area: card-luxury-room;
+    }
+  }
+}

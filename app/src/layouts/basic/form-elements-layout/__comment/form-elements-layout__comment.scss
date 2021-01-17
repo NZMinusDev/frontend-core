@@ -1,0 +1,8 @@
+.form-elements-layout__comment {
+  @media print, screen and (min-width: 992px) {
+    & {
+      grid-area: comment;
+      margin-top: 30px/711px * 100%;
+    }
+  }
+}

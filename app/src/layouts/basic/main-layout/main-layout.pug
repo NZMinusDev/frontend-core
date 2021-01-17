@@ -1,0 +1,25 @@
+//- mixins
+include ~@pug/mixins/meta.pug
+include ~@pug/mixins/noscript-notification.pug
+
+block variables
+
+doctype html
+html(lang="ru")
+  head
+    +meta(keywords, description, title)
+    if htmlWebpackPlugin
+      //- if process page after added files of BEM entities to bundle by bemdecl-to-fs-loader
+      //- FIXME: should add order sorting functionality for media
+      //- TODO: rework to dynamic import by js magic comment in webpack
+      each js in htmlWebpackPlugin.files.js
+        script(defer="defer", src=js)
+      each css in htmlWebpackPlugin.files.css
+        link(rel="stylesheet", href=css)
+      each css in htmlWebpackPlugin.files.extracted.css
+        link(rel="stylesheet", href=css.file, media=css.query)
+  body
+    +noscript
+    block header
+    block content
+    block footer

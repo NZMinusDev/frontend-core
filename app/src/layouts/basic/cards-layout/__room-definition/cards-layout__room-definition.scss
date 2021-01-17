@@ -1,0 +1,7 @@
+.cards-layout__room-definition {
+  @media print, screen and (min-width: 992px) {
+    & {
+      grid-area: room-definition;
+    }
+  }
+}

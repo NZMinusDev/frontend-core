@@ -1,0 +1,12 @@
+.form-elements-layout__button-icon-link {
+  @media print, screen and (min-width: 992px) {
+    & {
+      grid-area: button-icon-link;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-column-gap: 1.571428571428571em;
+      place-items: start;
+      margin-top: 10px/320px * 100%;
+    }
+  }
+}

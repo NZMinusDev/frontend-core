@@ -1,0 +1,27 @@
+.footer__widgets {
+  @media print, screen and (min-width: 0px) {
+    & {
+      grid-area: widgets;
+      display: grid;
+      grid: "logo" "description" "navigation" "about" "support" "subscription";
+      grid-row-gap: 1.142857142857143em;
+      justify-items: center;
+      padding-top: 7.142857142857143em;
+      padding-bottom: 7.142857142857143em;
+    }
+  }
+
+  @media print, screen and (min-width: 992px) {
+    & {
+      $descriptionWidth: 260 / (1440 - 140 * 2) * 100%;
+      $navigationGapWidth: 40 / (1440 - 140 * 2) * 100%;
+      $aboutGapWidth: 57 / (1440 - 140 * 2) * 100%;
+      $supportGapWidth: 92 / (1440 - 140 * 2) * 100%;
+      $subscriptionGapWidth: 57 / (1440 - 140 * 2) * 100%;
+      grid:
+        "logo . navigation . about . support . subscription" auto
+        "description . navigation . about . support . subscription" 1fr / #{$descriptionWidth} #{$navigationGapWidth} auto #{$aboutGapWidth} auto #{$supportGapWidth} auto #{$subscriptionGapWidth} auto;
+      justify-items: start;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+.form-elements-layout__dropdown-expanded-clear-apply {
+  @media print, screen and (min-width: 992px) {
+    & {
+      grid-area: dropdown-expanded-clear-apply;
+      margin-top: 2px/320px * 100%;
+    }
+  }
+}

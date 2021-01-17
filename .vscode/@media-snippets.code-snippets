@@ -1,0 +1,38 @@
+{
+  // Place your Рабочая область frontend-core snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+  // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+  // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+  // used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+  // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+  // Placeholders with the same ids are connected.
+  "small mobile media query snippet for css and scss files": {
+    "prefix": "@sm",
+    "scope": "css,scss,sass",
+    "body": ["@media print, screen and (min-width: 0px) {", "\t& {", "\t\t$0", "\t}", "}"],
+    "description": "small mobile media query snippet for css and scss files"
+  },
+  "large mobile media query snippet for css and scss files": {
+    "prefix": "@lm",
+    "scope": "css,scss,sass",
+    "body": ["@media print, screen and (min-width: 600px) {", "\t& {", "\t\t$0", "\t}", "}"],
+    "description": "large mobile media query snippet for css and scss files"
+  },
+  "tablet media query snippet for css and scss files": {
+    "prefix": "@t",
+    "scope": "css,scss,sass",
+    "body": ["@media print, screen and (min-width: 768px) {", "\t& {", "\t\t$0", "\t}", "}"],
+    "description": "tablet media query snippet for css and scss files"
+  },
+  "small-desktop media query snippet for css and scss files": {
+    "prefix": "@sd",
+    "scope": "css,scss,sass",
+    "body": ["@media print, screen and (min-width: 992px) {", "\t& {", "\t\t$0", "\t}", "}"],
+    "description": "small-desktop media query snippet for css and scss files"
+  },
+  "large-desktop media query snippet for css and scss files": {
+    "prefix": "@ld",
+    "scope": "css,scss,sass",
+    "body": ["@media print, screen and (min-width: 1200px) {", "\t& {", "\t\t$0", "\t}", "}"],
+    "description": "large-desktop media query snippet for css and scss files"
+  }
+}

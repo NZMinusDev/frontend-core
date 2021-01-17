@@ -1,0 +1,12 @@
+.form-elements-layout__expandable-checkbox-list {
+  @media print, screen and (min-width: 992px) {
+    & {
+      grid-area: expandable-checkbox-list;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      grid-row-gap: 2.857142857142857em;
+      margin-top: 26px/320px * 100%;
+      margin-right: 54px/320px * 100%;
+    }
+  }
+}

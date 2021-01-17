@@ -1,0 +1,9 @@
+.form-elements-layout__filter-date-dropdown {
+  @media print, screen and (min-width: 992px) {
+    & {
+      grid-area: filter-date-dropdown;
+      margin-top: 22px/320px * 100%;
+      margin-right: 54px/320px * 100%;
+    }
+  }
+}

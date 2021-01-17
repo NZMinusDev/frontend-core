@@ -1,3 +1,10 @@
 .footer {
   background-color: white;
+
+  @media print, screen and (min-width: 0px) {
+    & {
+      display: grid;
+      grid: "widgets" "copyright-bar";
+    }
+  }
 }

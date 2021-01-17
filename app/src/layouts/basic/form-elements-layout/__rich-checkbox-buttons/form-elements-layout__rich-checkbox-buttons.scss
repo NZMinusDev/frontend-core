@@ -1,0 +1,9 @@
+.form-elements-layout__rich-checkbox-buttons {
+  @media print, screen and (min-width: 992px) {
+    & {
+      grid-area: rich-checkbox-buttons;
+      width: 266px/320px * 100%;
+      margin-top: 26px/320px * 100%;
+    }
+  }
+}

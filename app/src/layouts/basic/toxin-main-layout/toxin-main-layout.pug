@@ -1,0 +1,16 @@
+extends ~@layouts/basic/main-layout/main-layout.pug
+
+block variables
+  -
+    let keywords = 'FSD, Frontend, TOXIN, образование, верстка';
+    let description = '';
+    let title = '';
+
+//- components
+include ~@common.blocks/basic/nav-bar/nav-bar.pug
+include ~@common.blocks/basic/footer/footer.pug
+
+block header
+  +nav-bar
+block footer
+  +footer

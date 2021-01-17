@@ -1,0 +1,9 @@
+.footer__subscription {
+  @media print, screen and (min-width: 0px) {
+    & {
+      grid-area: subscription;
+      grid: "label" "description" "text-field";
+      grid-row-gap: 1.5em;
+    }
+  }
+}

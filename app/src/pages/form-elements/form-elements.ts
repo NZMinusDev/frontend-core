@@ -2,9 +2,6 @@
 import "./form-elements.pug";
 import "./form-elements.scss";
 
-// assets
-import "@contents/personas/1/1.png";
-
 //libs
 import { DOMHelper } from "@utils/devTools/devTools";
 

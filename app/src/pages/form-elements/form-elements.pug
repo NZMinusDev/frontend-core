@@ -1,4 +1,4 @@
-extends ~@pug/layouts/ui-kit-layout.pug
+extends ~@layouts/basic/ui-kit-layout/ui-kit-layout.pug
 
 //- components
 include ~@common.blocks/primitives/form-text-field/form-text-field.pug
@@ -212,5 +212,5 @@ block content
         items={ Комфорт: { icon: 'insert_emoticon', description: 'Шумопоглощающие стены' }, Удобство: { icon: 'location_city', description: 'Окно в каждой из спален' } }
       )
       +comments#comment.form-elements-layout__comment(
-        items={ comment1: { personName: 'Мурад Сарафанов', iconPath: 'assets/pictures/contents/personas/1/1.png', date: '2020-10-21T17:00:00', content: 'Великолепный матрас на кровати в основной спальне! А пуфик вообще потрясающий. И стены, действительно, шумоподавляющие. Выкрикивал комплименты повару — никто не жаловался из соседей.', likeButtonCounter: 12, isLikeButtonChecked: 'checked' } }
+        items={ comment1: { personName: 'Мурад Сарафанов', iconPath: htmlWebpackPlugin ? require('@contents/personas/1/1.png').default : '', date: '2020-10-21T17:00:00', content: 'Великолепный матрас на кровати в основной спальне! А пуфик вообще потрясающий. И стены, действительно, шумоподавляющие. Выкрикивал комплименты повару — никто не жаловался из соседей.', likeButtonCounter: 12, isLikeButtonChecked: 'checked' } }
       )

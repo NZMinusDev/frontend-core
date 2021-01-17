@@ -1,0 +1,9 @@
+.form-elements-layout__toggle {
+  @media print, screen and (min-width: 992px) {
+    & {
+      grid-area: toggle;
+      display: grid;
+      margin-top: 19px/320px * 100%;
+    }
+  }
+}

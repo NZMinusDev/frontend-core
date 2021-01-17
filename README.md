@@ -64,7 +64,7 @@ You can see explanation [here](https://en.bem.info/methodology/redefinition-leve
 
 The order of redefinition levels is as follows: library -> common -> thematic* -> experimental*.
 
-_* - inside the directories, there are additional folders for each individual redefinition sublevel. To connect them, you need to modify webpack.config_.
+_\* - inside the directories, there are additional folders for each individual redefinition sublevel. To connect them, you need to modify webpack.config_.
 
 ### Technologies
 
@@ -100,15 +100,17 @@ _* - inside the directories, there are additional folders for each individual re
    3. TypeScript
 4. Webpack which kill your headaches:
    1. Pages only need to be created, and the collector can determine the entry points on its own. Scripts and styles connect to the page themselves, and the order of connection is always correct. Resources used by multiple pages are loaded only 1 time.
-   2. The normalization of the initial styles through [Normalize.css](https://necolas.github.io/normalize.css/) for each page based on the browsers specified as supported.
-   3. No need to remember a bunch of css prefixes and what properties are supported where thanks to [PostCSS Preset Env](https://github.com/csstools/postcss-preset-env) and [Autoprefixer](https://www.npmjs.com/package/autoprefixer).
-   4. [Modern JavaScript, today](https://babeljs.io/).
-   5. Compression of images, scripts, styles, html in production mode. Note: Each image will also have a**. webp* * clone, which further reduces the final size and only the necessary elements will be taken from the script modules, and not the code of the entire module.
-   6. There is no need to write relative paths for import when there are excellent aliases for the most popular paths in development.
-   7. During development, when changing pug/cs/ts, the result is immediately visible without manual reboots and builds.
-   8. During the build, webpack will notify you if: there are circular dependencies, libraries of different versions are connected, there are unused files, there are css properties that browsers do not support. Displays the speed of source processing at each stage of the build.
-   9. If the source code is changed, the user device will know about it and download only the latest version of the project (provided by hashing the output files).
-   10. It works the same on different platforms.
+   2. Connect images and use auxiliary modules directly in the [templates](./app/src/pages/cards/cards.pug).
+   3. The normalization of the initial styles through [Normalize.css](https://necolas.github.io/normalize.css/) for each page based on the browsers specified as supported.
+   4. No need to remember a bunch of css prefixes and what properties are supported where thanks to [PostCSS Preset Env](https://github.com/csstools/postcss-preset-env) and [Autoprefixer](https://www.npmjs.com/package/autoprefixer).
+   5. Users with mobile devices will not download code that is only intended for personal computers(use the mobile first approach: inside scss, specify [nested @media](./app/src/components/common.blocks/basic/footer/__copyright-bar/footer__copyright-bar.scss), and for scripts use [webpack magic comments with match media](); P.S.: use pre-configured snippets: [1](./.vscode/@media-snippets.code-snippets), [2]()).
+   6. [Modern JavaScript, today](https://babeljs.io/).
+   7. Compression of images, scripts, styles, html in production mode. Note: Each image will also have a\*_. webp_ \* clone, which further reduces the final size and only the necessary elements will be taken from the script modules, and not the code of the entire module.
+   8. There is no need to write relative paths for import when there are excellent aliases for the most popular paths in development.
+   9. During development, when changing pug/cs/ts, the result is immediately visible without manual reboots and builds.
+   10. During the build, webpack will notify you if: there are circular dependencies, libraries of different versions are connected, there are unused files, there are css properties that browsers do not support. Displays the speed of source processing at each stage of the build.
+   11. If the source code is changed, the user device will know about it and download only the latest version of the project (provided by hashing the output files).
+   12. It works the same on different platforms.
 5. ESLinter using [Airbnb standarts](https://github.com/airbnb/javascript) integrated with prettier and typescript which protects your knee from :gun: and your life from wasting :clock2:.
 6. Pre-installed libraries:
    1. fontawesome-free and material-icons-regular;
@@ -118,6 +120,7 @@ _* - inside the directories, there are additional folders for each individual re
 7. Custom Tools:
    1. Basic pug layers and mixins;
    2. scss and ts shortcuts.
+   3. pug and scss snippets: [1](./.vscode/template-snippetts.code-snippets), [2](./.vscode/@media-snippets.code-snippets)
 
 ## In the process of adding
 

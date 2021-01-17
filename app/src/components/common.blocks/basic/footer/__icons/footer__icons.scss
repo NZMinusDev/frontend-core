@@ -1,0 +1,16 @@
+.footer__icons {
+  @media print, screen and (min-width: 0px) {
+    & {
+      width: 100%;
+      grid-area: icons;
+      display: grid;
+      grid-auto-flow: column;
+      justify-items: center;
+    }
+  }
+  @media print, screen and (min-width: 992px) {
+    & {
+      grid-column-gap: 1.428571428571429em;
+    }
+  }
+}

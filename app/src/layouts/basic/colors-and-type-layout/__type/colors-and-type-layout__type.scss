@@ -1,0 +1,10 @@
+.colors-and-type-layout__type {
+  @media print, screen and (min-width: 0px) {
+    & {
+      grid-area: type;
+      display: grid;
+      place-content: start;
+      grid-row-gap: 3.571428571428571em;
+    }
+  }
+}

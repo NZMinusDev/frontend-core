@@ -1,0 +1,7 @@
+.footer__navigation {
+  @media print, screen and (min-width: 0px) {
+    & {
+      grid-area: navigation;
+    }
+  }
+}
