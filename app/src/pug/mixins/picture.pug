@@ -18,4 +18,4 @@ mixin picture
     source(media="(min-width:960px)", srcset=filePath + '-960.' + fileExt + ' 1x')
     source(media="(min-width:600px)", srcset=filePath + '-640.' + fileExt + ' 1x')
     source(media="(min-width:0px)", srcset=filePath + '-320.' + fileExt + ' 1x')
-    img(src=attributes.path, alt=attributes.alt)
+    img(src=attributes.path, alt=attributes.alt, width="100%", height="100%")
