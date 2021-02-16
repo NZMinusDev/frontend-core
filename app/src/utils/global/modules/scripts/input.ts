@@ -1,8 +1,8 @@
-import { WindowHrefHelper } from "@utils/devTools/devTools";
+import { getURLValue, addURLValues } from "@utils/devTools/tools/URLHelper";
 
 document.querySelectorAll("input").forEach((element) => {
   const inputElement = element as HTMLInputElement;
-  const hrefValue = WindowHrefHelper.getValue(inputElement.getAttribute("name")) as string;
+  const hrefValue = getURLValue(inputElement.getAttribute("name")) as string;
 
   if (hrefValue) {
     switch (inputElement.type) {
@@ -30,7 +30,7 @@ document.querySelectorAll("input").forEach((element) => {
 
   if (inputElement.getAttribute("isFilter")) {
     inputElement.addEventListener("change", (event) => {
-      WindowHrefHelper.addValues({
+      addURLValues({
         name: inputElement.getAttribute("name"),
         value: inputElement.value,
       });

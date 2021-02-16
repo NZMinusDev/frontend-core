@@ -126,8 +126,12 @@ _* - внутри директорий существуют дополнител
    9. reconnecting-websocket: webSocket будут автоматически переподключаться при разрывах соединения.
 8. Пользовательские инструменты:
    1. Базовые pug слои и миксины;
-   2. scss и ts шорткаты.
-   3. pug и scss сниппеты: [1](./.vscode/template-snippetts.code-snippets), [2](./.vscode/@media-snippets.code-snippets)
+   2. scss и ts шорткаты;
+   3. pug и scss сниппеты: [1](./.vscode/template-snippetts.code-snippets), [2](./.vscode/@media-snippets.code-snippets);
+   4. [заглушка](./app/src/assets/pictures/images/placeholders/lazy-loading-placeholder.svg) для не подгруженных изображений (контентные изображения будут [подгружаться](./app/src/utils/global/modules/scripts/assets-lazy-loading.ts) при пользовательском прокручивании страницы);
+   5. [arrow-to-top](./app/src/components/common.blocks/specific/arrow-to-top/) компонент;
+   6. [click-jacking-protector](./app/src/components/common.blocks/specific/click-jacking-protector/) для каждой страницы(ты можешь настроить это в [шаблоне](./app/src/layouts/basic/main-layout/main-layout.pug));
+   7. [глобальная ловушка](./app/src/utils/global/modules/scripts/unhandledrejection.ts) для необработанных ошибок.
 
 ## В процессе добавления
 

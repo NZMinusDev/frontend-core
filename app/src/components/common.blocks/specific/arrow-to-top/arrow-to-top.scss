@@ -1,0 +1,34 @@
+.arrow-to-top {
+  display: inline-block; /* or block */
+  position: relative;
+  padding-top: 1.8em;
+  text-decoration: none;
+  color: white;
+  border-color: white;
+  transition: all 0.3s ease-out;
+
+  &:hover {
+    color: lightgreen;
+    border-color: lightgreen;
+
+    &:before {
+      transform: rotate(360deg);
+    }
+  }
+
+  &:before {
+    content: "▲";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1.4em;
+    height: 1.4em;
+    margin-left: -0.7em;
+    border: solid 0.13em white;
+    border-radius: 10em;
+    border-color: inherit;
+    font-size: 0.9em;
+    line-height: 1.3em;
+    transition: transform 0.5s ease-in;
+  }
+}

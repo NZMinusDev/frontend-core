@@ -126,8 +126,12 @@ _\* - inside the directories, there are additional folders for each individual r
    9. reconnecting-websocket: webSocket that will automatically reconnect if the connection is closed.
 8. Custom Tools:
    1. Basic pug layers and mixins;
-   2. scss and ts shortcuts.
-   3. pug and scss snippets: [1](./.vscode/template-snippetts.code-snippets), [2](./.vscode/@media-snippets.code-snippets)
+   2. scss and ts shortcuts;
+   3. pug and scss snippets: [1](./.vscode/template-snippetts.code-snippets), [2](./.vscode/@media-snippets.code-snippets);
+   4. [placeholder](./app/src/assets/pictures/images/placeholders/lazy-loading-placeholder.svg) for unloaded img (img [would be loaded](./app/src/utils/global/modules/scripts/assets-lazy-loading.ts) by user's scroll);
+   5. [arrow-to-top](./app/src/components/common.blocks/specific/arrow-to-top/) component;
+   6. [click-jacking-protector](./app/src/components/common.blocks/specific/click-jacking-protector/) for each page(you can configure it in [template](./app/src/layouts/basic/main-layout/main-layout.pug));
+   7. [global error catcher](./app/src/utils/global/modules/scripts/unhandledrejection.ts) for unhandled errors.
 
 ## In the process of adding
 

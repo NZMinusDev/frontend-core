@@ -1,6 +1,8 @@
-import "./normalize.css";
-import "./reset.local.css";
-import "./tricks.scss";
-import "./fonts.scss";
+import "./modules/css/normalize.css";
+import "./modules/css/reset.local.css";
+import "./modules/css/tricks.scss";
+import "./modules/css/fonts.scss";
 
-import "./global";
+import "./modules/scripts/input";
+import "./modules/scripts/assets-lazy-loading";
+import "./modules/scripts/unhandledrejection";
