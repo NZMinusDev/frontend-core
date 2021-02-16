@@ -3,7 +3,7 @@ import "./form-elements.pug";
 import "./form-elements.scss";
 
 //libs
-import { DOMHelper } from "@utils/devTools/devTools";
+import { has } from "@utils/devTools/tools/DOMHelper";
 
 //components
 import {
@@ -14,12 +14,12 @@ import {
 // focus components
 (document.querySelector("#text-field-hover") as HTMLElement).focus();
 
-(DOMHelper.has(dropdownsWithIQList, "#dropdown-expanded-plural").closest(
+(has(dropdownsWithIQList, "#dropdown-expanded-plural").closest(
   ".form-dropdown"
 ) as ToxinIQDropdownElement).toxinIQDropdown.open();
-(DOMHelper.has(dropdownsWithIQList, "#dropdown-expanded-apply").closest(
+(has(dropdownsWithIQList, "#dropdown-expanded-apply").closest(
   ".form-dropdown"
 ) as ToxinIQDropdownElement).toxinIQDropdown.open();
-(DOMHelper.has(dropdownsWithIQList, "#dropdown-expanded-clear-apply").closest(
+(has(dropdownsWithIQList, "#dropdown-expanded-clear-apply").closest(
   ".form-dropdown"
 ) as ToxinIQDropdownElement).toxinIQDropdown.open();

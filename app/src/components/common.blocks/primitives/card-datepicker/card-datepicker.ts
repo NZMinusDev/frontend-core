@@ -1,4 +1,4 @@
-import { PluginCreation } from "@utils/devTools/devTools";
+import { Plugin } from "@utils/devTools/tools/PluginCreationHelper";
 
 import "@common.blocks/primitives/apply-control/apply-control.scss";
 import "@common.blocks/primitives/apply-control/__clear-btn-js/apply-control__clear-btn-js.scss";
@@ -22,32 +22,24 @@ export type CardDatepickerDOM = {
   applyBtn: HTMLButtonElement;
   $altFields: JQuery<HTMLElement>;
 };
-export interface CardDatepickerAPI extends PluginCreation.Plugin {
+export interface CardDatepickerAPI extends Plugin {
   readonly dom: CardDatepickerDOM;
   readonly lastFormattedDate: string;
   readonly lastDates: Array<Date>;
 }
 export class CardDatepicker implements CardDatepickerAPI {
-  readonly dom: CardDatepickerDOM = {
-    self: null,
-    $self: null,
-    input: null,
-    calendar: null,
-    clearBtn: null,
-    applyBtn: null,
-    $altFields: null,
-  };
+  readonly dom: CardDatepickerDOM = {};
 
-  private _lastFormattedDate = "";
+  #lastFormattedDate = "";
   public get lastFormattedDate(): string {
-    return this._lastFormattedDate;
+    return this.#lastFormattedDate;
   }
-  private _lastDates = [];
+  #lastDates: Array<Date> = [];
   public get lastDates(): Array<Date> {
-    return this._lastDates;
+    return this.#lastDates;
   }
 
-  private APPLY_CONTROL = `<div class="apply-control"><input class="apply-control__clear-btn-js apply-control__clear-btn-js_isHidden" type="button" value="очистить"><input class="apply-control__apply-btn-js" type="button" value="применить"></div>`;
+  #APPLY_CONTROL = `<div class="apply-control"><input class="apply-control__clear-btn-js apply-control__clear-btn-js_isHidden" type="button" value="очистить"><input class="apply-control__apply-btn-js" type="button" value="применить"></div>`;
 
   constructor(cardDatepicker: CardDatepickerElement) {
     this._initStaticDOM(cardDatepicker);
@@ -65,12 +57,12 @@ export class CardDatepicker implements CardDatepickerAPI {
     this.dom.self = cardDatepicker;
     this.dom.$self = $(cardDatepicker);
     this.dom.input = cardDatepicker.previousElementSibling as HTMLInputElement;
-    this.dom.$altFields = $(this.dom.self.dataset.altFields);
+    this.dom.$altFields = $(this.dom.self.dataset.altFields as string);
   }
   protected _initGeneratedDOM() {
-    this.dom.calendar = this.dom.self.querySelector(".datepicker");
+    this.dom.calendar = this.dom.self.querySelector(".datepicker") as HTMLDivElement;
 
-    this.dom.calendar.insertAdjacentHTML("beforeend", this.APPLY_CONTROL);
+    this.dom.calendar.insertAdjacentHTML("beforeend", this.#APPLY_CONTROL);
     this.dom.clearBtn = this.dom.self.querySelector(
       ".apply-control .apply-control__clear-btn-js"
     ) as HTMLButtonElement;
@@ -104,8 +96,8 @@ export class CardDatepicker implements CardDatepickerAPI {
       minDate: new Date(),
       toggleSelected: false,
       onSelect: (formattedDate, date, inst) => {
-        this._lastFormattedDate = formattedDate;
-        this._lastDates = date;
+        this.#lastFormattedDate = formattedDate;
+        this.#lastDates = date;
 
         if (this.dom.clearBtn) {
           this.dom.clearBtn.classList.remove("apply-control__clear-btn-js_isHidden");

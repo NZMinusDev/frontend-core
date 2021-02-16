@@ -1,4 +1,4 @@
-import { PluginCreation } from "@utils/devTools/devTools";
+import { Plugin } from "@utils/devTools/tools/PluginCreationHelper";
 
 import { dropdowns } from "./../form-dropdown";
 import {
@@ -16,7 +16,7 @@ export type DatepickerDropdownDOM = {
   selection: HTMLTimeElement;
   cardDatepickerDOM: CardDatepickerDOM;
 };
-export interface DatepickerDropdownAPI extends PluginCreation.Plugin {
+export interface DatepickerDropdownAPI extends Plugin {
   readonly dom: DatepickerDropdownDOM;
 }
 export class DatepickerDropdown implements DatepickerDropdownAPI {
@@ -146,7 +146,7 @@ export type AltDatepickerDropdownDOM = {
   input: HTMLInputElement;
   selection: HTMLParagraphElement;
 };
-export interface AltDatepickerDropdownAPI extends PluginCreation.Plugin {
+export interface AltDatepickerDropdownAPI extends Plugin {
   readonly dom: AltDatepickerDropdownDOM;
 }
 export class AltDatepickerDropdown implements AltDatepickerDropdownAPI {

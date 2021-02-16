@@ -1,4 +1,5 @@
-import { PluginCreation, DOMHelper } from "@utils/devTools/devTools";
+import { Plugin, PluginDecorator, ListenersByPlugin } from "@utils/devTools/tools/PluginCreationHelper";
+import { has } from "@utils/devTools/tools/DOMHelper";
 import merge from "lodash-es/merge";
 
 import { dropdowns } from "./../form-dropdown";
@@ -21,7 +22,7 @@ export type ToxinIQDropdownDOM = {
   incrementBtns: NodeListOf<HTMLButtonElement>;
   counters: NodeListOf<HTMLSpanElement>;
 };
-export interface ToxinIQDropdownAPI extends PluginCreation.Plugin {
+export interface ToxinIQDropdownAPI extends Plugin {
   readonly dom: ToxinIQDropdownDOM;
 
   readonly groupCounterList: Map<string, number>;
@@ -155,7 +156,7 @@ export class ToxinIQDropdown implements ToxinIQDropdownAPI {
 
   protected _initControlBtnListeners() {
     const counterBtnVisibilityClickHandler = (clickEvent: MouseEvent) => {
-      const targetMenuOption = DOMHelper.has(
+      const targetMenuOption = has(
         this.dom.menuOptions,
         clickEvent.currentTarget as Element
       );
@@ -241,10 +242,10 @@ export const dropdownsWithIQList = Array.from(dropdowns).filter((dropdown) => {
 }) as Array<ToxinIQDropdownElement>;
 
 // Component modifiers
-export abstract class ToxinIQDropdownOpenModModifier extends PluginCreation.PluginDecorator {
+export abstract class ToxinIQDropdownOpenModModifier extends PluginDecorator {
   constructor(
     toxinIQDropdown: ToxinIQDropdown,
-    listeners: Array<PluginCreation.ListenersByPlugin>
+    listeners: Array<ListenersByPlugin>
   ) {
     super(toxinIQDropdown, listeners, "toxinIQDropdownOpenModModifier");
   }

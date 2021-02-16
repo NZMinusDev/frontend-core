@@ -1,4 +1,4 @@
-import { WindowHrefHelper } from "@utils/devTools/devTools";
+import { addURLValues } from "@utils/devTools/tools/URLHelper";
 
 import noUiSlider from "@library.blocks/primitives/form-range-slider/form-range-slider";
 
@@ -30,7 +30,7 @@ sliderContainers.forEach((sliderContainer: HTMLDivElement) => {
 
   if (sliderContainer.getAttribute("isFilter")) {
     slider.noUiSlider.on("change", (values: Array<string>) => {
-      WindowHrefHelper.addValues(
+      addURLValues(
         {
           name: inputFrom.getAttribute("name"),
           value: inputFrom.value,
