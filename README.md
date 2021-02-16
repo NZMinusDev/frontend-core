@@ -43,6 +43,7 @@ Script-names:
 - start - builds bundles and runs server to be upgraded;
 - dev - just builds bundles and place it into _dist_ directory;
 - build - build minify bundles and place it into _dist_ directory;
+- test - run jest tests(matches .spec. or .test. files), P.S.: it can work in a separate console in parallel with webpack;
 - stats - visualize size of webpack output files with an interactive zoomable treemap using webpack-bundle-analyzer;
 - ext - install necessary VS Code extensions.
 
@@ -112,12 +113,18 @@ _\* - inside the directories, there are additional folders for each individual r
    11. If the source code is changed, the user device will know about it and download only the latest version of the project (provided by hashing the output files).
    12. It works the same on different platforms.
 5. ESLinter using [Airbnb standarts](https://github.com/airbnb/javascript) integrated with prettier and typescript which protects your knee from :gun: and your life from wasting :clock2:.
-6. Pre-installed libraries:
+6. Jest: delightful JavaScript Testing Framework with a focus on simplicity, it works fine with TypeScript.
+7. Pre-installed libraries:
    1. fontawesome-free and material-icons-regular;
    2. jquery to support old projects;
    3. inputmask for form validation;
-   4. lodash-es to supplement the js standard. Tip: you should use only import of lodash-es(moreover, when importing, only care about the readability and strictness of the code, and not the optimization of the weight) instead of common lodash because ES6+ module syntax is supported by terser for optimization.
-7. Custom Tools:
+   4. lodash-es to supplement the js standard. Tip: you should use only import of lodash-es(moreover, when importing, only care about the readability and strictness of the code, and not the optimization of the weight) instead of common lodash because ES6+ module syntax is supported by terser for optimization;
+   5. js-cookie: a simple, lightweight JavaScript API for handling cookies;
+   6. JSBI: BigInt replacement that works in today’s environments;
+   7. es6-promisify: converts callback-based functions to ES6/ES2015 Promises, using a boilerplate callback function;
+   8. idb: adds fine IndexedDB API;
+   9. reconnecting-websocket: webSocket that will automatically reconnect if the connection is closed.
+8. Custom Tools:
    1. Basic pug layers and mixins;
    2. scss and ts shortcuts.
    3. pug and scss snippets: [1](./.vscode/template-snippetts.code-snippets), [2](./.vscode/@media-snippets.code-snippets)
