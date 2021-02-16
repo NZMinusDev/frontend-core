@@ -6,6 +6,11 @@
     "target": "ESNext",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "strictBindCallApply":true,
+    "strictFunctionTypes":true,
+    "strictPropertyInitialization":true,
     "baseUrl": "./app/src/",
     "paths": {
       "@library.blocks/*": ["components/library.blocks/*"],
