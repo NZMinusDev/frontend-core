@@ -1,10 +1,9 @@
 extends ~@layouts/basic/main-layout/main-layout.pug
 
-block variables
-  - var lang = 'ru';
-  - var keywords = 'FSD, Frontend, TOXIN, образование, верстка';
-  - var description = 'Навигация по сверстанным макетам страниц';
-  - var title = 'Навигация по страницам';
+block append variables
+  -
+    title = 'Навигация по страницам';
+    description = 'Навигация по сверстанным макетам страниц';
 
 block header
 block content

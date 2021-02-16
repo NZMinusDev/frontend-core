@@ -4,10 +4,10 @@ extends ~@layouts/basic/ui-kit-layout/ui-kit-layout.pug
 include ~@common.blocks/basic/nav-bar/nav-bar.pug
 include ~@common.blocks/basic/footer/footer.pug
 
-block variables
-  - var keywords = 'FSD, Frontend, TOXIN, образование, верстка';
-  - var description = 'Футеры и хедеры, используемые в базовом макете сайта TOXIN';
-  - var title = 'Футеры и хедеры';
+block append variables
+  -
+    title = 'Футеры и хедеры';
+    description = 'Футеры и хедеры, используемые в базовом макете сайта TOXIN';
 
 block content
   main.headers-footers-layout

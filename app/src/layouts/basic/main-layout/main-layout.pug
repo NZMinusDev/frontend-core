@@ -1,24 +1,37 @@
 //- mixins
 include ~@pug/mixins/meta.pug
 include ~@pug/mixins/noscript-notification.pug
+include ~@common.blocks/specific/click-jacking-protector/click-jacking-protector.pug
 
 block variables
+  -
+    let title = 'Страница';
+    let description = '';
+    let keywords = '';
+    let haveClickJackingDivProtector = true;
 
 doctype html
 html(lang="ru")
   head
     +meta(keywords, description, title)
+    //- if process page after added files of BEM entities to bundle by bemdecl-to-fs-loader
     if htmlWebpackPlugin
-      //- if process page after added files of BEM entities to bundle by bemdecl-to-fs-loader
-      //- FIXME: should add order sorting functionality for media
       //- TODO: rework to dynamic import by js magic comment in webpack
       each js in htmlWebpackPlugin.files.js
+        //- Tip: for 'defer' use pay attention on elements which can be non-working while res loading.
         script(defer="defer", src=js)
       each css in htmlWebpackPlugin.files.css
         link(rel="stylesheet", href=css)
-      each css in htmlWebpackPlugin.files.extracted.css
+      //- extracted by MediaQueryPlugin
+      -
+        const extractedCSS = Array.from(htmlWebpackPlugin.files.extracted.css).sort((a,b)=>{
+          return parseInt(a.query.slice(a.query.indexOf(": ") + 2, a.query.indexOf("px"))) - parseInt(b.query.slice(b.query.indexOf(": ") + 2, b.query.indexOf("px")))
+        });
+      each css in extractedCSS
         link(rel="stylesheet", href=css.file, media=css.query)
   body
+    if haveClickJackingDivProtector
+      +click-jacking-protector
     +noscript
     block header
     block content

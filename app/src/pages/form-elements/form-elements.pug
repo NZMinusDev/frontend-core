@@ -15,10 +15,10 @@ include ~@common.blocks/containers/form-expandable-checkbox-list/form-expandable
 include ~@common.blocks/containers/form-bullet-list/form-bullet-list.pug
 include ~@common.blocks/containers/comments/comments.pug
 
-block variables
-  - var keywords = 'FSD, Frontend, TOXIN, образование, верстка';
-  - var description = 'Формы, используемые в базовом макете сайта TOXIN';
-  - var title = 'Формы';
+block append variables
+  -
+    title = 'Формы';
+    description = 'Формы, используемые в базовом макете сайта TOXIN';
 
 block content
   form(method="get")

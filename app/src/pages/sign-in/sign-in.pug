@@ -4,10 +4,10 @@ extends ~@layouts/basic/toxin-main-layout/toxin-main-layout.pug
 include ~@common.blocks/containers/card-registration/card-registration.pug
 include ~@common.blocks/containers/card-entering/card-entering.pug
 
-block variables
+block append variables
   -
-    let description = 'Страница регистрации и входа в макете сайта TOXIN';
-    let title = 'Регистрация и вход';
+    title = 'Регистрация и вход';
+    description = 'Страница регистрации и входа в макете сайта TOXIN';
 
 block content
   main.sign-in-layout

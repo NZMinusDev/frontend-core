@@ -8,10 +8,10 @@ include ~@common.blocks/containers/card-room-definition/card-room-definition.pug
 include ~@common.blocks/containers/card-room/card-room.pug
 include ~@common.blocks/primitives/card-datepicker/card-datepicker.pug
 
-block variables
-  - var keywords = 'FSD, Frontend, TOXIN, образование, верстка';
-  - var description = 'Карточки, используемые в базовом макете сайта TOXIN';
-  - var title = 'Карточки';
+block append variables
+  -
+    title = 'Карточки';
+    description = 'Карточки, используемые в базовом макете сайта TOXIN';
 
 block content
   - const MS_IN_DAY = 1000 * 60 * 60 * 24;
@@ -44,7 +44,7 @@ block content
     +card-room#card-room-luxury.cards-layout__card-luxury-room(
       href="#room-luxury",
       name="room-luxury",
-      paths=[htmlWebpackPlugin ? require('./../../assets/pictures/contents/rooms/luxury/888/888.png').default : '', htmlWebpackPlugin ? require('./../../assets/pictures/contents/rooms/common/840/840.png').default : '', htmlWebpackPlugin ? require('./../../assets/pictures/contents/rooms/luxury/888/888.png').default : '', htmlWebpackPlugin ? require('./../../assets/pictures/contents/rooms/common/840/840.png').default : ''],
+      paths=[htmlWebpackPlugin ? require('@contents/rooms/luxury/888/888.png').default : '', htmlWebpackPlugin ? require('@contents/rooms/common/840/840.png').default : '', htmlWebpackPlugin ? require('@contents/rooms/luxury/888/888.png').default : '', htmlWebpackPlugin ? require('@contents/rooms/common/840/840.png').default : ''],
       room-number=888,
       room-grade="Люкс",
       payment-amount=9990,
@@ -54,7 +54,7 @@ block content
     +card-room#card-room-common.cards-layout__card-common-room(
       href="#room-common",
       name="room-common",
-      paths=[htmlWebpackPlugin ? require('./../../assets/pictures/contents/rooms/common/840/840.png').default : '', htmlWebpackPlugin ? require('./../../assets/pictures/contents/rooms/luxury/888/888.png').default : '', htmlWebpackPlugin ? require('./../../assets/pictures/contents/rooms/common/840/840.png').default : '', htmlWebpackPlugin ? require('./../../assets/pictures/contents/rooms/luxury/888/888.png').default : ''],
+      paths=[htmlWebpackPlugin ? require('@contents/rooms/common/840/840.png').default : '', htmlWebpackPlugin ? require('@contents/rooms/luxury/888/888.png').default : '', htmlWebpackPlugin ? require('@contents/rooms/common/840/840.png').default : '', htmlWebpackPlugin ? require('@contents/rooms/luxury/888/888.png').default : ''],
       room-number=840,
       payment-amount=9900,
       rate=4,
