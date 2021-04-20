@@ -23,12 +23,13 @@ html(lang="ru")
       each css in htmlWebpackPlugin.files.css
         link(rel="stylesheet", href=css)
       //- extracted by MediaQueryPlugin
-      -
-        const extractedCSS = Array.from(htmlWebpackPlugin.files.extracted.css).sort((a,b)=>{
-          return parseInt(a.query.slice(a.query.indexOf(": ") + 2, a.query.indexOf("px"))) - parseInt(b.query.slice(b.query.indexOf(": ") + 2, b.query.indexOf("px")))
-        });
-      each css in extractedCSS
-        link(rel="stylesheet", href=css.file, media=css.query)
+      if htmlWebpackPlugin.files.extracted.css
+        -
+          const extractedCSS = Array.from(htmlWebpackPlugin.files.extracted.css).sort((a,b)=>{
+            return parseInt(a.query.slice(a.query.indexOf(": ") + 2, a.query.indexOf("px"))) - parseInt(b.query.slice(b.query.indexOf(": ") + 2, b.query.indexOf("px")))
+          });
+        each css in extractedCSS
+          link(rel="stylesheet", href=css.file, media=css.query)
   body
     if haveClickJackingDivProtector
       +click-jacking-protector
