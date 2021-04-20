@@ -1,10 +1,7 @@
-// FIXME: предпочтительнее вынести на сервер, чтобы не передавать лишнюю библиотеку
-import moment from "moment";
+import { diffDate, MS_IN_DAY } from "@utils/devTools/tools/DateHelper";
 
-moment.locale("ru");
-
-document
-  .querySelectorAll(".comments__date-item time")
-  .forEach((dateHTMLItem: HTMLParagraphElement) => {
-    dateHTMLItem.textContent = moment(dateHTMLItem.getAttribute("datetime")).fromNow();
-  });
+document.querySelectorAll(".comments__date-item time").forEach((dateHTMLItem) => {
+  dateHTMLItem.textContent = `${Math.abs(
+    diffDate(new Date(), new Date(dateHTMLItem.getAttribute("datetime") as string)) / MS_IN_DAY
+  ).toFixed(0)} дней назад`;
+});
