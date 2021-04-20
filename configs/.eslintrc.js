@@ -1,4 +1,5 @@
 module.exports = {
+  env: { browser: true },
   /**
    * Alternative to "Espree" parser that can read Typescript code and produce said ESTree(the language ESLint can understand)
    */
@@ -18,6 +19,7 @@ module.exports = {
      * Should be last for override other configs.
      */
     "plugin:prettier/recommended",
+    "plugin:lit/recommended",
   ],
   plugins: ["no-loops", "promise", "lit"],
   rules: {
@@ -37,6 +39,5 @@ module.exports = {
     "promise/no-new-statics": "error",
     "promise/no-return-in-finally": "warn",
     "promise/valid-params": "warn",
-    "lit/rule-name": "error"
   },
 };
