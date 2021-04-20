@@ -57,9 +57,9 @@ const sharedAliases = {
 
 /**
  * Useful tool for creating name of files with hash
- * @param {String} name - what should be before hash
- * @param {String} ext - extension of output bundle files such as js/webp/png
- * @returns {String} - hashed name in production mode and nohashed in another case
+ * @param { string } name - what should be before hash
+ * @param { string } ext - extension of output bundle files such as js/webp/png
+ * @returns { string } - hashed name in production mode and nohashed in another case
  */
 const hashedFileName = (name, ext) => (isDev ? `${name}.${ext}` : `${name}.[hash].${ext}`);
 
@@ -106,10 +106,10 @@ const resultOfTemplatesProcessing = new ResultOfTemplatesProcessing();
 
 /**
  * Get all inner files in directory
- * @param {string} dir path to dir
- * @param {Array<string>} excludedExt extensions to exclude
- * @param {Array<string>} _files private param of files path for recursion
- * @return {Array<string>} array of files' paths
+ * @param { string } dir path to dir
+ * @param { string[] } excludedExt extensions to exclude
+ * @param { string[] } _files private param of files path for recursion
+ * @return { string[] } array of files' paths
  */
 const getFilesDeep = (dir, excludedExt, _files) => {
   // eslint-disable-next-line no-param-reassign
@@ -133,10 +133,10 @@ const getFilesDeep = (dir, excludedExt, _files) => {
 };
 /**
  * Map list for append suffix to each element
- * @param {Array<string>} list absolute paths of images
- * @param {string} suffix suffix of files in list to append
- * @param {string} base - path to base src folder when located folder of images
- * @returns {Array{src:string,dest:String}} WebpackImagesResizer 'list' option
+ * @param { string[] } list absolute paths of images
+ * @param { string } suffix suffix of files in list to append
+ * @param { string } base - path to base src folder when located folder of images
+ * @returns { {src:string,dest:String}[] } WebpackImagesResizer 'list' option
  */
 const listOfSourceImagesMapping = (list, suffix, base = PATHS.src_absolute) => {
   return list.map((filePath) => {
@@ -187,7 +187,7 @@ const webpackPlugins = () => {
       },
     }),
     new MiniCssExtractPlugin({
-      //FIXME: can't use styles/[name]/[name] cause of MediaQueryPlugin interpolation bug
+      // FIXME: can't use styles/[name]/[name] cause of MediaQueryPlugin interpolation bug
       filename: hashedFileName("styles/[name]/style", "css"),
     }),
     // FIXME: make it works before MediaQueryPlugin for extracting wrapped content
@@ -284,7 +284,7 @@ const webpackPlugins = () => {
 
 /**
  * Loaders contraction for templates.
- * @param {Array<String>} includedFilesExtensions - extensions for including into bundles from components' resources; example: ["scss", "ts"].
+ * @param { string[] } includedFilesExtensions - extensions for including into bundles from components' resources; example: ["scss", "ts"].
  */
 const templatesLoaders = (includedFilesExtensions = ["css", "js", "scss", "ts"]) => {
   const bemDeclLevels = [];
@@ -322,8 +322,8 @@ const templatesLoaders = (includedFilesExtensions = ["css", "js", "scss", "ts"])
  * Loaders contraction that loads autoprefixed normalize css with converting modern CSS into something most browsers can understand.
  * DoIUse - alerts for unsupported css features, depending on browserslist.
  * PostcssFlexbugsFixes - fix some flex bugs in old browsers.
- * @param {Object} extra_loader - loader with options for css preprocessor.
- * @returns {Array<Object>}
+ * @param { object } extra_loader - loader with options for css preprocessor.
+ * @returns { object[] }
  */
 const cssLoaders = (extraLoader) => {
   const loaders = [
@@ -366,13 +366,13 @@ const cssLoaders = (extraLoader) => {
 
 /**
  * loads js using babel
- * @param {String} extraPreset - name of loader for js preprocessor
- * @returns {Array<String>}
+ * @param { string } extraPreset - name of loader for js preprocessor
+ * @returns { string[] }
  */
 const jsLoaders = (extraPreset) => {
   const babelOptions = {
     presets: ["@babel/preset-env"],
-    plugins: ["@babel/plugin-proposal-class-properties", "transform-jsbi-to-bigint"],
+    plugins: ["@babel/plugin-proposal-class-properties"],
     cacheDirectory: "./app/cache/webpack__babel",
   };
 
@@ -390,8 +390,8 @@ const jsLoaders = (extraPreset) => {
 
 /**
  * loads assets using file-loader
- * @param {Object} extra_loader - loader with options
- * @returns {Array<Object>}
+ * @param { object } extra_loader - loader with options
+ * @returns { object[] }
  */
 const assetsLoaders = (extraLoader) => {
   const loaders = [
