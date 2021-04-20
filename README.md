@@ -20,7 +20,7 @@ _Here you can write link for your runtime project_.
 
 1. Package manager [NPM](https://www.npmjs.com/) and [NodeJs](https://nodejs.org/en/) platform.
 2. Some CLI to execute commands from directory of your project (bash is recommended).
-3. Clean VS Code editor.
+3. Clean VS Code editor(optional).
 
 ### Installation
 
@@ -85,16 +85,17 @@ _\* - inside the directories, there are additional folders for each individual r
    12. TODO Highlight.
    13. Quokka.js.
    14. ESLint.
-   15. Prettier - Code formatter.
-   16. Image preview.
-   17. VSCode Map Preview.
-   18. SVG.
-   19. markdownlint.
-   20. Sort Lines by Selection.
-   21. Live Server.
-   22. Import Cost.
-   23. JavaScript (ES6) code snippets.
-   24. Webpack Snippets.
+   15. lit-html.
+   16. Prettier - Code formatter.
+   17. Image preview.
+   18. VSCode Map Preview.
+   19. SVG.
+   20. markdownlint.
+   21. Sort Lines by Selection.
+   22. Live Server.
+   23. Import Cost.
+   24. JavaScript (ES6) code snippets.
+   25. Webpack Snippets.
 3. Preprocessors which speed up work:
    1. Pug.
    2. SCSS.
@@ -123,7 +124,8 @@ _\* - inside the directories, there are additional folders for each individual r
    6. JSBI: BigInt replacement that works in today’s environments;
    7. es6-promisify: converts callback-based functions to ES6/ES2015 Promises, using a boilerplate callback function;
    8. idb: adds fine IndexedDB API;
-   9. reconnecting-websocket: webSocket that will automatically reconnect if the connection is closed.
+   9. reconnecting-websocket: webSocket that will automatically reconnect if the connection is closed;
+   10. lit-html to highlight html inside js/ts and only update the parts of the template that have changed since the last render.
 8. Custom Tools:
    1. Basic pug layers and mixins;
    2. scss and ts shortcuts;

@@ -65,7 +65,7 @@ Script-names:
 
 Порядок уровней переопределения следующий: library -> common -> thematic* -> experimental*.
 
-_* - внутри директорий существуют дополнительные папки для каждого отдельного подуровня переопределения, для их подключения необходима модификация webpack.config_.
+_\* - внутри директорий существуют дополнительные папки для каждого отдельного подуровня переопределения, для их подключения необходима модификация webpack.config_.
 
 ### Технологии
 
@@ -85,16 +85,17 @@ _* - внутри директорий существуют дополнител
    12. TODO Highlight.
    13. Quokka.js.
    14. ESLint.
-   15. Prettier - Code formatter.
-   16. Image preview.
-   17. VSCode Map Preview.
-   18. SVG.
-   19. markdownlint.
-   20. Sort Lines by Selection.
-   21. Live Server.
-   22. Import Cost.
-   23. JavaScript (ES6) code snippets.
-   24. Webpack Snippets.
+   15. lit-html.
+   16. Prettier - Code formatter.
+   17. Image preview.
+   18. VSCode Map Preview.
+   19. SVG.
+   20. markdownlint.
+   21. Sort Lines by Selection.
+   22. Live Server.
+   23. Import Cost.
+   24. JavaScript (ES6) code snippets.
+   25. Webpack Snippets.
 3. Препроцессоры, повышающие скорость и качество работы:
    1. Pug.
    2. SCSS.
@@ -123,7 +124,8 @@ _* - внутри директорий существуют дополнител
    6. JSBI: замена BigInt, которая работает в современных условиях;
    7. es6-promisify: помогает преобразовать функции с callback вызовами в ES6/ES2015 Promises;
    8. idb: добавляет IndexedDB API;
-   9. reconnecting-websocket: webSocket будут автоматически переподключаться при разрывах соединения.
+   9. reconnecting-websocket: webSocket будут автоматически переподключаться при разрывах соединения;
+   10. lit-html обеспечивает подсветку html в js/ts и позволяет эффективно рендерить шаблоны через обновление только тех частей, что были изменены с предыдущего рендеринга;
 8. Пользовательские инструменты:
    1. Базовые pug слои и миксины;
    2. scss и ts шорткаты;

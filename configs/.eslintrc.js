@@ -19,7 +19,7 @@ module.exports = {
      */
     "plugin:prettier/recommended",
   ],
-  plugins: ["no-loops", "promise"],
+  plugins: ["no-loops", "promise", "lit"],
   rules: {
     "no-loops/no-loops": 2, // Disallow use of loops (for, for-in, while, do-while, for-of) - we have forEach, map etc.
     /**
@@ -37,5 +37,6 @@ module.exports = {
     "promise/no-new-statics": "error",
     "promise/no-return-in-finally": "warn",
     "promise/valid-params": "warn",
+    "lit/rule-name": "error"
   },
 };
