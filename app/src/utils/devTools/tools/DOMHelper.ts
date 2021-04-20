@@ -1,5 +1,5 @@
 export function has(
-  elements: NodeListOf<Element> | HTMLCollection | Array<Element>,
+  elements: NodeListOf<Element> | HTMLCollection | Element[],
   contained: string | Element
 ): Element | undefined {
   if (typeof contained === "string") {
@@ -9,10 +9,10 @@ export function has(
   }
 }
 export function hasAll(
-  elements: NodeListOf<Element> | HTMLCollection | Array<Element>,
+  elements: NodeListOf<Element> | HTMLCollection | Element[],
   contained: string | Element
 ): Element[] | undefined {
-  let isHas:Element[] = [];
+  let isHas: Element[] = [];
   if (typeof contained === "string") {
     isHas = Array.from(elements).filter((element) => element.querySelector(contained));
   } else {
@@ -172,7 +172,7 @@ export function place(element: HTMLElement, { position = "absolute" } = {}) {
  * });
  *
  */
-export function loadScript(src:URL) {
+export function loadScript(src: URL) {
   return new Promise(function (resolve, reject) {
     let script = document.createElement("script");
     script.src = src.toString();

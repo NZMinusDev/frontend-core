@@ -1,4 +1,4 @@
-export function addURLValues(...added: Array<{ name: string; value: string }>): void {
+export function addURLValues(...added: { name: string; value: string }[]): void {
   const locationURL = new URL(window.location.href);
 
   added.forEach((added) => {

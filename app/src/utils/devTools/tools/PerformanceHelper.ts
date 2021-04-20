@@ -1,5 +1,5 @@
-export interface BenchOptions<A extends unknown> {
-  funcArgs?: A[];
+export interface BenchOptions<TArgs extends unknown> {
+  funcArgs?: TArgs[];
   iterations?: number;
 }
 /**
@@ -21,9 +21,9 @@ export interface BenchOptions<A extends unknown> {
  * // process several times for more accurate results(you should process once before it)
  * for (let i = 0; i < 10; i++) time += bench(diffDate);
  */
-export function bench<A extends unknown, R extends unknown>(
-  benchMarkingFunction: (...funcArgs: A[]) => R,
-  { funcArgs = [], iterations = 1 }: BenchOptions<A> = {}
+export function bench<TArgs extends unknown, TReturn extends unknown>(
+  benchMarkingFunction: (...funcArgs: TArgs[]) => TReturn,
+  { funcArgs = [], iterations = 1 }: BenchOptions<TArgs> = {}
 ) {
   let start = performance.now();
   for (let i = 0; i < iterations; i++) benchMarkingFunction(...funcArgs);
@@ -57,10 +57,14 @@ export function bench<A extends unknown, R extends unknown>(
  *alert(worker.slow(3, 5)); // slow(3, 5) caching it
  *alert("Again: " + worker.slow(3, 5)); // returning from the cache
  */
-export function cachingDecorator<FA extends unknown, FR extends unknown, HR extends unknown>(
-  func: (...funcArgs: FA[]) => FR,
-  hash: (funcArgs: IArguments) => HR
-): (...funcArgs: FA[]) => FR {
+export function cachingDecorator<
+  TFunctionArgs extends unknown,
+  TFunctionReturn extends unknown,
+  THashReturn extends unknown
+>(
+  func: (...funcArgs: TFunctionArgs[]) => TFunctionReturn,
+  hash: (funcArgs: IArguments) => THashReturn
+): (...funcArgs: TFunctionArgs[]) => TFunctionReturn {
   const cache = new Map();
 
   return function () {
@@ -69,7 +73,7 @@ export function cachingDecorator<FA extends unknown, FR extends unknown, HR exte
       return cache.get(key);
     }
 
-    let result = func.apply(this, arguments as unknown as FA[]);
+    let result = func.apply(this, (arguments as unknown) as TFunctionArgs[]);
 
     cache.set(key, result);
 

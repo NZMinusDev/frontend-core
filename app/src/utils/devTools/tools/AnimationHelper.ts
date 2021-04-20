@@ -18,7 +18,7 @@
  * function circ(timeFraction) { return 1 - Math.sin(Math.acos(timeFraction)); }
  * function shotFromABow(x, timeFraction) { return Math.pow(timeFraction, 2) * ((x + 1) * timeFraction - x) }
  * function bounce(timeFraction) {
- *   for (let a = 0, b = 1, result; 1; a += b, b /= 2) {
+ *   for (let a = 0, b = 1; 1; a += b, b /= 2) {
  *     if (timeFraction >= (7 - 4 * a) / 11) {
  *       return -Math.pow((11 - 6 * a - 11 * timeFraction) / 4, 2) + Math.pow(b, 2)
  *     }
@@ -47,6 +47,26 @@ export function animate(
       requestAnimationFrame(animate);
     }
   });
+}
+
+export function power(timeFraction, {power = 2} = {}) { 
+      return Math.pow(timeFraction, power)
+    }
+export function circ(timeFraction) {
+  return 1 - Math.sin(Math.acos(timeFraction));
+}
+export function shotFromABow(x, timeFraction) {
+  return Math.pow(timeFraction, 2) * ((x + 1) * timeFraction - x);
+}
+export function bounce(timeFraction) {
+  for (let a = 0, b = 1; 1; a += b, b /= 2) {
+    if (timeFraction >= (7 - 4 * a) / 11) {
+      return -Math.pow((11 - 6 * a - 11 * timeFraction) / 4, 2) + Math.pow(b, 2);
+    }
+  }
+}
+export function elastic(x, timeFraction) {
+  return Math.pow(2, 10 * (timeFraction - 1)) * Math.cos(((20 * Math.PI * x) / 3) * timeFraction);
 }
 
 /**
@@ -97,7 +117,6 @@ export function makeEaseOut(timingFunction: (timeFraction: number) => number) {
     return 1 - timingFunction(1 - timeFraction);
   };
 }
-
 /**
  *
  * @param timing - easeIn function
@@ -114,7 +133,7 @@ export function makeEaseOut(timingFunction: (timeFraction: number) => number) {
  * let bounceEaseInOut = makeEaseInOut(bounce);
  */
 export function makeEaseInOut(timingFunction: (timeFraction: number) => number) {
-  return function (timeFraction : number) {
+  return function (timeFraction: number) {
     if (timeFraction < 0.5) return timingFunction(2 * timeFraction) / 2;
     else return (2 - timingFunction(2 * (1 - timeFraction))) / 2;
   };

@@ -1,5 +1,5 @@
 /*
-  //TODO: Apply for functions
+  //TODO: Apply for functions, Tip: do not forget change T variables on some readable variables
   type Proxy<T> = {
     get(): T;
     set(value: T): void;
