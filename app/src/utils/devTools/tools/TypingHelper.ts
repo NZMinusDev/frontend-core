@@ -1,6 +1,7 @@
-export type GenericFunc<TFuncArgs extends unknown[], TFuncReturn extends unknown> = (
+type GenericFunc<TFuncArgs extends unknown[], TFuncReturn extends unknown> = (
   ...funcArgs: TFuncArgs
 ) => TFuncReturn;
+
 /**
  * @example
  * class Class {
@@ -9,7 +10,7 @@ export type GenericFunc<TFuncArgs extends unknown[], TFuncReturn extends unknown
  * type T = GenericConstructor<typeof Class>
  * // type T = new (a: number, b?: string | undefined) => typeof Class
  */
-export type GenericConstructor<TCreator extends new (...args: any[]) => any> = new (
+type GenericConstructor<TCreator extends new (...args: any[]) => any> = new (
   ...args: ConstructorParameters<TCreator>
 ) => TCreator;
 
@@ -28,13 +29,16 @@ export type GenericConstructor<TCreator extends new (...args: any[]) => any> = n
  * type T5 = Unpacked<Unpacked<Promise<string>[]>>;
  * //   ^ = type T5 = string
  */
-export type Unpacked<TType> = TType extends (infer TUnpacked)[]
+type Unpacked<TType> = TType extends (infer TUnpacked)[]
   ? TUnpacked
-  : TType extends (...args: any[]) => infer TUnpacked
+  : // eslint-disable-next-line no-shadow
+  TType extends (...args: any[]) => infer TUnpacked
   ? TUnpacked
-  : TType extends Promise<infer TUnpacked>
+  : // eslint-disable-next-line no-shadow
+  TType extends Promise<infer TUnpacked>
   ? TUnpacked
   : TType;
+
 /**
  * @example
  * type test = {
@@ -54,7 +58,9 @@ export type Unpacked<TType> = TType extends (infer TUnpacked)[]
  *   param5: [{ p1: "p1", p2: 0 }],
  * };
  */
-export type ArrayPacked<TObject extends object> = { [TKey in keyof TObject]: TObject[TKey][] };
+type ArrayPacked<TObject extends Record<string, unknown>> = {
+  [TKey in keyof TObject]: TObject[TKey][];
+};
 
 /**
  * @example
@@ -80,17 +86,20 @@ export type ArrayPacked<TObject extends object> = { [TKey in keyof TObject]: TOb
  * //       subparts: Part[];
  * //   }
  */
-export type FunctionPropertyNames<TObject extends object> = {
-  [TKey in keyof TObject]: TObject[TKey] extends Function ? TKey : never;
+type FunctionPropertyNames<TObject extends Record<string, unknown>> = {
+  [TKey in keyof TObject]: TObject[TKey] extends (...args: any) => any ? TKey : never;
 }[keyof TObject];
-export type FunctionProperties<TObject extends object> = Pick<
+
+type FunctionProperties<TObject extends Record<string, unknown>> = Pick<
   TObject,
   FunctionPropertyNames<TObject>
 >;
-export type NonFunctionPropertyNames<TObject extends object> = {
-  [TKey in keyof TObject]: TObject[TKey] extends Function ? never : TKey;
+
+type NonFunctionPropertyNames<TObject extends Record<string, unknown>> = {
+  [TKey in keyof TObject]: TObject[TKey] extends (...args: any) => any ? never : TKey;
 }[keyof TObject];
-export type NonFunctionProperties<TObject extends object> = Pick<
+
+type NonFunctionProperties<TObject extends Record<string, unknown>> = Pick<
   TObject,
   NonFunctionPropertyNames<TObject>
 >;
@@ -112,12 +121,13 @@ export type NonFunctionProperties<TObject extends object> = Pick<
  * type SomeTypeIndexKeys = IndexKeyType<SomeType>;
  * // type SomeTypeIndexKeys = string 🙂
  */
-export type RequiredKeys<TObject extends object> = {
+type RequiredKeys<TObject extends { [key: number]: unknown } | { [key: string]: unknown }> = {
   [TKey in keyof TObject]-?: string extends TKey
     ? never
     : number extends TKey
     ? never
-    : {} extends Pick<TObject, TKey>
+    : // eslint-disable-next-line @typescript-eslint/ban-types
+    {} extends Pick<TObject, TKey>
     ? never
     : TKey;
 } extends { [_ in keyof TObject]-?: infer TInfer }
@@ -125,12 +135,14 @@ export type RequiredKeys<TObject extends object> = {
     ? TInfer
     : never
   : never;
-export type OptionalKeys<TObject extends object> = {
+
+type OptionalKeys<TObject extends Record<string, unknown>> = {
   [TKey in keyof TObject]-?: string extends TKey
     ? never
     : number extends TKey
     ? never
-    : {} extends Pick<TObject, TKey>
+    : // eslint-disable-next-line @typescript-eslint/ban-types
+    {} extends Pick<TObject, TKey>
     ? TKey
     : never;
 } extends { [_ in keyof TObject]-?: infer TInfer }
@@ -138,7 +150,8 @@ export type OptionalKeys<TObject extends object> = {
     ? TInfer
     : never
   : never;
-export type IndexKeyType<TObject> = string extends keyof TObject
+
+type IndexKeyType<TObject> = string extends keyof TObject
   ? string
   : number extends keyof TObject
   ? number
@@ -146,21 +159,23 @@ export type IndexKeyType<TObject> = string extends keyof TObject
 
 /**
  * @example
- * type MyTuple = [container:HTMLElement, id: number, name?:string, data?:{}]
- *
- * type MyTupleWithRequired = RequiredTupleValues<MyTuple>
- * // type MyTupleWithRequired = [HTMLElement, number]
- * type MyTupleWithOptional = OptionalTupleValues<MyTuple>
- * // type MyTupleWithRequired = [name?: string | undefined, data?: {} | undefined]
+ * type T1 = FilterType<[number, string, undefined, number],undefined>
+ * // [number, string, number]
+ * type T2 = FilterType<[1, undefined, 2],undefined> // [1, 2]
+ * type T3 = FilterType<[undefined, 2],undefined> // [2]
+ * type T4 = FilterType<[2, undefined],undefined> // [2]
+ * type T5 = FilterType<[undefined, undefined, 2],undefined> // [2]
+ * type T6 = FilterType<[undefined],undefined> // []
+ * type T7 = FilterType<[],undefined> // []
  */
-export type RequiredTupleValues<TTuple extends unknown[]> = FilterType<
-  RequiredToNeverInTuple<TTuple>,
-  never
->;
-export type OptionalTupleValues<TTuple extends unknown[]> = FilterType<
-  OptionalToNeverInTuple<TTuple>,
-  null
->;
+type FilterType<TTuple extends unknown[], TType> = TTuple extends []
+  ? []
+  : TTuple extends [infer H, ...infer R]
+  ? H extends TType
+    ? FilterType<R, TType>
+    : [H, ...FilterType<R, TType>]
+  : TTuple;
+
 type RequiredToNeverInTuple<TTuple extends unknown[]> = {
   [TKey in keyof TTuple]: TTuple[TKey] extends TTuple[RequiredKeys<TTuple>] ? TTuple[TKey] : never;
 };
@@ -174,22 +189,21 @@ type OptionalToNeverInTuple<TTuple extends unknown[]> = {
 
 /**
  * @example
- * type T1 = FilterType<[number, string, undefined, number],undefined>
- * // [number, string, number]
- * type T2 = FilterType<[1, undefined, 2],undefined> // [1, 2]
- * type T3 = FilterType<[undefined, 2],undefined> // [2]
- * type T4 = FilterType<[2, undefined],undefined> // [2]
- * type T5 = FilterType<[undefined, undefined, 2],undefined> // [2]
- * type T6 = FilterType<[undefined],undefined> // []
- * type T7 = FilterType<[],undefined> // []
+ * type MyTuple = [container:HTMLElement, id: number, name?:string, data?:{}]
+ *
+ * type MyTupleWithRequired = RequiredTupleValues<MyTuple>
+ * // type MyTupleWithRequired = [HTMLElement, number]
+ * type MyTupleWithOptional = OptionalTupleValues<MyTuple>
+ * // type MyTupleWithRequired = [name?: string | undefined, data?: {} | undefined]
  */
-export type FilterType<TTuple extends unknown[], TType> = TTuple extends []
-  ? []
-  : TTuple extends [infer H, ...infer R]
-  ? H extends TType
-    ? FilterType<R, TType>
-    : [H, ...FilterType<R, TType>]
-  : TTuple;
+type RequiredTupleValues<TTuple extends unknown[]> = FilterType<
+  RequiredToNeverInTuple<TTuple>,
+  never
+>;
+type OptionalTupleValues<TTuple extends unknown[]> = FilterType<
+  OptionalToNeverInTuple<TTuple>,
+  null
+>;
 
 /**
  * @example
@@ -204,8 +218,9 @@ export type FilterType<TTuple extends unknown[], TType> = TTuple extends []
  * type T2 =  OptionalValues<SomeType>
  * // { optional?: number | undefined; }
  */
-export type RequiredValues<TObject extends object> = Pick<TObject, RequiredKeys<TObject>>;
-export type OptionalValues<TObject extends object> = Pick<TObject, OptionalKeys<TObject>>;
+type RequiredValues<TObject extends Record<string, unknown>> = Pick<TObject, RequiredKeys<TObject>>;
+
+type OptionalValues<TObject extends Record<string, unknown>> = Pick<TObject, OptionalKeys<TObject>>;
 
 /**
  * @example
@@ -215,7 +230,11 @@ export type OptionalValues<TObject extends object> = Pick<TObject, OptionalKeys<
  * people.next.next.name;
  * people.next.next.next.name;
  */
-export type LinkedList<TType> = TType & { next: LinkedList<TType> };
+type LinkedList<TType> = TType & { next: LinkedList<TType> };
+
+type BoxedValue<TType> = { value: TType };
+type BoxedArray<TType> = { array: TType[] };
+
 /**
  * @example
  * type T1 = Boxed<string>;
@@ -229,6 +248,25 @@ export type LinkedList<TType> = TType & { next: LinkedList<TType> };
  * type T3 = Boxed<string | number[]>;
  * //   ^ = type T3 = BoxedValue | BoxedArray
  */
-export type Boxed<TType> = TType extends any[] ? BoxedArray<TType[number]> : BoxedValue<TType>;
-type BoxedValue<TType> = { value: TType };
-type BoxedArray<TType> = { array: TType[] };
+type Boxed<TType> = TType extends any[] ? BoxedArray<TType[number]> : BoxedValue<TType>;
+
+export {
+  GenericFunc,
+  GenericConstructor,
+  Unpacked,
+  ArrayPacked,
+  FunctionPropertyNames,
+  FunctionProperties,
+  NonFunctionPropertyNames,
+  NonFunctionProperties,
+  RequiredKeys,
+  OptionalKeys,
+  IndexKeyType,
+  RequiredTupleValues,
+  OptionalTupleValues,
+  FilterType,
+  RequiredValues,
+  OptionalValues,
+  LinkedList,
+  Boxed,
+};

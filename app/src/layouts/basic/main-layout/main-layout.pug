@@ -23,7 +23,7 @@ html(lang="ru")
       each css in htmlWebpackPlugin.files.css
         link(rel="stylesheet", href=css)
       //- extracted by MediaQueryPlugin
-      if htmlWebpackPlugin.files.extracted.css
+      if htmlWebpackPlugin.files.extracted !== undefined && htmlWebpackPlugin.files.extracted.css !== undefined
         -
           const extractedCSS = Array.from(htmlWebpackPlugin.files.extracted.css).sort((a,b)=>{
             return parseInt(a.query.slice(a.query.indexOf(": ") + 2, a.query.indexOf("px"))) - parseInt(b.query.slice(b.query.indexOf(": ") + 2, b.query.indexOf("px")))

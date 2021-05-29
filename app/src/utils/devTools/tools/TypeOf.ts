@@ -16,15 +16,17 @@
  * user = { [Symbol.toStringTag]: "User" };
  * console.log(user) // User
  */
-export default function TypeOf(obj: unknown): string {
+const TypeOf = (obj: unknown): string => {
   const type = Object.prototype.toString.call(obj);
-  return type.slice(type.indexOf(" ") + 1, type.indexOf("]"));
-}
+
+  return type.slice(type.indexOf(' ') + 1, type.indexOf(']'));
+};
+
 /**
  * Identify whether the value is a reference
  * @param any A value
  * @returns true if value is Reference, false otherwise
  */
-export function isReferenceType(any: unknown) {
-  return any instanceof Object;
-}
+const isReferenceType = (any: unknown) => any instanceof Object;
+
+export { TypeOf as default, isReferenceType };

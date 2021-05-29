@@ -1,9 +1,32 @@
-import { html, render, TemplateResult } from "lit-html";
-import { ClassInfo } from "lit-html/directives/class-map";
-import { StyleInfo } from "lit-html/directives/style-map";
-import { defaultsDeep } from "lodash-es";
+/* eslint-disable max-classes-per-file */
+import defaultsDeep from 'lodash-es/defaultsDeep';
 
-export interface Plugin {
+/**
+ * It's shortcut of default handleEvent in EventListenerObject
+ */
+// eslint-disable-next-line func-style
+function handleEvent(event: Event) {
+  // mousedown -> onMousedown
+  const handlerName = `_on${event.type[0].toUpperCase()}${event.type.slice(1)}`;
+  if (this[handlerName]) {
+    this[handlerName](event);
+  }
+
+  return this;
+}
+
+interface CustomEventListener {
+  (...args: any): void;
+}
+
+interface CustomEventListenerObject {
+  handleEvent(...args: any): void;
+  [key: string]: any;
+}
+
+type handler = CustomEventListener | CustomEventListenerObject;
+
+interface Plugin {
   readonly dom: { self: HTMLElement | null };
 }
 
@@ -38,45 +61,50 @@ export interface Plugin {
  * btn.addEventListener('mousedown', menu);
  * btn.addEventListener('mouseup', menu);
  */
-export class EventManagerMixin<TEvents extends string> {
+class EventManagerMixin<TEvents extends string> {
   protected _eventHandlers: {
     [key: string]: handler[];
   } = {};
 
   // Subscribe to the event
-  on(eventName: TEvents, handler: handler) {
+  on(eventName: TEvents, eventHandler: handler) {
     if (!this._eventHandlers[eventName]) {
       this._eventHandlers[eventName] = [];
     }
-    if (!this._eventHandlers[eventName].includes(handler)) {
-      this._eventHandlers[eventName].push(handler);
+
+    if (!this._eventHandlers[eventName].includes(eventHandler)) {
+      this._eventHandlers[eventName].push(eventHandler);
     }
 
     return this;
   }
+
   // Cancel subscribe
-  off(eventName: TEvents, handler: (...args: any) => void) {
-    let handlers = this._eventHandlers && this._eventHandlers[eventName];
-    if (!handlers) return this;
-    for (let i = 0; i < handlers.length; i++) {
-      if (handlers[i] === handler) {
-        handlers.splice(i--, 1);
-      }
+  off(eventName: TEvents, eventHandler: (...args: any) => void) {
+    const handlers = this._eventHandlers && this._eventHandlers[eventName];
+
+    if (!handlers) {
+      return this;
     }
+
+    handlers.splice(handlers.findIndex(eventHandler), 1);
 
     return this;
   }
+
   // Generate the event with the specified name and data
   trigger(eventName: TEvents, ...args: any) {
+    // no handlers
     if (!this._eventHandlers || !this._eventHandlers[eventName]) {
-      return this; // no handlers
+      return this;
     }
+
     // calling the handlers
-    this._eventHandlers[eventName].forEach((handler) => {
-      if (typeof handler === "function") {
-        handler.apply(this, args);
+    this._eventHandlers[eventName].forEach((eventHandler) => {
+      if (typeof eventHandler === 'function') {
+        eventHandler.apply(this, args);
       } else {
-        handler.handleEvent(...args);
+        eventHandler.handleEvent(...args);
       }
     });
 
@@ -85,30 +113,19 @@ export class EventManagerMixin<TEvents extends string> {
 
   handleEvent(event: Event) {
     // mousedown -> onMousedown
-    let method = "_on" + event.type[0].toUpperCase() + event.type.slice(1);
-    if (this[method]) this[method](event);
+    const methodName = `_on${event.type[0].toUpperCase()}${event.type.slice(1)}`;
+    if (this[methodName]) this[methodName](event);
 
     return this;
   }
 }
-export interface CustomEventListener {
-  (...args: any): void;
-}
-export interface CustomEventListenerObject {
-  handleEvent(...args: any): void;
-  [key: string]: any;
-}
-export type handler = CustomEventListener | CustomEventListenerObject;
 
-export abstract class MVPView<
-  TOptionsToGet extends object,
-  TOptionsToSet extends object,
-  TState extends object,
-  TEvents extends string = ""
-> extends EventManagerMixin<Exclude<TEvents | "render" | "remove", "">> {
-  readonly template: template = ({ classInfo, styleInfo, attributes } = {}, ...args) => html``;
-  static readonly templateOfRemoving = () => html``;
-
+abstract class MVPView<
+  TOptionsToGet extends Record<string, unknown>,
+  TOptionsToSet extends Record<string, unknown>,
+  TState extends Record<string, unknown>,
+  TEvents extends string = ''
+> extends EventManagerMixin<Exclude<TEvents | 'render' | 'remove', ''>> {
   protected _options: TOptionsToGet;
   protected _state: TState;
 
@@ -176,6 +193,7 @@ export abstract class MVPView<
 
     return options as TOptionsToGet;
   }
+
   setOptions(options?: TOptionsToSet) {
     const optionsToForEach = options === undefined ? this._options : options;
 
@@ -206,7 +224,7 @@ export abstract class MVPView<
   }
 
   remove() {
-    this.trigger("remove");
+    this.trigger('remove');
 
     return this;
   }
@@ -245,6 +263,7 @@ export abstract class MVPView<
 
     return this;
   }
+
   protected _fixState() {
     let fixStateMethodName;
     this._theOrderOfIteratingThroughTheState.forEach((state) => {
@@ -256,56 +275,26 @@ export abstract class MVPView<
   }
 
   protected _render() {
-    this.trigger("render");
+    this.trigger('render');
 
     return this;
   }
 }
-export type template = (
-  attributes?: {
-    classInfo?: ClassInfo;
-    styleInfo?: StyleInfo;
-    attributes?: { [key: string]: unknown };
-  },
-  ...args: any | undefined
-) => TemplateResult;
 
-export function renderMVPView<
-  TMVPViewCreator extends new (...args: TArguments) => TInstance,
-  TArguments extends unknown[],
-  TInstance extends MVPView<any, any, any>
->(
-  ViewCreator: TMVPViewCreator,
-  viewParameters: TArguments,
-  container: HTMLElement | DocumentFragment
-) {
-  const view = new ViewCreator(...viewParameters);
-  render(view.template(), container);
-
-  view
-    .on("render", () => {
-      render(view.template(), container);
-    })
-    .on("remove", () => {
-      render((ViewCreator as any).templateOfRemoving(), container);
-    });
-
-  return view;
-}
-
-export interface MVPModel<State> {
+interface MVPModel<State> {
   getState(): Promise<Required<State>>;
   setState(state?: Partial<State>): Promise<this>;
   whenStateIsChanged(callback: (state: Required<State>) => void): void;
 }
 
-export interface ListenersByPlugin {
+interface ListenersByPlugin {
   currentTarget: HTMLElement | HTMLElement[];
   eventType: keyof HTMLElementEventMap;
   listener(this: Element, ev: HTMLElementEventMap[keyof HTMLElementEventMap]): unknown;
   options?: boolean | AddEventListenerOptions;
 }
-export abstract class PluginDecorator {
+
+abstract class PluginDecorator {
   protected plugin: Plugin;
   protected listeners: ListenersByPlugin[];
 
@@ -325,7 +314,7 @@ export abstract class PluginDecorator {
 
   protected assign(): void {
     if (this.listeners) {
-      this.listeners.forEach(function (listener) {
+      this.listeners.forEach((listener) => {
         if (Array.isArray(listener.currentTarget)) {
           listener.currentTarget.forEach((element) => {
             element.addEventListener(listener.eventType, listener.listener, listener.options);
@@ -342,7 +331,7 @@ export abstract class PluginDecorator {
   }
   protected cancel(): void {
     if (this.listeners) {
-      this.listeners.forEach(function (listener) {
+      this.listeners.forEach((listener) => {
         if (Array.isArray(listener.currentTarget)) {
           listener.currentTarget.forEach((element) => {
             element.removeEventListener(listener.eventType, listener.listener, listener.options);
@@ -366,17 +355,13 @@ export abstract class PluginDecorator {
  * @param descendantSelector - necessary descendant
  * @returns result of checking
  */
-export function checkDelegatingEvents(
-  event: Event,
-  parent: HTMLElement,
-  descendantSelector: string
-) {
-  let descendant = (event.target as HTMLElement).closest(descendantSelector);
+const checkDelegatingEvents = (event: Event, parent: HTMLElement, descendantSelector: string) => {
+  const descendant = (event.target as HTMLElement).closest(descendantSelector);
 
   if (!descendant && !parent.contains(descendant)) return false;
 
   return true;
-}
+};
 
 /**
  * Apply mixins to derivedConstructor.
@@ -408,10 +393,13 @@ export function checkDelegatingEvents(
  * player.jump();
  * console.log(player.x, player.y);
  */
-export function applyMixins<
+const applyMixins = <
   TDerivedConstructor extends new (...args: unknown[]) => unknown,
   TMixinConstructors extends new (...args: unknown[]) => unknown
->(derivedConstructor: TDerivedConstructor, mixinConstructors: TMixinConstructors[]) {
+>(
+  derivedConstructor: TDerivedConstructor,
+  mixinConstructors: TMixinConstructors[]
+) => {
   mixinConstructors.forEach((baseConstructor) => {
     Object.getOwnPropertyNames(baseConstructor.prototype).forEach((name) => {
       Object.defineProperty(
@@ -421,4 +409,19 @@ export function applyMixins<
       );
     });
   });
-}
+};
+
+export {
+  handleEvent,
+  CustomEventListener,
+  CustomEventListenerObject,
+  handler,
+  Plugin,
+  EventManagerMixin,
+  MVPView,
+  MVPModel,
+  ListenersByPlugin,
+  PluginDecorator,
+  checkDelegatingEvents,
+  applyMixins,
+};

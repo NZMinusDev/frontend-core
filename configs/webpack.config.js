@@ -263,8 +263,11 @@ const webpackPlugins = () => {
           ],
         },
       }),
-      new DuplicatesPlugin() // writes data in stats.json as plain text, shouldn't be in dev mod
     );
+  }
+
+  if (process.env.MEASURE === "true") {
+    plugins.push(new DuplicatesPlugin()); // writes data in stats.json as plain text, shouldn't be in dev mod)
   }
 
   plugins.push(
@@ -479,7 +482,7 @@ const optimization = () => {
 
 // measures speed of each plugin in bundling
 // writes data in stats.json as plain text, shouldn't be in dev mod
-const smp = new SpeedMeasurePlugin({ disable: isDev });
+const smp = new SpeedMeasurePlugin({ disable: process.env.MEASURE === "false" });
 module.exports = smp.wrap({
   // The base directory, an absolute path, for resolving entry points and loaders
   context: PATHS.src_absolute,

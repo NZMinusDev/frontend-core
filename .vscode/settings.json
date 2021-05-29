@@ -6,7 +6,6 @@
   "editor.rulers": [100],
   "editor.wordWrap": "wordWrapColumn",
   "editor.wordWrapColumn": 100,
-  "prettier.printWidth": 100,
   "files.autoSave": "afterDelay",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
@@ -55,6 +54,7 @@
     "Flexbugs",
     "Incrementation",
     "Postcss",
+    "Preprocessors",
     "Supremum",
     "Zaitsev",
     "autoprefixed",
@@ -105,5 +105,6 @@
   },
   "path-autocomplete.triggerOutsideStrings": true,
   "path-autocomplete.enableFolderTrailingSlash": true,
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "plantuml.exportOutDir": "./"
 }

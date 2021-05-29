@@ -1,8 +1,7 @@
-export const MS_IN_DAY = 1000 * 60 * 60 * 24;
-
 /**
  * @returns milliseconds
  */
-export function diffDate(date1: Date, date2: Date) {
-  return date2.getTime() - date1.getTime();
-}
+const diffDate = (date1: Date, date2: Date) => date2.getTime() - date1.getTime();
+
+// eslint-disable-next-line import/prefer-default-export
+export { diffDate };

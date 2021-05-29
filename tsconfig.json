@@ -21,6 +21,12 @@
       "@images/*": ["assets/pictures/images/*"],
       "@contents/*": ["assets/pictures/contents/*"],
       "@utils/*": ["utils/*"]
-    }
+    },
+    "plugins": [
+      {
+        "transform": "@zerollup/ts-transform-paths",
+        "exclude": ["*"]
+      }
+    ]
   }
 }
