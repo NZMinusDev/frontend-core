@@ -1,35 +1,31 @@
-//- name: name of group
-//- buttons: {
-  name1:{
-    id:string,
-    itemLabel:string,
-    checked: 'checked'
-  },
-  name2:{
-    id:string,
-    itemLabel:string,
-    checked: ''
-  },...}
-//- id?: id of radio buttons' container
-//- class?: class for component bem mix: such as positioning functionality
-//- isFilter?: {boolean} - if true, change event will reload page with chosen value(get method)
-//- label?: text of label
-//- disabled?: same as fieldset disabled (disable all buttons)
-mixin form-radio-buttons
-  .form-radio-buttons(id=attributes.id, class=attributes.class)
-    if attributes.label
-      h3.form-label.form-radio-buttons__label
-        label(for=attributes.id)= attributes.label
-    fieldset(disabled=attributes.disabled)
-      each btn, key in attributes.buttons
+include ~@common.blocks/primitives/heading/heading.pug
+
+//-
+  heading?: see mixin heading
+  headingMarginBottom?: marginBottom in mixin heading
+  buttons: {
+    [value: string]: {
+      label: string,
+      checked?: boolean
+  }}
+  name?: string - name of group
+  disabled?: boolean - same as fieldset disabled (disable all buttons)
+  isFilter?: boolean - if true, change event will reload page with chosen value(get method)
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin form-radio-buttons({ heading = '', headingMarginBottom = 'large', name = 'radio', buttons = {}, disabled = false, isFilter = false } = {})
+  .form-radio-buttons&attributes(attributes)
+    if heading
+      .form-radio-buttons__heading
+        +heading(heading, { marginBottom: headingMarginBottom })
+    fieldset.form-radio-buttons__fieldset(disabled=disabled)
+      each btn, key in buttons
         .form-radio-buttons__item
           input.form-radio-buttons__button-item(
-            id=btn.id,
+            id=key,
             type="radio",
-            name=attributes.name,
-            isFilter=attributes.isFilter ? attributes.isFilter + '' : null,
+            name=name,
+            data-is-filter=isFilter,
             checked=btn.checked,
             value=key
           )
-          if btn.itemLabel
-            label.form-radio-buttons__label-item(for=btn.id)= btn.itemLabel
+          label.form-radio-buttons__label-item(for=key)= btn.label

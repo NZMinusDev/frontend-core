@@ -1,18 +1,9 @@
 .form-elements-layout__like-button {
-  @media print, screen and (min-width: 992px) {
-    & {
-      grid-area: like-button;
-      display: grid;
-      grid: "label label" "btn-checked btn-unchecked";
-      grid-column-gap: 0.7142857142857143em;
-      place-content: end start;
-    }
-  }
-}
-.form-elements-layout__like-button-label {
-  @media print, screen and (min-width: 992px) {
-    & {
-      grid-area: label;
-    }
+  @media print, screen and (min-width: 1200px) {
+    grid-area: like-button;
+    display: grid;
+    grid: 'label label' 'btn-checked btn-unchecked';
+    gap: 10px / 14px * 1em;
+    place-content: end start;
   }
 }

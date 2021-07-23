@@ -1,25 +1,20 @@
-// page's resources
-import "./form-elements.pug";
-import "./form-elements.scss";
+import { FormDropdownWithItemQuantityListElementWithComponent } from '@common.blocks/primitives/form-dropdown/form-dropdown';
 
-//libs
-import { has } from "@utils/devTools/tools/DOMHelper";
+import './form-elements.pug';
+import './form-elements.scss';
 
-//components
-import {
-  dropdownsWithIQList,
-  ToxinIQDropdownElement,
-} from "@common.blocks/primitives/form-dropdown/__item-quantity-list/form-dropdown__item-quantity-list.ts";
+const components = {
+  dropdownExpandedPlural: (document.querySelector(
+    '.js-form-elements-layout__dropdown-expanded-plural'
+  )?.firstElementChild as FormDropdownWithItemQuantityListElementWithComponent).component,
+  dropdownExpandedApply: (document.querySelector(
+    '.js-form-elements-layout__dropdown-expanded-apply'
+  )?.firstElementChild as FormDropdownWithItemQuantityListElementWithComponent).component,
+  dropdownExpandedClearApply: (document.querySelector(
+    '.js-form-elements-layout__dropdown-expanded-clear-apply'
+  )?.firstElementChild as FormDropdownWithItemQuantityListElementWithComponent).component,
+};
 
-// focus components
-(document.querySelector("#text-field-hover") as HTMLElement).focus();
-
-(has(dropdownsWithIQList, "#dropdown-expanded-plural").closest(
-  ".form-dropdown"
-) as ToxinIQDropdownElement).toxinIQDropdown.open();
-(has(dropdownsWithIQList, "#dropdown-expanded-apply").closest(
-  ".form-dropdown"
-) as ToxinIQDropdownElement).toxinIQDropdown.open();
-(has(dropdownsWithIQList, "#dropdown-expanded-clear-apply").closest(
-  ".form-dropdown"
-) as ToxinIQDropdownElement).toxinIQDropdown.open();
+components.dropdownExpandedPlural.getExpandableItemElement().component.open();
+components.dropdownExpandedApply.getExpandableItemElement().component.open();
+components.dropdownExpandedClearApply.getExpandableItemElement().component.open();

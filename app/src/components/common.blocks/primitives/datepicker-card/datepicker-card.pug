@@ -1,0 +1,14 @@
+//-
+  name?: string - name of input
+  selectedDates?: 'ISODateString,ISODateString,...' - initial dates(date), for several values use ','; example: '2020-11-18T21:00:00.000Z' or '2020-11-18T21:00:00.000Z,2020-11-20T21:00:00.000Z';
+  range?: boolean | number - lib argument, enable range functionality
+  altFields?: string - selector of bonded alt fields
+  isFilter?: boolean - if true, change event will reload page with chosen value(get method)
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin datepicker-card({ name = 'datepicker-card', selectedDates = '', range = false, altFields = undefined, isFilter = false } = {})
+  input(type="hidden", name=name, value=selectedDates, data-is-filter=isFilter)
+  .datepicker-here.datepicker-card.js-datepicker-card(
+    data-range=range ? `${range}` : undefined,
+    data-multiple-dates-separator=" - ",
+    data-alt-fields=altFields
+  )&attributes(attributes)

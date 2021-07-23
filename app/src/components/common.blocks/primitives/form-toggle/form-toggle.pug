@@ -1,20 +1,10 @@
-//- id: id of toggle button
-//- class: class for component bem mix: such as positioning functionality
-//- label: text of label
-//- name: name of toggle button
-//- itemLabel: text of itemLabel
-//- checked: same as input checked
-mixin form-toggle
-  .form-toggle(class=attributes.class)
-    if attributes.label
-      h3.form-label
-        label(for=attributes.id)= attributes.label
-    .form-toggle__item
-      input.form-toggle__button-item(
-        id=attributes.id,
-        type="checkbox",
-        name=attributes.name,
-        checked=attributes.checked
-      )
-      if attributes.itemLabel
-        label.form-toggle__label-item(for=attributes.id)= attributes.itemLabel
+//-
+  name?: string - name of toggle button
+  label?: string - text of label
+  checked?: boolean - same as input checked
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin form-toggle({ name = 'toggle', label = '', checked = false } = {})
+  .form-toggle&attributes(attributes)
+    input.form-toggle__button(id=name, type="checkbox", name=name, checked=checked)
+    if label
+      label.form-toggle__label(for=name)= label

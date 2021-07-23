@@ -1,3 +1,5 @@
 .form-bullet-list__list {
   grid-area: list;
+  display: grid;
+  grid-row-gap: 10px / 14px * 1em;
 }

@@ -1,14 +1,22 @@
-import "./sign-in.pug";
-import "./sign-in.scss";
+import './sign-in.pug';
+import './sign-in.scss';
 
-document.querySelectorAll(".sign-in-layout__card").forEach((cardElement, key, nodeList) => {
-  let switchBtn = cardElement.querySelector(
-    `.card-${cardElement.getAttribute("name")}__switch-btn`
-  );
+const cardContainerElements = [
+  ...document.querySelectorAll('.js-sign-in-layout__card'),
+] as HTMLDivElement[];
 
-  switchBtn.addEventListener("click", () => {
-    nodeList.forEach((cardElement) => {
-      cardElement.classList.toggle("sign-in-layout__card_hidden");
+const handleCardSwitchBtnClick = (event: MouseEvent) => {
+  const target = event.target as HTMLButtonElement;
+
+  const isSwitchBtn = target.value === 'Создать' || target.value === 'Войти';
+
+  if (target.type !== 'submit' && isSwitchBtn) {
+    cardContainerElements.forEach((currentCardElement) => {
+      currentCardElement.classList.toggle('sign-in-layout__card_hidden');
     });
-  });
+  }
+};
+
+cardContainerElements.forEach((cardContainerElement) => {
+  cardContainerElement.addEventListener('click', handleCardSwitchBtnClick);
 });

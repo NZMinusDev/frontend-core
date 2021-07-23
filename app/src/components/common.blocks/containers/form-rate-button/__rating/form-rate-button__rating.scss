@@ -1,18 +1,13 @@
 .form-rate-button__rating {
   display: inline;
+  font-size: 24px / 14px * 1em;
+  line-height: 1em;
 
-  //after selected by hover: filled
-  & > .icon:hover:after,
-  & > .icon:hover ~ .icon:after {
-    content: "\f0ec";
-  }
+  &:disabled {
+    pointer-events: none;
 
-  //before selected by hover: filled
-  & > .form-rate-button__button-item:checked + .icon:hover:after,
-  & > .form-rate-button__button-item:checked + .icon:hover ~ .icon:after,
-  & > .form-rate-button__button-item:checked ~ .icon:hover:after,
-  & > .form-rate-button__button-item:checked ~ .icon:hover ~ .icon:after,
-  & > .icon:hover ~ .form-rate-button__button-item:checked ~ .icon:after {
-    content: "\f0ec";
+    .form-rate-button__icon {
+      cursor: initial;
+    }
   }
 }

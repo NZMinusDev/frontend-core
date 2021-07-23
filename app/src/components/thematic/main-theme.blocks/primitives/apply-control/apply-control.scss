@@ -1,16 +1,3 @@
-@use "@utils/devTools/devTools.scss";
-
 .apply-control {
-  .apply-control__clear-btn-js,
-  .apply-control__apply-btn-js {
-    font: var(--font__h3);
-    text-transform: uppercase;
-  }
-
-  .apply-control__clear-btn-js {
-    color: devTools.getColor(color__dark-shade, 0.5);
-  }
-  .apply-control__apply-btn-js {
-    color: devTools.getColor(color__primary, 1);
-  }
+  font: var(--font__h3);
 }

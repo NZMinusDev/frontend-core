@@ -1,39 +1,52 @@
-import { getURLValue, addURLValues } from "@utils/devTools/tools/URLHelper";
+import { getURLValue, addURLValues } from '@utils/devTools/scripts/URLHelper';
 
-document.querySelectorAll("input").forEach((element) => {
+document.querySelectorAll('input').forEach((element) => {
   const inputElement = element as HTMLInputElement;
-  const hrefValue = getURLValue(inputElement.getAttribute("name")) as string;
+  const hrefValue = getURLValue(inputElement.name);
 
-  if (hrefValue) {
+  if (hrefValue !== undefined) {
     switch (inputElement.type) {
-      case "radio": {
+      case 'radio': {
         inputElement.checked = inputElement.value === hrefValue;
+
         break;
       }
-      case "checkbox": {
-        inputElement.checked = hrefValue === "on";
+      case 'checkbox': {
+        inputElement.checked = hrefValue === 'on';
+
         break;
       }
+
       default: {
         inputElement.value = hrefValue;
       }
     }
   }
 
-  switch (inputElement.type) {
-    case "checkbox": {
-      inputElement.addEventListener("change", function () {
-        this.value = this.checked ? "on" : "off";
-      });
-    }
+  if (inputElement.type === 'checkbox') {
+    const onChange = (e: Event) => {
+      const checkbox = e.currentTarget as HTMLInputElement;
+
+      if (checkbox.name !== '') {
+        checkbox.value = checkbox.checked ? 'on' : 'off';
+      }
+
+      if (!checkbox.checked) {
+        checkbox.removeAttribute('checked');
+      }
+    };
+
+    inputElement.addEventListener('change', onChange);
   }
 
-  if (inputElement.getAttribute("isFilter")) {
-    inputElement.addEventListener("change", (event) => {
+  if (inputElement.dataset.isFilter !== undefined) {
+    const onChange = () => {
       addURLValues({
-        name: inputElement.getAttribute("name"),
+        name: inputElement.name,
         value: inputElement.value,
       });
-    });
+    };
+
+    inputElement.addEventListener('change', onChange);
   }
 });

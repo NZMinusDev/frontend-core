@@ -1,0 +1,7 @@
+@use '@utils/devTools/styles/mixins.scss';
+
+@use '@thematic/main-theme.blocks/gradients.scss';
+
+.icon_color_primary-gradient {
+  @include mixins.gradientFont(gradients.primary(1));
+}

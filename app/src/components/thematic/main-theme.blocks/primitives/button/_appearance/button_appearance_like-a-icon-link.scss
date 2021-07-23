@@ -1,0 +1,7 @@
+.button_appearance_like-a-icon-link {
+  color: rgba(var(--color__primary), 1);
+
+  &:hover {
+    color: rgba(var(--color__dark-shade), 0.5);
+  }
+}

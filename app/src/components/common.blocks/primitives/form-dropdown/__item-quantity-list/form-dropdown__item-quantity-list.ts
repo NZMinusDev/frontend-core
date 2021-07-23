@@ -1,252 +1,394 @@
-import { Plugin, PluginDecorator, ListenersByPlugin } from "@utils/devTools/tools/PluginCreationHelper";
-import { has } from "@utils/devTools/tools/DOMHelper";
-import merge from "lodash-es/merge";
+import {
+  BEMComponent,
+  HTMLElementWithComponent,
+} from '@utils/devTools/scripts/ComponentCreationHelper';
+import { has } from '@utils/devTools/scripts/DOMHelper';
+import { Unpacked } from '@utils/devTools/scripts/TypingHelper';
 
-import { dropdowns } from "./../form-dropdown";
+import formDropdowns, { ExpandableItemCustomEvents } from '../form-dropdown';
 
-export interface ToxinIQDropdownElement extends HTMLDivElement {
-  toxinIQDropdown: ToxinIQDropdownAPI;
-}
+type FormDropdownItemQuantityListElement = HTMLDivElement;
 
-export type ToxinIQDropdownDOM = {
-  self: ToxinIQDropdownElement;
-  mainInput: HTMLInputElement;
-  openingButton: HTMLButtonElement;
+type FormDropdownItemQuantityListDOM = {
+  $element: JQuery<FormDropdownItemQuantityListElement>;
+  listInput: HTMLInputElement;
   selection: HTMLParagraphElement;
   menu: HTMLDivElement;
-  optionInputs: NodeListOf<HTMLInputElement>;
-  menuOptions: NodeListOf<HTMLDivElement>;
-  optionTitles: NodeListOf<HTMLHeadingElement>;
-  controls: NodeListOf<HTMLDivElement>;
-  decrementBtns: NodeListOf<HTMLButtonElement>;
-  incrementBtns: NodeListOf<HTMLButtonElement>;
-  counters: NodeListOf<HTMLSpanElement>;
+  optionInputs: HTMLInputElement[];
+  menuOptions: HTMLDivElement[];
 };
-export interface ToxinIQDropdownAPI extends Plugin {
-  readonly dom: ToxinIQDropdownDOM;
+type FormDropdownItemQuantityListGeneratedDOM = {
+  decrementButtons: HTMLButtonElement[];
+  incrementButtons: HTMLButtonElement[];
+};
 
-  readonly groupCounterList: Map<string, number>;
+type FormDropdownItemQuantityListHTMLOptions = {
+  selection: { placeholder: string };
+  menu: { groups: { [groupName: string]: { selectionText: string; textPlural: string } } };
+  menuOptions: Map<
+    HTMLDivElement,
+    {
+      id: string;
+      defaultCount: number;
+      minCount: number;
+      maxCount: number;
+      group: string;
+    }
+  >;
+};
+type FormDropdownItemQuantityListState = {
+  totalItems: number;
+  itemsCounter: Map<string, number>;
+  groupsCounter: Map<string, number>;
+};
 
-  open(): boolean;
-  close(): boolean;
-  toggle(): void;
-}
+type FormDropdownItemQuantityListCustomEvents = {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  select: {};
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  close: {};
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  change: {};
+} & ExpandableItemCustomEvents;
 
-// Component
-export class ToxinIQDropdown implements ToxinIQDropdownAPI {
-  public readonly dom: ToxinIQDropdownDOM = {
-    mainInput: null,
-    self: null,
-    openingButton: null,
-    selection: null,
-    menu: null,
-    optionInputs: null,
-    menuOptions: null,
-    optionTitles: null,
-    controls: null,
-    decrementBtns: null,
-    incrementBtns: null,
-    counters: null,
-  };
+class FormDropdownItemQuantityList extends BEMComponent<
+  FormDropdownItemQuantityListElement,
+  FormDropdownItemQuantityListCustomEvents
+> {
+  protected readonly _DOM: Readonly<FormDropdownItemQuantityListDOM>;
+  protected readonly _generatedDOM: Readonly<FormDropdownItemQuantityListGeneratedDOM>;
 
-  private _groupCounterList = new Map<string, number>();
-  public get groupCounterList(): Map<string, number> {
-    return this._groupCounterList;
+  protected readonly _options: FormDropdownItemQuantityListHTMLOptions;
+  protected readonly _state: FormDropdownItemQuantityListState;
+
+  constructor(formDropdownItemQuantityListElement: FormDropdownItemQuantityListElement) {
+    super(formDropdownItemQuantityListElement);
+
+    this._DOM = this._initDOM();
+    this._state = this._initState();
+    this._options = this._initOptionsFromHTML();
+    this._generatedDOM = this._initLibFormDropdownItemQuantityList()._initGeneratedDOM();
+
+    this._bindCounterBtnListeners()._bindListeners();
+
+    this._initDisplay();
   }
 
-  private _libOptions: LibIQDropdownOptions = {
-    setSelectionText: (itemCount, totalItems) => {
-      let result = "";
-      const groups = JSON.parse(this.dom.menu.dataset.groups);
-      this._groupCounterList.clear();
+  getTotalItems() {
+    return this._state.totalItems;
+  }
+  reset() {
+    this._DOM.menuOptions.forEach((menuOption, index) => {
+      const menuOptionOptions = this._options.menuOptions.get(menuOption) as Unpacked<
+        FormDropdownItemQuantityListHTMLOptions['menuOptions']
+      >;
 
-      this.dom.menuOptions.forEach((menuOption) => {
-        const groupKey = menuOption.dataset.group || menuOption.dataset.id;
-        const groupAmount = this._groupCounterList.get(groupKey)
-          ? this._groupCounterList.get(groupKey) + itemCount[menuOption.dataset.id]
-          : itemCount[menuOption.dataset.id];
+      const currAmount = this._state.itemsCounter.get(menuOptionOptions.id) as number;
+      const minAmount = menuOptionOptions.minCount;
+      let amountToDecrement = currAmount - minAmount;
 
-        this._groupCounterList.set(groupKey, groupAmount);
-      });
+      const decrementBtn = this._generatedDOM.decrementButtons[index];
 
-      if (totalItems > 0) {
-        let appendedText = "";
-
-        this._groupCounterList.forEach((amount, group) => {
-          if (amount > 0) {
-            if (result !== "") result += ", ";
-
-            appendedText = amount === 1 ? groups[group].selectionText : groups[group].textPlural;
-            result += amount + " " + appendedText;
-          }
-        });
-      } else {
-        result = this.dom.selection.dataset.placeholder;
+      // eslint-disable-next-line no-loops/no-loops
+      while (amountToDecrement !== 0) {
+        decrementBtn.dispatchEvent(new Event('click'));
+        amountToDecrement -= 1;
       }
+    });
 
-      return result;
-    },
-    controls: {
-      position: "right",
-      displayCls: "iqdropdown-content",
-      controlsCls: "form-dropdown__counter-control",
-      counterCls: "counter",
-    },
-  };
-
-  constructor(dropdown: ToxinIQDropdownElement, libOptions?: LibIQDropdownOptions) {
-    this._initStaticDOM(dropdown);
-
-    this._setOptions(libOptions);
-
-    this._initLibDropdown();
-    this._initGeneratedDOM();
-    this._clearOpenMode();
-
-    this._initControlBtnListeners();
-    this._initInputUpdateListeners();
-
-    dropdown.toxinIQDropdown = this;
+    return this;
   }
 
-  public open() {
-    if (!this.dom.openingButton.classList.contains("menu-open")) {
-      this.dom.openingButton.classList.add("menu-open");
-      this.dom.self.dispatchEvent(new CustomEvent("open"));
-      return true;
-    }
-    return false;
+  open() {
+    this.element.classList.add('menu-open');
+
+    return this;
   }
-  public close() {
-    if (this.dom.openingButton.classList.contains("menu-open")) {
-      this.dom.openingButton.classList.remove("menu-open");
-      this.dom.self.dispatchEvent(new CustomEvent("close"));
-      return true;
-    }
-    return false;
+  close() {
+    this.element.classList.remove('menu-open');
+
+    this.element.dispatchEvent(new CustomEvent('close', { bubbles: true }));
+
+    return this;
   }
-  public toggle() {
-    if (!this.open()) {
+  toggle() {
+    if (this.element.classList.contains('menu-open')) {
       this.close();
+    } else {
+      this.open();
     }
+
+    return this;
   }
 
-  protected _setOptions(libOptions: LibIQDropdownOptions) {
-    if (libOptions) this._libOptions = merge(this._libOptions, libOptions);
-  }
+  protected _initDOM() {
+    const $element = $(this.element) as FormDropdownItemQuantityListDOM['$element'];
+    const listInput = this.element.querySelector(
+      '.js-form-dropdown__list-input'
+    ) as FormDropdownItemQuantityListDOM['listInput'];
+    const selection = this.element.querySelector(
+      '.js-iqdropdown-selection'
+    ) as FormDropdownItemQuantityListDOM['selection'];
+    const menu = this.element.querySelector(
+      '.js-iqdropdown-menu'
+    ) as FormDropdownItemQuantityListDOM['menu'];
+    const optionInputs = [
+      ...menu.querySelectorAll('.js-form-dropdown__option-input'),
+    ] as FormDropdownItemQuantityListDOM['optionInputs'];
+    const menuOptions = [
+      ...menu.querySelectorAll('.js-iqdropdown-menu-option'),
+    ] as FormDropdownItemQuantityListDOM['menuOptions'];
 
-  protected _initStaticDOM(dropdown: ToxinIQDropdownElement) {
-    this.dom.self = dropdown;
-    this.dom.mainInput = this.dom.self.querySelector(".form-dropdown__list-input");
-    this.dom.openingButton = this.dom.self.querySelector(
-      ".iqdropdown.form-dropdown__item-quantity-list"
-    );
-    this.dom.selection = this.dom.openingButton.querySelector(".iqdropdown-selection");
-    this.dom.menu = this.dom.openingButton.querySelector(".iqdropdown-menu");
-    this.dom.optionInputs = this.dom.menu.querySelectorAll(".form-dropdown__option-input");
-    this.dom.menuOptions = this.dom.menu.querySelectorAll(".iqdropdown-menu-option");
-    this.dom.optionTitles = this.dom.menu.querySelectorAll(".iqdropdown-itemItem");
+    return {
+      $element,
+      listInput,
+      selection,
+      menu,
+      optionInputs,
+      menuOptions,
+    };
+  }
+  protected _initOptionsFromHTML() {
+    const values = this._DOM.listInput.value.split(',');
+
+    return {
+      selection: { placeholder: this._DOM.selection.dataset.placeholder || '' },
+      menu: {
+        groups:
+          this._DOM.menu.dataset.groups !== undefined
+            ? JSON.parse(this._DOM.menu.dataset.groups)
+            : '',
+      },
+      menuOptions: new Map(
+        this._DOM.menuOptions.map((menuOption, index) => {
+          // eslint-disable-next-line no-param-reassign
+          menuOption.dataset.defaultcount = values[index] ?? menuOption.dataset.defaultcount;
+
+          return [
+            menuOption,
+            {
+              id: menuOption.dataset.id || '',
+              defaultCount: Number(menuOption.dataset.defaultcount),
+              minCount: Number(menuOption.dataset.mincount),
+              maxCount: Number(menuOption.dataset.maxcount),
+              group: menuOption.dataset.group || '',
+            },
+          ];
+        })
+      ),
+    };
+  }
+  private _initLibFormDropdownItemQuantityList() {
+    this._DOM.$element.iqDropdown({
+      setSelectionText: (itemCount, totalItems) => {
+        this._state.totalItems = totalItems;
+        this._updateCounters(itemCount);
+
+        return this._generateResultText();
+      },
+      controls: {
+        position: 'right',
+        displayCls: 'iqdropdown-content',
+        controlsCls: 'form-dropdown__counter-control',
+        counterCls: 'counter',
+      },
+    });
+
+    // disable menu toggling by lib
+    this._DOM.$element.off('click');
+
+    return this;
   }
   protected _initGeneratedDOM() {
-    this.dom.controls = this.dom.self.querySelectorAll(".form-dropdown__counter-control");
-    this.dom.decrementBtns = this.dom.self.querySelectorAll(".button-decrement");
-    this.dom.incrementBtns = this.dom.self.querySelectorAll(".button-increment");
-    this.dom.counters = this.dom.self.querySelectorAll(".counter");
+    const decrementButtons = [
+      ...this._DOM.menu.querySelectorAll('.button-decrement'),
+    ] as FormDropdownItemQuantityListGeneratedDOM['decrementButtons'];
+    const incrementButtons = [
+      ...this._DOM.menu.querySelectorAll('.button-increment'),
+    ] as FormDropdownItemQuantityListGeneratedDOM['incrementButtons'];
+
+    return {
+      decrementButtons,
+      incrementButtons,
+    };
   }
 
-  protected _initControlBtnListeners() {
-    const counterBtnVisibilityClickHandler = (clickEvent: MouseEvent) => {
+  // eslint-disable-next-line class-methods-use-this
+  protected _initState() {
+    const totalItems = -1;
+    const itemsCounter = new Map<string, number>();
+    const groupsCounter = new Map<string, number>();
+
+    return { totalItems, itemsCounter, groupsCounter };
+  }
+
+  protected _bindCounterBtnListeners() {
+    this._generatedDOM.incrementButtons.forEach((incrementBtn) => {
+      incrementBtn.addEventListener(
+        'click',
+        this._counterButtonEventListenerObject.handleCounterButtonClick
+      );
+    });
+    this._generatedDOM.decrementButtons.forEach((decrementBtn) => {
+      decrementBtn.addEventListener(
+        'click',
+        this._counterButtonEventListenerObject.handleCounterButtonClick
+      );
+    });
+
+    return this;
+  }
+  protected _counterButtonEventListenerObject = {
+    handleCounterButtonClick: (clickEvent: MouseEvent) => {
       const targetMenuOption = has(
-        this.dom.menuOptions,
-        clickEvent.currentTarget as Element
-      );
-      const decrementBtn = targetMenuOption.querySelector(".button-decrement");
-      const incrementBtn = targetMenuOption.querySelector(".button-increment");
-      const counterAmount = parseInt(
-        (targetMenuOption.querySelector(".counter") as HTMLDivElement).textContent
-      );
+        this._DOM.menuOptions,
+        clickEvent.currentTarget as Unpacked<
+          | FormDropdownItemQuantityListGeneratedDOM['decrementButtons']
+          | FormDropdownItemQuantityListGeneratedDOM['incrementButtons']
+        >
+      ) as Unpacked<FormDropdownItemQuantityListDOM['menuOptions']>;
 
-      if (parseInt(targetMenuOption.getAttribute("data-mincount")) === counterAmount) {
-        decrementBtn.classList.add("iqdropdown__counter_isDisabled");
-      } else {
-        decrementBtn.classList.remove("iqdropdown__counter_isDisabled");
-      }
-      if (parseInt(targetMenuOption.getAttribute("data-maxcount")) === counterAmount) {
-        incrementBtn.classList.add("iqdropdown__counter_isDisabled");
-      } else {
-        incrementBtn.classList.remove("iqdropdown__counter_isDisabled");
-      }
-    };
-    this.dom.incrementBtns.forEach((incrementBtn) => {
-      incrementBtn.addEventListener("click", counterBtnVisibilityClickHandler);
-    });
-    this.dom.decrementBtns.forEach((decrementBtn) => {
-      decrementBtn.addEventListener("click", counterBtnVisibilityClickHandler);
+      this._updateCounterButtonDisplay(targetMenuOption);
+
+      this.element.dispatchEvent(new CustomEvent('select', { bubbles: true }));
+    },
+  };
+
+  protected _bindListeners() {
+    this.element.addEventListener('close', this.onClose);
+
+    return this;
+  }
+  protected onClose = () => {
+    this._changeValueOfInputs();
+  };
+
+  protected _initDisplay() {
+    this._DOM.menuOptions.forEach((menuOption) => {
+      this._updateCounterButtonDisplay(menuOption);
     });
 
-    // init btns' state
-    Array.from(this.dom.decrementBtns)
-      .concat(Array.from(this.dom.incrementBtns))
-      .forEach((btn) => {
-        counterBtnVisibilityClickHandler(({ currentTarget: btn } as unknown) as MouseEvent);
+    return this;
+  }
+
+  protected _generateResultText() {
+    const { groups } = this._options.menu;
+    let result = '';
+
+    if (this._state.totalItems > 0) {
+      this._state.groupsCounter.forEach((groupAmount, groupKey) => {
+        if (groupAmount > 0) {
+          if (result !== '') {
+            result += ', ';
+          }
+
+          const appendedText =
+            groupAmount === 1 ? groups[groupKey].selectionText : groups[groupKey].textPlural;
+          result += `${groupAmount} ${appendedText}`;
+        }
       });
+    } else {
+      result = this._options.selection.placeholder;
+    }
+
+    return result;
   }
-  protected _initInputUpdateListeners() {
-    const changeInputValueHandler = () => {
-      let accumulator = "";
-      this.dom.menuOptions.forEach((menuOption, index) => {
-        const counterAmount = this.dom.counters.item(index).textContent;
-        const input = this.dom.optionInputs.item(index);
+  protected _updateCounters(itemCount: { [itemID: string]: number }) {
+    this._state.itemsCounter.clear();
+    this._state.groupsCounter.clear();
 
-        input.value = counterAmount;
+    this._DOM.menuOptions.forEach((menuOption) => {
+      const menuOptionOptions = this._options.menuOptions.get(menuOption) as Unpacked<
+        FormDropdownItemQuantityListHTMLOptions['menuOptions']
+      >;
 
-        if (index > 0) accumulator += ",";
-        accumulator += counterAmount;
-      });
-      this.dom.mainInput.value = accumulator;
-      this.dom.mainInput.dispatchEvent(new Event("change"));
-      this.dom.self.dispatchEvent(
-        new CustomEvent("change", {
-          detail: {
-            value: this.dom.mainInput.value,
-          },
-        })
+      this._state.itemsCounter.set(menuOptionOptions.id, itemCount[menuOptionOptions.id]);
+      this._state.groupsCounter.set(
+        menuOptionOptions.group,
+        (this._state.groupsCounter.get(menuOptionOptions.group) || 0) +
+          itemCount[menuOptionOptions.id]
       );
-    };
-    this.dom.self.addEventListener("close", changeInputValueHandler);
-  }
-
-  private _initLibDropdown() {
-    this.dom.mainInput.value.split(",").map((menuOptionInputValue, index) => {
-      this.dom.optionInputs.item(index).value = menuOptionInputValue;
-      this.dom.menuOptions.item(index).dataset.defaultcount = menuOptionInputValue;
     });
 
-    $(this.dom.openingButton).iqDropdown(this._libOptions);
+    return this;
   }
-  private _clearOpenMode() {
-    $(this.dom.openingButton).off("click");
-    this.dom.menu.addEventListener("click", (event) => {
-      event.stopPropagation();
+  protected _changeValueOfInputs() {
+    let accumulator = '';
+    this._DOM.menuOptions.forEach((menuOption, index) => {
+      const menuOptionOptions = this._options.menuOptions.get(menuOption) as Unpacked<
+        FormDropdownItemQuantityListHTMLOptions['menuOptions']
+      >;
+
+      const itemAmount = this._state.itemsCounter.get(menuOptionOptions.id);
+      const input = this._DOM.optionInputs[index];
+
+      input.value = `${itemAmount}`;
+
+      if (index > 0) {
+        accumulator += ',';
+      }
+
+      accumulator += itemAmount;
     });
-  }
-}
 
-// init and export our dropdowns
-export const dropdownsWithIQList = Array.from(dropdowns).filter((dropdown) => {
-  if (dropdown.querySelector(".form-dropdown__item-quantity-list")) {
-    new ToxinIQDropdown(dropdown as ToxinIQDropdownElement);
-    return true;
-  }
-  return false;
-}) as Array<ToxinIQDropdownElement>;
+    this._DOM.listInput.value = accumulator;
 
-// Component modifiers
-export abstract class ToxinIQDropdownOpenModModifier extends PluginDecorator {
-  constructor(
-    toxinIQDropdown: ToxinIQDropdown,
-    listeners: Array<ListenersByPlugin>
+    this._DOM.listInput.dispatchEvent(new Event('change'));
+    this.element.dispatchEvent(new CustomEvent('change', { bubbles: true }));
+
+    return this;
+  }
+  protected _updateCounterButtonDisplay(
+    targetMenuOption: Unpacked<FormDropdownItemQuantityListDOM['menuOptions']>
   ) {
-    super(toxinIQDropdown, listeners, "toxinIQDropdownOpenModModifier");
+    const targetMenuOptionOptions = this._options.menuOptions.get(targetMenuOption) as Unpacked<
+      FormDropdownItemQuantityListHTMLOptions['menuOptions']
+    >;
+
+    const menuOptionIndex = this._DOM.menuOptions.indexOf(targetMenuOption);
+    const decrementBtn = this._generatedDOM.decrementButtons[menuOptionIndex];
+    const incrementBtn = this._generatedDOM.incrementButtons[menuOptionIndex];
+
+    const itemAmount = this._state.itemsCounter.get(targetMenuOptionOptions.id);
+
+    if (targetMenuOptionOptions.minCount === itemAmount) {
+      decrementBtn.classList.add('iqdropdown__counter_isDisabled');
+    } else {
+      decrementBtn.classList.remove('iqdropdown__counter_isDisabled');
+    }
+
+    if (targetMenuOptionOptions.maxCount === itemAmount) {
+      incrementBtn.classList.add('iqdropdown__counter_isDisabled');
+    } else {
+      incrementBtn.classList.remove('iqdropdown__counter_isDisabled');
+    }
+
+    return this;
   }
 }
+
+type FormDropdownItemQuantityListElementWithComponent = HTMLElementWithComponent<
+  FormDropdownItemQuantityListElement,
+  FormDropdownItemQuantityListCustomEvents,
+  FormDropdownItemQuantityList
+>;
+
+const formDropdownItemQuantityLists = formDropdowns
+  .map((formDropdown) =>
+    Array.from(
+      formDropdown.element.querySelectorAll<FormDropdownItemQuantityListElement>(
+        '.js-form-dropdown__item-quantity-list'
+      ),
+      (formDropdownItemQuantityListElement) =>
+        new FormDropdownItemQuantityList(formDropdownItemQuantityListElement)
+    )
+  )
+  .flat();
+
+export type {
+  FormDropdownItemQuantityListCustomEvents,
+  FormDropdownItemQuantityList,
+  FormDropdownItemQuantityListElementWithComponent,
+};
+
+export { formDropdownItemQuantityLists as default };

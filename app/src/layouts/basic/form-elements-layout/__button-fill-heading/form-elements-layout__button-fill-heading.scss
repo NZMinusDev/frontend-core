@@ -1,0 +1,5 @@
+.form-elements-layout__button-fill-heading {
+  @media print, screen and (min-width: 0px) {
+    grid-area: heading;
+  }
+}

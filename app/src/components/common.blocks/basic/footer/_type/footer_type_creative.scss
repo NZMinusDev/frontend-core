@@ -1,0 +1,13 @@
+.footer_type_creative {
+  @media print, screen and (min-width: 0px) {
+    width: 768px / 1440px * 100%;
+    padding: #{120px / 1440px * 100%} #{104px / 1440px * 100%} #{116px / 1440px * 100%} #{104px / 1440px *
+      100%};
+    grid:
+      'logo'
+      'copyright'
+      'icons';
+    grid-row-gap: 20px / 14px * 1em;
+    justify-items: center;
+  }
+}

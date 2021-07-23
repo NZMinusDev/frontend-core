@@ -1,10 +1,10 @@
-//- Just wrapped apply and reset buttons
-//- id: id of component
-//- class: class for component bem mix: such as positioning functionality
+//- 
+  Just wrapped apply and reset buttons
+  Tip: mixin also uses 'and attributes'(&attributes)
 mixin apply-control
-  .apply-control(id=attributes.id, class=attributes.class)
-    input.apply-control__clear-btn-js.apply-control__clear-btn-js_isHidden(
+  .apply-control.js-apply-control&attributes(attributes)
+    input.apply-control__clear-btn.js-apply-control__clear-btn.apply-control__clear-btn_hidden(
       type="button",
       value="очистить"
     )
-    input.apply-control__apply-btn-js(type="button", value="применить")
+    input.apply-control__apply-btn.js-apply-control__apply-btn(type="button", value="применить")

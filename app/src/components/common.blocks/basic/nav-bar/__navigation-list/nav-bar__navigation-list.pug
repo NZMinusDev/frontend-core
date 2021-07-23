@@ -1,34 +1,48 @@
-mixin nav-bar__navigation-list
+include ~@common.blocks/primitives/icon/icon.pug
+
+//-
+  items: { [textContent: string]: { href: string, items?: [textContent: string]: { href: string, items?: } } } - recursive items of nav-bar list
+  active?: string - key of active item
+mixin nav-bar__navigation-list(items, active)
   -
-    function bubbleActiveStatus(items, activeKey) {
-      for (let key in items) {
-        if (Object.hasOwnProperty.call(items, key)) {
-          if (items[key].items) {
-            if(bubbleActiveStatus(items[key].items, activeKey)){
-              items[key].active = "active";
-            }
-          }
-          if (key === activeKey || items[key].active) {
-            items[key].active = "active";
-            return true;
+    const bubbleActiveStatus = (items, activeKey) => {
+      let isActive = false;
+
+      Object.entries(items).forEach(([key, item]) => {
+        if (item.items) {
+          if (bubbleActiveStatus(item.items, activeKey)) {
+            item.active = 'active';
           }
         }
-      }
-      return false;
-    }
-    bubbleActiveStatus(attributes.items, attributes.active);
-  ul.nav-bar__navigation-list
-    each itemSettings, itemName in attributes.items
+
+        if (key === activeKey || item.active) {
+          item.active = 'active';
+
+          isActive = true;
+        }
+      });
+
+      return isActive;
+    };
+
+    bubbleActiveStatus(items, active);   
+  ul.nav-bar__navigation-list.js-nav-bar__navigation-list
+    each itemSettings, itemName in items
       if itemSettings.items
-        li.nav-bar__navigation-item(
-          class=itemSettings.items ? 'nav-bar__navigation-item_isDropdown' : '',
-          class=itemSettings.active ? 'nav-bar__navigation-item_isActive' : ''
-        )= itemName
-          .icon.nav-bar__expand-icon
-          +nav-bar__navigation-list(items=itemSettings.items)
-      else
-        a.nav-bar__navigation-item(
-          href=itemSettings.href,
-          class=itemSettings.active ? 'nav-bar__navigation-item_isActive' : ''
+        li.nav-bar__navigation-item.js-nav-bar__navigation-item.nav-bar__navigation-item_expandable.js-nav-bar__navigation-item_expandable(
+          class=[itemSettings.active ? 'nav-bar__navigation-item_active' : undefined]
         )
-          li(class=itemSettings.items ? 'nav-bar__navigation-item_isDropdown' : '')= itemName
+          - const checkboxID = Date.now() + Math.random();
+          input.nav-bar__navigation-item-dropdown-checkbox.js-nav-bar__navigation-item-dropdown-checkbox(
+            id=checkboxID,
+            type="checkbox"
+          )
+          label.nav-bar__navigation-item-dropdown-label(for=checkboxID, tabindex="0")= itemName
+            span.nav-bar__expand-icon
+              +icon({content: 'expand_more', width: 'medium'})
+          +nav-bar__navigation-list(itemSettings.items)
+      else
+        li.nav-bar__navigation-item.js-nav-bar__navigation-item(
+          class=itemSettings.active ? 'nav-bar__navigation-item_active' : undefined
+        )
+          a(href=itemSettings.href)= itemName

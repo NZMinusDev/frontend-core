@@ -1,0 +1,15 @@
+extends ~@layouts/basic/toxin-main-layout/toxin-main-layout.pug
+
+//- components
+include ~@common.blocks/containers/pick-room-card/pick-room-card.pug
+
+block append variables
+  -
+    title = 'Стартовая страница';
+    description = 'Стартовая страница в макете сайта TOXIN';
+
+block content
+  main.landing-page-layout
+    .landing-page-layout__pick-room
+      +pick-room-card
+    p.landing-page-layout__welcome-text Лучшие номера для вашей работы, отдыха и просто вдохновения

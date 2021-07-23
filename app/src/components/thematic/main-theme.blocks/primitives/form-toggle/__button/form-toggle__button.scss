@@ -1,0 +1,15 @@
+.form-toggle__button {
+  border: var(--border);
+
+  &:checked {
+    border-color: rgba(var(--color__primary), 1);
+  }
+
+  &:before {
+    background-color: rgba(var(--color__dark-shade), 0.25);
+  }
+
+  &:checked:before {
+    background-color: rgba(var(--color__primary), 1);
+  }
+}

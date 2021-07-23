@@ -1,9 +1,35 @@
 .form-range-slider {
   display: grid;
   grid:
-    "label result"
-    ". ." 23px/14px * 1em
-    "slider slider"
-    ". ." 13px/14px * 1em
-    "description description";
+    'label result'
+    '. .' 23px / 14px * 1em
+    'slider slider'
+    '. .' 16px / 14px * 1em
+    'description description';
+  align-items: baseline;
+
+  .noUi-horizontal {
+    height: 6px / 14px * 1em;
+  }
+  .noUi-target,
+  .noUi-connect {
+    border-radius: 3px;
+  }
+  .noUi-horizontal .noUi-handle {
+    width: 16px / 14px * 1em;
+    height: 16px / 14px * 1em;
+    top: -6px / 14px * 1em;
+    right: -8px / 14px * 1em;
+    border: 2px solid #ffffff;
+    border-radius: 100%;
+  }
+  .noUi-handle {
+    border-radius: 100%;
+    box-shadow: initial;
+    cursor: pointer;
+    &:after,
+    &:before {
+      display: none;
+    }
+  }
 }

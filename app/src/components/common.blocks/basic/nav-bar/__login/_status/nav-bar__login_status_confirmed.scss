@@ -1,0 +1,12 @@
+.nav-bar__login_status_confirmed {
+  &:before {
+    content: '';
+  }
+
+  @media print, screen and (min-width: 992px) {
+    &:before {
+      border-left: 1px solid black;
+      margin-right: 20px / 14px * 1em;
+    }
+  }
+}

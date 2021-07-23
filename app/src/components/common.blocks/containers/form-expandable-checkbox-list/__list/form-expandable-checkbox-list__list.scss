@@ -1,6 +1,8 @@
 .form-expandable-checkbox-list__list {
-  max-height: 0;
   overflow: hidden;
-  transition: max-height linear 0.3s;
+  visibility: hidden;
+  max-height: 0;
+  transition: max-height 0.3s linear, visibility 0.3s linear;
   margin-top: 0.5em;
+  text-transform: none;
 }

@@ -1,0 +1,10 @@
+@use '@utils/devTools/styles/mixins.scss';
+
+.form-dropdown__selection-text {
+  width: (15px + 103px) / 150px * 100%;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  position: absolute;
+  @include mixins.ellipsisText;
+}

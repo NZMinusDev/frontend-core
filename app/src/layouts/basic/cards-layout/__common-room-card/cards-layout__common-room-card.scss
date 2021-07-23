@@ -1,0 +1,5 @@
+.cards-layout__common-room-card {
+  @media print, screen and (min-width: 1440px) {
+    grid-area: common-room-card;
+  }
+}

@@ -1,5 +1,6 @@
-@use "@thematic/main-theme.blocks/gradients.scss";
+@use '@thematic/main-theme.blocks/gradients.scss';
 
 .pagination__item_active {
+  color: rgba(255, 255, 255, 1);
   background: gradients.primary(1);
 }

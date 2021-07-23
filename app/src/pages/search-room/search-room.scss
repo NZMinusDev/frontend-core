@@ -1,0 +1,91 @@
+.search-room-layout {
+  display: grid;
+  $filterWidth: 266px / (1440px - 140px * 2) * 100%;
+  grid-column-gap: 60px / (1440px - 140px * 2) * 100%;
+  align-items: flex-start;
+  padding-top: 30px / 14px * 1em;
+  padding-bottom: 70px / 14px * 1em;
+
+  @media (min-width: 0px) {
+    grid:
+      'filter'
+      'title'
+      'rooms'
+      'pagination';
+  }
+  @media (min-width: 992px) {
+    grid:
+      'filter title'
+      'filter rooms'
+      '. pagination' / #{$filterWidth} auto;
+  }
+}
+
+.search-room-layout__filter {
+  $mediumGap: 20px / 14px * 1em;
+  $largeGap: 30px / 14px * 1em;
+
+  grid-area: filter;
+  display: grid;
+  grid:
+    'dates-of-stay-dropdown'
+    '.' #{$mediumGap}
+    'guests-dropdown'
+    '.' #{$largeGap}
+    'price-range-slider'
+    '.' #{$largeGap}
+    'checkbox-buttons'
+    '.' #{$largeGap}
+    'affordable-rich-checkbox-buttons'
+    '.' #{$largeGap}
+    'facilities-dropdown'
+    '.' #{$largeGap}
+    'additional-comfort-expandable-checkbox-list';
+}
+.search-room-layout__dates-of-stay-dropdown {
+  grid-area: dates-of-stay-dropdown;
+}
+.search-room-layout__guests-dropdown {
+  grid-area: guests-dropdown;
+}
+.search-room-layout__price-range-slider {
+  grid-area: price-range-slider;
+}
+.search-room-layout__checkbox-buttons {
+  grid-area: checkbox-buttons;
+}
+.search-room-layout__affordable-rich-checkbox-buttons {
+  grid-area: affordable-rich-checkbox-buttons;
+}
+.search-room-layout__facilities-dropdown {
+  grid-area: facilities-dropdown;
+}
+.search-room-layout__additional-comfort-expandable-checkbox-list {
+  grid-area: additional-comfort-expandable-checkbox-list;
+}
+
+.search-room-layout__title {
+  grid-area: title;
+  margin-bottom: 20.5px / 24px * 1em;
+}
+.search-room-layout__rooms {
+  grid-area: rooms;
+  display: grid;
+  grid: auto-flow auto / 1fr 1fr 1fr;
+  grid-gap: #{20.5px / 14px * 1em} #{12px / 14px * 1em};
+  justify-items: center;
+
+  @media (min-width: 0px) {
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 600px) {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (min-width: 1200px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+.search-room-layout__pagination {
+  grid-area: pagination;
+  margin-top: 41px / 14px * 1em;
+}

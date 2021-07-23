@@ -1,0 +1,71 @@
+//-
+  path: string - relative(in dist) path to img
+  alt: string - img alt attr
+  title?: string - title attribute
+  size?: 'rectangle' | 'contain' - size of picture
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin picture(path, alt, { title = undefined, size = 'rectangle' } = {})
+  -
+    if(!path){
+      path = '';
+    }
+    const filePath = path.substring(0, path.lastIndexOf('.')) || path;
+    const fileExt = path.substring(path.lastIndexOf('.') + 1, path.length) || path;
+
+    const sizeClass = size === 'rectangle' ? undefined : `picture_size_${size}`;
+  picture.picture(class=[sizeClass])&attributes(attributes)
+    source(
+      media="(min-width:1200px)",
+      type="image/webp",
+      srcset=htmlWebpackPlugin ? require('@assets/pictures/images/placeholders/lazy-loading-placeholder.svg').default : undefined,
+      data-srcset=`${filePath}-1920.webp 1x`
+    )
+    source(
+      media="(min-width:960px)",
+      type="image/webp",
+      srcset=htmlWebpackPlugin ? require('@assets/pictures/images/placeholders/lazy-loading-placeholder.svg').default : undefined,
+      data-srcset=`${filePath}-960.webp 1x`
+    )
+    source(
+      media="(min-width:600px)",
+      type="image/webp",
+      srcset=htmlWebpackPlugin ? require('@assets/pictures/images/placeholders/lazy-loading-placeholder.svg').default : undefined,
+      data-srcset=`${filePath}-640.webp 1x`
+    )
+    source(
+      media="(min-width:0px)",
+      type="image/webp",
+      srcset=htmlWebpackPlugin ? require('@assets/pictures/images/placeholders/lazy-loading-placeholder.svg').default : undefined,
+      data-srcset=`${filePath}-320.webp 1x`
+    )
+    source(
+      type="image/webp",
+      srcset=htmlWebpackPlugin ? require('@assets/pictures/images/placeholders/lazy-loading-placeholder.svg').default : undefined,
+      data-srcset=`${filePath}.webp 1x`
+    )
+    source(
+      media="(min-width:1200px)",
+      srcset=htmlWebpackPlugin ? require('@assets/pictures/images/placeholders/lazy-loading-placeholder.svg').default : undefined,
+      data-srcset=`${filePath}-1920.${fileExt} 1x`
+    )
+    source(
+      media="(min-width:960px)",
+      srcset=htmlWebpackPlugin ? require('@assets/pictures/images/placeholders/lazy-loading-placeholder.svg').default : undefined,
+      data-srcset=`${filePath}-960.${fileExt} 1x`
+    )
+    source(
+      media="(min-width:600px)",
+      srcset=htmlWebpackPlugin ? require('@assets/pictures/images/placeholders/lazy-loading-placeholder.svg').default : undefined,
+      data-srcset=`${filePath}-640.${fileExt} 1x`
+    )
+    source(
+      media="(min-width:0px)",
+      srcset=htmlWebpackPlugin ? require('@assets/pictures/images/placeholders/lazy-loading-placeholder.svg').default : undefined,
+      data-srcset=`${filePath}-320.${fileExt} 1x`
+    )
+    img.picture__img(
+      src=htmlWebpackPlugin ? require('@assets/pictures/images/placeholders/lazy-loading-placeholder.svg').default : undefined,
+      alt=alt,
+      title=title,
+      data-src=path
+    )

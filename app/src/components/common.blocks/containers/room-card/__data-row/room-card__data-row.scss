@@ -1,0 +1,12 @@
+.room-card__data-row {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-column-gap: 1em;
+  justify-content: space-between;
+  align-items: end;
+  padding-bottom: 10px / 14px * 1em;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid black;
+  }
+}

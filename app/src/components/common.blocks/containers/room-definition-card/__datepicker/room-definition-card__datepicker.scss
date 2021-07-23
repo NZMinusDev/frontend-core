@@ -1,0 +1,8 @@
+.room-definition-card__datepicker-fieldset {
+  grid-area: datepicker-fieldset;
+}
+
+.room-definition-card__datepicker {
+  display: grid;
+  grid: 'arrival-date-dropdown . departure-date-dropdown' auto / 1fr #{20px / 14px * 1em} 1fr;
+}

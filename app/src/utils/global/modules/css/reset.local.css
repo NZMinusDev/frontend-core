@@ -2,6 +2,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  word-break: break-all;
 }
 a {
   text-decoration: none;
@@ -21,16 +22,22 @@ figure {
 img {
   display: block;
 }
+label {
+  user-select: none;
+  cursor: inherit;
+}
 input {
   border: 0;
   padding: 0;
   margin: 0;
   background-color: inherit;
 }
+input[type='text'] {
+  padding-right: 1em;
+}
 button,
 input {
   font: inherit;
-  outline: none;
 }
 
 ul,

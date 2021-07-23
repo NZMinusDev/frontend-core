@@ -1,9 +1,7 @@
 .form-elements-layout__pagination {
-  @media print, screen and (min-width: 992px) {
-    & {
-      grid-area: pagination;
-      margin-top: 51px/320px * 100%;
-      margin-right: 79px/320px * 100%;
-    }
+  @media print, screen and (min-width: 1200px) {
+    grid-area: pagination;
+    margin-top: 40px / 320px * 100%;
+    margin-right: 79px / 320px * 100%;
   }
 }

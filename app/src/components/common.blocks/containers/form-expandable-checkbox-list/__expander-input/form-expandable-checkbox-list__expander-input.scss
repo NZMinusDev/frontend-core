@@ -1,0 +1,13 @@
+.form-expandable-checkbox-list__expander-input {
+  display: none;
+
+  &:checked {
+    & + .form-expandable-checkbox-list__expand-icon {
+      transform: rotate(180deg);
+    }
+
+    & ~ .form-expandable-checkbox-list__list {
+      visibility: visible;
+    }
+  }
+}

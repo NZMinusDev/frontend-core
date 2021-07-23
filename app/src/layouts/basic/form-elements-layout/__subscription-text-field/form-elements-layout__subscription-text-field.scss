@@ -1,9 +1,7 @@
 .form-elements-layout__subscription-text-field {
-  @media print, screen and (min-width: 992px) {
-    & {
-      grid-area: subscription-text-field;
-      width: 19.07142857142857em;
-      margin-top: 17px/320px * 100%;
-    }
+  @media print, screen and (min-width: 1200px) {
+    grid-area: subscription-text-field;
+    width: 267px / 14px * 1em;
+    padding-top: 18px / 14px * 1em;
   }
 }

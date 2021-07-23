@@ -1,8 +1,8 @@
 extends ~@layouts/basic/toxin-main-layout/toxin-main-layout.pug
 
 //- components
-include ~@common.blocks/containers/card-registration/card-registration.pug
-include ~@common.blocks/containers/card-entering/card-entering.pug
+include ~@common.blocks/containers/registration-card/registration-card.pug
+include ~@common.blocks/containers/entering-card/entering-card.pug
 
 block append variables
   -
@@ -11,5 +11,7 @@ block append variables
 
 block content
   main.sign-in-layout
-    +card-registration.sign-in-layout__card.sign-in-layout__card_hidden(name="registration")
-    +card-entering.sign-in-layout__card(name="entering")
+    .sign-in-layout__card.js-sign-in-layout__card.sign-in-layout__card_hidden
+      +registration-card
+    .sign-in-layout__card.js-sign-in-layout__card
+      +entering-card

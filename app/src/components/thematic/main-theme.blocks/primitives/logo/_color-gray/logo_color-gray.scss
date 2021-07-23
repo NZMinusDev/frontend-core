@@ -1,7 +1,0 @@
-@use "@utils/devTools/devTools.scss";
-
-.logo_color-gray,
-.logo_color-gray:before,
-.logo_color-gray:after {
-  border-color: devTools.getColor(color__dark-shade, 0.25);
-}

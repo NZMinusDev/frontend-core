@@ -1,0 +1,8 @@
+.form-dropdown__expand-btn {
+  color: rgba(var(--color__dark-shade), 0.5);
+
+  &:hover,
+  &:focus-within {
+    color: inherit;
+  }
+}

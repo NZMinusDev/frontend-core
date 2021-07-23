@@ -1,0 +1,79 @@
+include ~@common.blocks/primitives/form-dropdown/form-dropdown.pug
+include ~@common.blocks/primitives/button/button.pug
+
+//- 
+  action: string - form action
+  name?: string - name of <form>, also it is used such prefix for names of inner forms
+  method?: 'get' | 'post' - form method - default is 'get'
+  roomNumber: number - number of room
+  roomGrade: string - grade of room
+  paymentAmount: number - daily cost
+  selectedDates?: see mixin form-dropdown
+  guestsGroups: see groups in mixin form-dropdown
+  guestsList: see list in mixin form-dropdown
+  servicesPayment: number - amount of services payment
+  servicesSale: number - amount of services sale
+  additionalServicesPayment: number - amount of additional services payment
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin room-definition-card({ action = '/mock.js', name = 'room-definition-card', method = 'post', roomNumber = -1, roomGrade = '', paymentAmount = -1, selectedDates = '', guestsGroups = {}, guestsList = {}, servicesPayment = -1, servicesSale = -1, additionalServicesPayment = -1 } = {})
+  -
+    const currency = '₽';
+    const msInADay = 24 * 60 * 60 * 1000;
+
+    const dates = selectedDates.split(',').map((ISODateString) => new Date(ISODateString));
+    const days = (dates[1].getTime() - dates[0].getTime()) / msInADay;
+    const totalDayPaymentAmount = paymentAmount * days;
+
+    const totalDayPaymentSentence = `${paymentAmount.toLocaleString()}${currency} x ${days.toLocaleString()} суток`;
+    const totalDayPaymentAmountSentence = `${totalDayPaymentAmount.toLocaleString()}${currency}`;
+
+    const roomNumberSentence = `№ ${roomNumber.toLocaleString()}`;
+    const paymentAmountSentence = `${paymentAmount.toLocaleString()}${currency}<span class="card-base__text card-base__text_size_small"> в сутки</span>`;
+
+    servicesPayment = servicesPayment - servicesSale;
+    const servicesSaleSentence = `Сбор за услуги: скидка ${servicesSale.toLocaleString()}${currency}`;
+
+    const totalPaymentAmount = totalDayPaymentAmount + servicesPayment + additionalServicesPayment;
+  form.card-base.room-definition-card.js-room-definition-card(
+    name=name,
+    action=action,
+    method=method
+  )&attributes(attributes)
+    .room-definition-card__room-title
+      h1.room-definition-card__room-number= roomNumberSentence
+      h3.room-definition-card__room-grade= roomGrade
+    h3.room-definition-card__day-payment.js-room-definition-card__day-payment(
+      data-amount=paymentAmount
+    )!= paymentAmountSentence
+    fieldset.room-definition-card__datepicker-fieldset
+      .room-definition-card__datepicker
+        .room-definition-card__arrival-date-dropdown.js-room-definition-card__arrival-date-dropdown
+          +form-dropdown('date', { heading: { h3: 'Прибытие' }, name: `${name}-arrival`, range: true, selectedDates, altFields: `.room-definition-card__departure-date-dropdown [name=${name}-departure]` })
+        .room-definition-card__departure-date-dropdown
+          +form-dropdown('date', { heading: { h3: 'Выезд' }, name: `${name}-departure`, isAltField: true })
+    .room-definition-card__guests-dropdown.js-room-definition-card__guests-dropdown
+      +form-dropdown('item-quantity', { heading: { h3: 'Гости' }, name: `${name}-guests`, placeholder: 'Сколько гостей', openingMethod: 'applied', groups: guestsGroups, list: guestsList })
+    .room-definition-card__payment-rates
+      p.room-definition-card__payment-item.room-definition-card__total-day-payment.js-room-definition-card__total-day-payment
+        span.room-definition-card__payment-sentence.js-room-definition-card__payment-sentence= totalDayPaymentSentence
+        span.room-definition-card__payment-amount.js-room-definition-card__payment-amount= totalDayPaymentAmountSentence
+      p.room-definition-card__payment-item.room-definition-card__services-payment.js-room-definition-card__services-payment.room-definition-card__payment-item_col-template_with-tooltip
+        span.room-definition-card__payment-sentence= servicesSaleSentence
+        span.room-definition-card__payment-tooltip
+          span.tooltip(data-content="Подсказка к сборам за услуги") i
+        span.room-definition-card__payment-amount.js-room-definition-card__payment-amount(
+          data-amount=servicesPayment
+        )= `${servicesPayment.toLocaleString()}${currency}`
+      p.room-definition-card__payment-item.room-definition-card__additional-services-payment.js-room-definition-card__additional-services-payment.room-definition-card__payment-item_col-template_with-tooltip
+        span.room-definition-card__payment-sentence Сбор за дополнительные услуги
+        span.room-definition-card__payment-tooltip
+          span.tooltip(data-content="Подсказка к сборам за дополнительные услуги") i
+        span.room-definition-card__payment-amount.js-room-definition-card__payment-amount(
+          data-amount=additionalServicesPayment
+        )= `${additionalServicesPayment.toLocaleString()}${currency}`
+    h2.room-definition-card__payment-item.room-definition-card__total-payment
+      span Итого
+      span.room-definition-card__text-separator
+      span.room-definition-card__total-payment-amount.js-room-definition-card__total-payment-amount= `${totalPaymentAmount.toLocaleString()}${currency}`
+    .room-definition-card__submit-btn
+      +button({ appearance: 'like-a-link' })(type="submit", value="Забронировать")

@@ -1,13 +1,10 @@
-@font-face {
-  font-family: "ToxinLogoFont";
-  src: url("./fonts/ToxinLogoFont.woff") format("woff"), url("./fonts/ToxinLogoFont.eot"),
-    url("./fonts/ToxinLogoFont.eot?#iefix") format("embedded-opentype"),
-    url("./fonts/ToxinLogoFont.ttf") format("truetype"),
-    url("./fonts/ToxinLogoFont.svg#ToxinLogoFont") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
+@use '@utils/devTools/styles/mixins.scss';
+
+@include mixins.importFont('Toxin Logo Font', './fonts/toxin-logo-font.ttf');
 
 .logo__title {
-  font-family: "ToxinLogoFont";
+  font-family: 'Toxin Logo Font';
+  font-size: 1em;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }

@@ -1,0 +1,5 @@
+.nav-bar__login_status_confirmed {
+  &:before {
+    border-left-color: rgba(var(--color__dark-shade), 0.1);
+  }
+}

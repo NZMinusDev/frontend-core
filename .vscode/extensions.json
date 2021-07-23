@@ -1,0 +1,30 @@
+{
+  "recommendations": [
+    "rafikis75.vscode-sassdoc",
+    "formulahendry.auto-complete-tag",
+    "teabyii.ayu",
+    "coenraads.bracket-pair-colorizer",
+    "wmaurer.change-case",
+    "streetsidesoftware.code-spell-checker",
+    "pranaygp.vscode-css-peek",
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "ecmel.vscode-html-css",
+    "kisstkondoros.vscode-gutter-preview",
+    "wix.vscode-import-cost",
+    "xabikos.javascriptsnippets",
+    "ritwickdey.liveserver",
+    "pkief.material-icon-theme",
+    "ionutvmi.path-autocomplete",
+    "esbenp.prettier-vscode",
+    "wallabyjs.quokka-vscode",
+    "streetsidesoftware.code-spell-checker-russian",
+    "ms-ceintl.vscode-language-pack-ru",
+    "earshinov.sort-lines-by-selection",
+    "jock.svg",
+    "wayou.vscode-todo-highlight",
+    "jumpinjackie.vscode-map-preview",
+    "gogocrow.webpack-snippets",
+    "jebbs.plantuml"
+  ]
+}

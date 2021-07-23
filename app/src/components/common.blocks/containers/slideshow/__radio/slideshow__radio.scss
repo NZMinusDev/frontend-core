@@ -1,8 +1,8 @@
 .slideshow__radio {
-  width: 0.5357142857142857em;
-  height: 0.5357142857142857em;
+  width: 7.5px / 14px * 1em;
+  height: 7.5px / 14px * 1em;
   position: absolute;
-  bottom: 1.071428571428571em;
+  bottom: 15px / 14px * 1em;
   right: 0; //redefined in pug template using style attr
   z-index: 2;
   appearance: none;
@@ -14,15 +14,14 @@
 
     //current picture
     & + .slideshow__switcher + .slideshow__picture {
-      display: block;
       opacity: 1;
     }
 
     // switcher to next picture
     & ~ .slideshow__switcher ~ .slideshow__switcher ~ .slideshow__switcher {
-      display: inline-block;
+      display: inline-flex;
       right: 0;
-      transform: matrix(-1, 0, 0, 1, 0, 0);
+      transform: rotate(180deg);
 
       //another switchers
       & ~ .slideshow__switcher {
@@ -32,7 +31,7 @@
 
     // switcher to previous picture
     & + .slideshow__switcher {
-      display: inline-block;
+      display: inline-flex;
       left: 0;
     }
   }

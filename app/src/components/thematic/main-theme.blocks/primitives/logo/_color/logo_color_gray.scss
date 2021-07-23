@@ -1,0 +1,5 @@
+.logo_color_gray,
+.logo_color_gray:before,
+.logo_color_gray:after {
+  border-color: rgba(var(--color__dark-shade), 0.25);
+}

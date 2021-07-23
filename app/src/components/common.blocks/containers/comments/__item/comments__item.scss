@@ -1,14 +1,7 @@
-@use "@utils/devTools/devTools.scss";
-
 .comments__item {
   display: grid;
   grid:
-    "icon source"
-    "like content" / auto 1fr;
-  grid-row-gap: 0.7142857142857143em;
-  grid-column-gap: 0.7142857142857143em;
-
-  &:not(:first-child) {
-    margin-top: 22px/14px * 1em;
-  }
+    'icon source'
+    'like content' / auto 1fr;
+  gap: 10px / 14px * 1em;
 }

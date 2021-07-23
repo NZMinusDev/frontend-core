@@ -1,2 +1,2 @@
-import "./cards.pug";
-import "./cards.scss";
+import './cards.pug';
+import './cards.scss';

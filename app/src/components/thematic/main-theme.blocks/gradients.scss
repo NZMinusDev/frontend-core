@@ -1,16 +1,14 @@
-@use "@utils/devTools/devTools.scss";
-
 @function primary($opacity) {
   @return linear-gradient(
     180deg,
-    devTools.getColor(color__primary, $opacity) 0%,
-    devTools.getColor(color__primary_additional, $opacity) 100%
+    rgba(var(--color__primary), #{$opacity}) 0%,
+    rgba(var(--color__primary_additional), #{$opacity}) 100%
   );
 }
 @function secondary($opacity) {
   @return linear-gradient(
     180deg,
-    devTools.getColor(color__secondary, $opacity) 0%,
-    devTools.getColor(color__secondary_additional, $opacity) 100%
+    rgba(var(--color__secondary), #{$opacity}) 0%,
+    rgba(var(--color__secondary_additional), #{$opacity}) 100%
   );
 }

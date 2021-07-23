@@ -18,8 +18,7 @@
       "@common.blocks/*": ["components/common.blocks/*"],
       "@thematic/*": ["components/thematic/*"],
       "@experiments/*": ["components/experimental/*"],
-      "@images/*": ["assets/pictures/images/*"],
-      "@contents/*": ["assets/pictures/contents/*"],
+      "@assets/*": ["assets/*"],
       "@utils/*": ["utils/*"]
     },
     "plugins": [

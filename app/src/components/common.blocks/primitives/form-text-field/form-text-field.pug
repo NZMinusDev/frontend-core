@@ -1,39 +1,65 @@
-//- attributes.id - id for input field inside component
-//- attributes.class - class for component bem mix: such as positioning functionality
-//- isFilter: {boolean} - if true, input change event will reload page with chosen value(get method)
-//- attributes.label - text for label
-//- attributes.type - type of field for validation: 'email' | 'password' | 'date' 
-//- attributes.name - name of input field
-//- attributes.value - init value of field
-//- attributes.placeholder - placeholder text
-//- autofocus - just add it for it works
-//- materialIcon - material icon name for submit btn in field
-mixin form-text-field
+include ~@common.blocks/primitives/heading/heading.pug
+include ~@common.blocks/primitives/icon/icon.pug
+
+//-
+  heading?: see mixin heading
+  description?: see mixin heading
+  headingMarginBottom?: see marginBottom in mixin heading
+  name?: string - name of input field
+  type?: 'text' | 'email' | 'password' | 'date' - type of field for validation 
+  placeholder?: string - placeholder text
+  value?: string - init value of field
+  autofocus?: boolean - autofocus of field
+  materialIcon?: string - material icon name for submit btn in field
+  isFilter?: boolean - if true, input change event will reload page with chosen value(get method)
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin form-text-field({ heading = '', description = '', headingMarginBottom = '', name = 'text-field', type = 'text', placeholder = '', value = '', autofocus = false, materialIcon = '', isFilter = false } = {})
   -
-    const ALLOWED_INPUTMASK_TYPES = ['text', 'search', 'tel', 'url', 'password'];
-    const ALLOWED_INPUTMODE_ATTRIBUTE = ['none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'];
-    const RESERVED_PLACEHOLDERS = {email:"Email", password:"Пароль", date:"ДД.ММ.ГГГГ"};
+    //- allowed inputMask types: 'text' | 'search' | 'tel' | 'url' | 'password', see: https://github.com/RobinHerbots/Inputmask#allowed-html-elements
+    //- allowed inputmode:  'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url',
 
-    const componentClassModificator = attributes.type ? 'form-text-field_is' + attributes.type[0].toUpperCase() + attributes.type.slice(1) : '';
-    let inputMaskType = ALLOWED_INPUTMASK_TYPES.find(type => type==attributes.type);
-    let inputModeAttr = ALLOWED_INPUTMODE_ATTRIBUTE.find(type => type==attributes.type);
-    inputMaskType == inputMaskType || "text";
-    inputModeAttr == inputModeAttr || "text";
+    const attributesOfType = {
+      text:{
+        inputType: 'text',
+        inputmode: 'text',
+        placeholder: '',
+      },
+      email:{
+        inputType: 'text',
+        inputmode: 'email',
+        placeholder: 'Email',
+      },
+      password:{
+        inputType: 'password',
+        inputmode: 'text',
+        placeholder: 'Пароль',
+      },
+      date:{
+        inputType: 'text',
+        inputmode: 'numeric',
+        placeholder: 'ДД.ММ.ГГГГ',
+      }
+    }
 
-  .form-text-field(class=componentClassModificator, class=attributes.class)
-    if attributes.label
-      h3.form-label
-        label(for=attributes.id)= attributes.label
-    .form-field
-      input.form-text-field__input(
-        id=attributes.id,
-        isFilter=attributes.isFilter ? attributes.isFilter + '' : null,
-        type=inputMaskType,
-        inputmode=inputModeAttr,
-        name=attributes.name,
-        placeholder=RESERVED_PLACEHOLDERS[attributes.type] || attributes.placeholder,
-        value=attributes.value,
-        autofocus=attributes.autofocus
+    const typeClasses = type ? [`form-text-field__input_type_with-${type}`,`js-form-text-field__input_type_with-${type}`] : undefined;
+  .form-text-field.js-form-text-field&attributes(attributes)
+    if heading
+      +heading(heading, { description, marginBottom: headingMarginBottom, isLabel: true })(
+        for=name
       )
-      if attributes.materialIcon
-        button.icon.form-text-field__link-icon(type="submit", data-icon=attributes.materialIcon)
+    .form-field
+      input.form-text-field__input.js-form-text-field__input(
+        class=[...typeClasses],
+        data-is-filter=isFilter,
+        type=attributesOfType[type].inputType,
+        inputmode=attributesOfType[type].inputmode,
+        name=name,
+        id=name,
+        placeholder=attributesOfType[type].placeholder || placeholder,
+        value=value,
+        autofocus=autofocus
+      )
+      if materialIcon
+        +icon({ tag: 'button', content: materialIcon, width: 'large', color: 'primary-gradient' })(
+          type="submit"
+        )

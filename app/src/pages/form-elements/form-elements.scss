@@ -1,39 +1,25 @@
-@use "@utils/devTools/devTools.scss";
-
-@use "@thematic/main-theme.blocks/gradients.scss";
+@use '@thematic/main-theme.blocks/gradients.scss';
 
 /* Styles just for demonstration in ui-kit, not fof production use*/
-.form-elements-layout__dropdown-expanded-plural > .form-field {
+.form-elements-layout__dropdown-expanded-plural .form-field {
   border: var(--border-hover);
-  color: devTools.getColor(color__dark-shade, 0.75);
-
-  & > .form-dropdown__expand-icon {
-    color: devTools.getColor(color__dark-shade, 0.75);
-  }
+  color: rgba(var(--color__dark-shade), 0.75);
 }
-.form-elements-layout__dropdown-expanded-apply > .form-field {
+.form-elements-layout__dropdown-expanded-apply .form-field {
   border: var(--border-hover);
-  color: devTools.getColor(color__dark-shade, 0.75);
-
-  & > .form-dropdown__expand-icon {
-    color: devTools.getColor(color__dark-shade, 0.75);
-  }
+  color: rgba(var(--color__dark-shade), 0.75);
 }
-.form-elements-layout__dropdown-expanded-clear-apply > .form-field {
+.form-elements-layout__dropdown-expanded-clear-apply .form-field {
   border: var(--border-hover);
-  color: devTools.getColor(color__dark-shade, 0.75);
-
-  & > .form-dropdown__expand-icon {
-    color: devTools.getColor(color__dark-shade, 0.75);
-  }
+  color: rgba(var(--color__dark-shade), 0.75);
 }
 
-#button-fill-hovered {
+.button_appearance_filled:nth-of-type(2) {
   background: gradients.primary(0.5);
 }
-#button-empty-hovered {
+.button_appearance_bordered:nth-of-type(2) {
   background: linear-gradient(180deg, white, white) padding-box, gradients.primary(0.5) border-box;
 }
-#button-icon-link-hovered {
-  color: devTools.getColor(color__dark-shade, 0.5);
+.button_appearance_like-a-icon-link:nth-of-type(2) {
+  color: rgba(var(--color__dark-shade), 0.5);
 }

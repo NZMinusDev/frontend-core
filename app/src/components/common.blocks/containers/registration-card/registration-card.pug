@@ -1,0 +1,36 @@
+include ~@common.blocks/primitives/form-text-field/form-text-field.pug
+include ~@common.blocks/primitives/form-toggle/form-toggle.pug
+include ~@common.blocks/containers/form-radio-buttons/form-radio-buttons.pug
+include ~@common.blocks/primitives/button/button.pug
+
+//- 
+  action: string - form action
+  name?: string - name of <form>, also it is used such prefix for names of inner forms
+  method?: 'get' | 'post' - form method
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin registration-card({ action = '/mock.js', name = 'registration-card', method = 'post' } = {})
+  form.card-base.registration-card(name=name, action=action, method=method)&attributes(attributes)
+    h1.registration-card__title Регистрация аккаунта
+    fieldset.registration-card__name-fieldset 
+      +form-text-field({ name: `${name}-name`, placeholder: 'Имя' })
+      +form-text-field({ name: `${name}-surname`, placeholder: 'Фамилия' })
+      +form-radio-buttons({ buttons: { male: { label: 'Мужчина', checked: true }, female: { label: 'Женщина' } } })
+    .registration-card__birthday-field
+      +form-text-field({ heading: { h3: 'Дата рождения' }, name: `${name}-birthday`, type: 'date' })
+    fieldset.registration-card__login-fieldset
+      +form-text-field({ heading: { h3: 'Данные для входа в сервис' }, name: `${name}-email`, type: 'email' })
+      +form-text-field({ name: `${name}-password`, type: 'password' })
+      +form-toggle({ name: `${name}-special-offers`, label: 'Получать спецпредложения' })
+    .registration-card__link-btn
+      +button({ appearance: 'like-a-link' })(
+        type="submit",
+        value="Перейти к оплате",
+        tabindex="1"
+      )
+    .registration-card__switcher
+      p.registration-card__caption-of-redirect-to-entering Уже есть аккаунт на Toxin
+      .registration-card__switch-btn
+        +button({ appearance: 'bordered', horizontalPadding: 'large' })(
+          type="button",
+          value="Войти"
+        )

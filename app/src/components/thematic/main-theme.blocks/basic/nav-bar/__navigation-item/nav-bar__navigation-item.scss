@@ -1,13 +1,12 @@
-@use "@utils/devTools/devTools.scss";
-
 .nav-bar__navigation-item {
-  color: devTools.getColor(color__dark-shade, 0.5);
+  color: rgba(var(--color__dark-shade), 0.5);
 
-  &:hover {
-    color: devTools.getColor(color__dark-shade, 0.75);
-
-    & > .nav-bar__expand-icon:after {
-      color: devTools.getColor(color__dark-shade, 0.75);
-    }
+  *:hover,
+  *:hover:after,
+  *:hover:before,
+  *:focus-within,
+  *:focus-within:after,
+  *:focus-within:before {
+    color: rgba(var(--color__dark-shade), 0.75);
   }
 }

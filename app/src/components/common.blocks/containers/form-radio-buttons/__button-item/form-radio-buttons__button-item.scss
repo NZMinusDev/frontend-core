@@ -1,24 +1,19 @@
 .form-radio-buttons__button-item {
   appearance: none;
-  position: relative;
-  display: inline-block;
-  width: 1.428571428571429em;
-  height: 1.428571428571429em;
-  margin-right: 0.7142857142857143em;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px / 14px * 1em;
+  height: 20px / 14px * 1em;
+  margin-right: 10px / 14px * 1em;
   border: 1px solid black;
   border-radius: 100%;
   cursor: pointer;
 
   &:before {
-    content: "";
+    content: '';
     width: 60%;
     height: 60%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    margin: auto;
     background: black;
     border-radius: 100%;
     opacity: 0;

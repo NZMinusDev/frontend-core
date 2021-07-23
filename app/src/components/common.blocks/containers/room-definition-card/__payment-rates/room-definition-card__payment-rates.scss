@@ -1,0 +1,6 @@
+.room-definition-card__payment-rates {
+  grid-area: payment-rates;
+  display: grid;
+  grid-template-columns: auto;
+  grid-row-gap: 10px / 14px * 1em;
+}

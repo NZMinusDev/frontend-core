@@ -1,0 +1,20 @@
+include ~@common.blocks/primitives/form-text-field/form-text-field.pug
+include ~@common.blocks/primitives/button/button.pug
+
+//- 
+  action: string - form action
+  name?: string - name of <form>, also it is used such prefix for names of inner forms
+  method?: 'get' | 'post' - form method
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin entering-card({ action = '/mock.js', name = 'entering-card', method = 'post' } = {})
+  form.card-base.entering-card(name=name, action=action, method=method)&attributes(attributes)
+    h1.entering-card__title Войти
+    .entering-card__email-field
+      +form-text-field({ name: `${name}-email`, type: 'email' })
+    .entering-card__password-field
+      +form-text-field({ name: `${name}-password`, type: 'password' })
+    .entering-card__link-btn
+      +button({ appearance: 'like-a-link' })(type="submit", value="Войти", tabindex="1")
+    p.entering-card__caption-of-redirect-to-registration Нет аккаунта на Toxin?
+    .entering-card__switch-btn
+      +button({ appearance: 'bordered' })(type="button", value="Создать")

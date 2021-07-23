@@ -1,9 +1,0 @@
-.footer__brand-icon {
-  position: relative;
-  width: 1.714285714285714em;
-
-  &:after {
-    font-family: "Font Awesome 5 Brands";
-    content: attr(data-icon);
-  }
-}

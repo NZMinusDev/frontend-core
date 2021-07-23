@@ -1,6 +1,9 @@
 .pagination__item_previous {
-  font-family: "Material Icons";
-  background-color: rgba(0, 0, 0, 1);
+  width: 40px / 24px * 1em;
+  height: 40px / 24px * 1em;
+  font-family: 'Material Icons';
+  font-size: 24px / 14px * 1em;
   color: white;
+  background-color: rgba(0, 0, 0, 1);
   border-radius: 100%;
 }

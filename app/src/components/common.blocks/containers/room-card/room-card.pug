@@ -1,0 +1,35 @@
+include ~@common.blocks/containers/slideshow/slideshow.pug
+include ~@common.blocks/containers/form-rate-button/form-rate-button.pug
+
+//- 
+  href: string - link to room's page
+  roomNumber: number - number of room
+  roomGrade?: string - grade of room, for example: Люкс
+  paymentAmount: number - daily cost
+  rate: number - initial rating
+  commentsAmount: number - amount of comments about room
+  paths: string[] - images' paths
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin room-card({ href = '/mock.html', roomNumber = -1, roomGrade = '', paymentAmount = -1, rate = 0, commentsAmount = -1, paths = [] } = {})
+  -
+    const currency = '₽';
+
+    const roomNumberSentence = `№ ${roomNumber.toLocaleString()}`;
+    const paymentAmountSentence = `${paymentAmount.toLocaleString()}${currency}<span class="card-base__text card-base__text_size_small"> в сутки</span>`;
+    const commentsAmountSentence = `${commentsAmount.toLocaleString()}<span class="card-base__text"> Отзывов</span>`;
+
+    const uniqueNamePostfix = Math.random();
+  figure.card-base.room-card&attributes(attributes)
+    .room-card__slideshow
+      +slideshow({ name: `${href}-slideshow-${uniqueNamePostfix}`, paths })
+    figcaption.room-card__room-data
+      a.room-card__data-row(href=href, title="Подробнее о номере")
+        .room-card__room-title
+          h2.room-card__room-number= roomNumberSentence
+          if roomGrade
+            h3.room-card__room-grade= roomGrade
+        h3.room-card__day-payment!= paymentAmountSentence
+      .room-card__data-row
+        .room-card__room-rating
+          +form-rate-button({ name: `${href}-rating-${uniqueNamePostfix}`, rate, disabled: true, interaction: 'rejected' })
+        h3.room-card__room-comments!= commentsAmountSentence

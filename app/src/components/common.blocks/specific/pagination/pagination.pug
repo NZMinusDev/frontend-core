@@ -1,89 +1,126 @@
-//- displayed: {number} - amount of items to display 
-//- total: {number} - amount of searched items
-//- id?: id of component
-//- class?: class for component bem mix: such as positioning functionality or size
-//- mod?: "href" | "async", default is href
-  //- Additional for type="href":
-    //-  hrefPrefix: {string} - href with: location, filter get settings, name of pagination. Example: /catalog?date1=date&guests=3&page=
-//- page?: {number} - active page, default is 1
-//- text?: {string} - placed text after amounts
-mixin pagination
+//-
+  addressingMethod?: 'href' | 'async'
+    when 'href':
+      hrefPrefix?: string - href with: location, filter get settings, name of pagination. Example: /catalog?date1=date&guests=3&page=
+  total: number - amount of searched items
+  displayed: number - amount of items to display 
+  page?: number - active page
+  text?: string - placed text after amounts
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin pagination({ addressingMethod = 'href', hrefPrefix = '?page=', total = 100, displayed = 12, page = 1, text = '' } = {})
   -
-    const pages = Math.ceil(attributes.total / attributes.displayed);
-    const activePage = attributes.page || 1;
+    const pages = Math.ceil(total / displayed);
+    const activePage = page;
 
-    //- Determine how many pages to show after the current page index
+    // Determine how many pages to show after the current page index
     let pageCutLow = activePage - 1;
-    //- Determine how many pages to show before the current page index
+
+    // Determine how many pages to show before the current page index
     let pageCutHigh = activePage + 1;
 
-    if (activePage === 1){
+    if (activePage === 1) {
       pageCutLow += 1;
       pageCutHigh += 1;
     }
-    if (activePage >= pages){ 
+
+    if (activePage >= pages) {
       pageCutLow -= 1;
-      pageCutHigh = pages
+      pageCutHigh = pages;
     }
 
-    const counterFrom = (activePage - 1) * attributes.displayed + 1;
-    const counterTo = activePage * attributes.displayed > attributes.total ? attributes.total : activePage * attributes.displayed;
-    const counterToString = counterTo+"";
-    const counterTotalString = attributes.total+"";
-    const counterTotal = counterTotalString.length > counterToString.length ? Math.floor(attributes.total / Math.pow(10,counterToString.length)) * Math.pow(10,counterToString.length) + "+ " : attributes.total  + " ";
+    const counterFrom = (activePage - 1) * displayed + 1;
+    const counterTo =
+      activePage * displayed > total
+        ? total
+        : activePage * displayed;
+    const counterToString = `${counterTo}`;
+    const counterTotalString = `${total}`;
+    const counterTotal =
+      counterTotalString.length > counterToString.length
+        ? `${
+            Math.floor(total / Math.pow(10, counterToString.length)) *
+            Math.pow(10, counterToString.length)
+          }+ `
+        : `${total} `;
 
-    const counterText = counterFrom + ' - ' + counterTo + ' из ' + counterTotal + attributes.text;
+    const counterText = `${counterFrom} - ${counterTo} из ${counterTotal}${text}`;
 
-    const type = attributes.type || "href";
-
-    const paginationHrefs = [];
-    if(type=="href"){
-      for(let i=1;i<=pages;i++){
-        paginationHrefs.push(`${attributes.hrefPrefix}${i}`);
-      } 
+    let paginationHrefs;
+    if (addressingMethod === 'href') {
+      paginationHrefs = new Array(pages)
+        .fill('')
+        .map((value, index) => `${hrefPrefix}${index}`);
     }
-  nav.pagination(
-    id=attributes.id,
-    class=attributes.class,
-    class=type === 'async' ? 'pagination_mod-async' : null,
-    data-page=type === 'async' ? activePage : null,
-    data-displayed=type === 'async' ? attributes.displayed : null,
-    data-total=type === 'async' ? attributes.total : null,
-    data-text=type === 'async' ? attributes.text : null
-  )
-    ul.pagination__list
+  nav.pagination.js-pagination(
+    class=addressingMethod === 'async' ? ['pagination_addressing-method_async', 'js-pagination_addressing-method_async'] : undefined,
+    data-page=addressingMethod === 'async' ? activePage : undefined,
+    data-displayed=addressingMethod === 'async' ? displayed : undefined,
+    data-total=addressingMethod === 'async' ? total : undefined,
+    data-text=addressingMethod === 'async' ? text : undefined
+  )&attributes(attributes)
+    ul.pagination__list.js-pagination__list
       //- Show the Previous button only if you are on a page other than the first
       if activePage > 1
-        li.pagination__item.pagination__item_previous
-          a(href=type === 'href' ? paginationHrefs[activePage - 2] : null)= 'arrow_back'
+        li.pagination__item.pagination__item_previous(title="на предыдущую страницу")
+          if addressingMethod === 'href'
+            a.pagination__link(href=paginationHrefs[activePage - 2])= 'arrow_back'
+          else
+            = 'arrow_back'
       //- Show all the pagination elements if there are less than 6 pages total
       if pages < 6
-        - for (let p = 1; p <= pages; p++)
-        li.pagination__item(class=activePage === p ? 'pagination__item_active' : null)
-          a(href=type === 'href' ? paginationHrefs[p - 1] : null)= p
-      //- Use "..." to collapse pages outside of a certain range
+        - for (let page = 1; page <= pages; page++)
+        li.pagination__item(
+          class=activePage === page ? 'pagination__item_active' : undefined,
+          title=activePage === page ? 'текущая страница' : `на страницу ${page}`
+        )
+          if addressingMethod === 'href'
+            a.pagination__link(href=paginationHrefs[page - 1])= page
+          else
+            = page
+      //- Use '...' to collapse pages outside of a certain range
       else
-        //- Show the very first page followed by a "..." at the beginning of the pagination section (after the Previous button)
+        //- Show the very first page followed by a '...' at the beginning of the pagination section (after the Previous button)
         if activePage > 2
-          li.pagination__item
-            a(href=type === 'href' ? paginationHrefs[0] : null)= 1
+          li.pagination__item(title=`на страницу ${1}`)
+            if addressingMethod === 'href'
+              a.pagination__link(href=paginationHrefs[0])= 1
+            else
+              = 1
           if activePage > 3
-            li.pagination__item.pagination__item_out-of-range
-              a(href=type === 'href' ? paginationHrefs[1] : null)= '...'
+            li.pagination__item.pagination__item_out-of-range(title=`на страницу ${2}`)
+              if addressingMethod === 'href'
+                a(href=paginationHrefs[1])= '...'
+              else
+                = '...'
         //- Output the indexes for pages that fall inside the range of pageCutLow and pageCutHigh
-        - for (let p = pageCutLow; p <= pageCutHigh; p++)
-          li.pagination__item(class=activePage === p ? 'pagination__item_active' : null)
-            a(href=type === 'href' ? paginationHrefs[p - 1] : null)= p
-        //- Show the very last page preceded by a "..." at the end of the pagination section (before the Next button)
+        - for (let page = pageCutLow; page <= pageCutHigh; page++)
+          li.pagination__item(
+            class=activePage === page ? 'pagination__item_active' : undefined,
+            title=activePage === page ? 'текущая страница' : `на страницу ${page}`
+          )
+            if addressingMethod === 'href'
+              a.pagination__link(href=paginationHrefs[page - 1])= page
+            else
+              = page
+        //- Show the very last page preceded by a '...' at the end of the pagination section (before the Next button)
         if activePage < pages - 1
           if activePage < pages - 2
-            li.pagination__item.pagination__item_out-of-range
-              a(href=type === 'href' ? paginationHrefs[pages - 3] : null)= '...'
-          li.pagination__item
-            a(href=type === 'href' ? paginationHrefs[pages - 1] : null)= pages
+            li.pagination__item.pagination__item_out-of-range(title=`на страницу ${pages - 1}`)
+              if addressingMethod === 'href'
+                a.pagination__link(href=paginationHrefs[pages - 2])= '...'
+              else
+                = '...'
+          li.pagination__item(title=`на страницу ${pages}`)
+            if addressingMethod === 'href'
+              a.pagination__link(href=paginationHrefs[pages - 1])= pages
+            else
+              = pages
       //- Show the Next button only if you are on a page other than the last
       if activePage < pages
-        li.pagination__item.pagination__item_next
-          a(href=type === 'href' ? paginationHrefs[activePage] : null)= 'arrow_forward'
+        li.pagination__item.pagination__item_next(title="на следующую страницу")
+          if addressingMethod === 'href'
+            a.pagination__link(href=paginationHrefs[activePage])= 'arrow_forward'
+          else
+            = 'arrow_forward'
     //- counter
-    p.pagination__counter= counterText
+    p.pagination__counter.js-pagination__counter= counterText

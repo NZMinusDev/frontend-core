@@ -1,9 +1,6 @@
 .form-elements-layout__button-long {
-  @media print, screen and (min-width: 992px) {
-    & {
-      grid-area: button-long;
-      position: relative;
-      bottom: 2px;
-    }
+  @media print, screen and (min-width: 1200px) {
+    grid-area: button-long;
+    margin-bottom: 2px;
   }
 }

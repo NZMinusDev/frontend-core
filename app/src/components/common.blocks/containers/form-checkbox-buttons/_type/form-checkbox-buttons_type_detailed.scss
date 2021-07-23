@@ -1,0 +1,10 @@
+.form-checkbox-buttons_type_detailed {
+  .form-checkbox-buttons__label-item {
+    font-weight: 700;
+  }
+  .form-checkbox-buttons__item {
+    grid-template-areas:
+      'button-item label-item'
+      '. description';
+  }
+}

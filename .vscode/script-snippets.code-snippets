@@ -1,0 +1,60 @@
+{
+  /*
+   * Place your snippets here.
+   * Each snippet is defined under a snippet name and has a scope, prefix, body and description.
+   * Add comma separated ids of the languages where the snippet is applicable in the scope field.
+   * If scope is left empty or omitted, the snippet gets applied to all languages. The prefix is what is used to trigger the snippet and the body will be expanded and inserted.
+   * Possible variables are:
+   *   $1, $2 for tab stops
+   *   $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+   * Placeholders with the same ids are connected.
+   */
+   "BEM single block defination": {
+    "prefix": "bem:sb",
+    "scope": "typescript",
+    "body": [
+      "import {\n  BEMComponent,\n  HTMLElementWithComponent,\n} from '@utils/devTools/scripts/ComponentCreationHelper';\n\ntype ${1:BlockName}Element = HTML$3Element;\n\ntype ${1:BlockName}DOM = {};\n\ntype ${1:BlockName}HTMLOptions = {};\ntype ${1:BlockName}State = {};\n\ntype ${1:BlockName}CustomEvents = {};\n\nclass ${1:BlockName} extends BEMComponent<${1:BlockName}Element, ${1:BlockName}CustomEvents> {\n  protected readonly _DOM: Readonly<${1:BlockName}DOM>;\n\n  protected readonly _options: ${1:BlockName}HTMLOptions;\n  protected readonly _state: ${1:BlockName}State;\n\n  constructor(${2:blockName}Element: ${1:BlockName}Element) {\n    super(${2:blockName}Element);\n\n    this._DOM = this._initDOM();\n\n    this._options = this._initOptionsFromHTML();\n    this._state = this._initState();\n\n    this._bindListeners();\n\n    this._initDisplay();\n  }\n\n  protected _initDOM() { return {}; }\n\n  protected _initOptionsFromHTML(){ return {}; }\n  protected _initState(){ return {}; }\n\n  protected _bindListeners(){ return this; }\n\n  protected _initDisplay(){ return this; }\n}\n\ntype ${1:BlockName}ElementWithComponent = HTMLElementWithComponent<${1:BlockName}Element, ${1:BlockName}CustomEvents, ${1:BlockName}>;\n\nconst ${2:blockName}s = [new ${1:BlockName}(document.querySelector('.js-${TM_FILENAME_BASE}') as ${1:BlockName}Element)];\n\nexport type { ${1:BlockName}CustomEvents, ${1:BlockName}, ${1:BlockName}ElementWithComponent }\n\nexport { ${2:blockName}s as default };"
+    ],
+    "description": "Template of BEM single block defination"
+  },
+  "BEM multiple block defination": {
+    "prefix": "bem:mb",
+    "scope": "typescript",
+    "body": [
+      "import {\n  BEMComponent,\n  HTMLElementWithComponent,\n} from '@utils/devTools/scripts/ComponentCreationHelper';\n\ntype ${1:BlockName}Element = HTML$3Element;\n\ntype ${1:BlockName}DOM = {};\n\ntype ${1:BlockName}HTMLOptions = {};\ntype ${1:BlockName}State = {};\n\ntype ${1:BlockName}CustomEvents = {};\n\nclass ${1:BlockName} extends BEMComponent<${1:BlockName}Element, ${1:BlockName}CustomEvents> {\n  protected readonly _DOM: Readonly<${1:BlockName}DOM>;\n\n  protected readonly _options: ${1:BlockName}HTMLOptions;\n  protected readonly _state: ${1:BlockName}State;\n\n  constructor(${2:blockName}Element: ${1:BlockName}Element) {\n    super(${2:blockName}Element);\n\n    this._DOM = this._initDOM();\n\n    this._options = this._initOptionsFromHTML();\n    this._state = this._initState();\n\n    this._bindListeners();\n\n    this._initDisplay();\n  }\n\n  protected _initDOM() { return {}; }\n\n  protected _initOptionsFromHTML(){ return {}; }\n  protected _initState(){ return {}; }\n\n  protected _bindListeners(){ return this; }\n\n  protected _initDisplay(){ return this; }\n}\n\ntype ${1:BlockName}ElementWithComponent = HTMLElementWithComponent<${1:BlockName}Element, ${1:BlockName}CustomEvents, ${1:BlockName}>;\n\nconst ${2:blockName}s = Array.from(document.querySelectorAll<${1:BlockName}Element>('.js-${TM_FILENAME_BASE}'), (${2:blockName}Element) => new ${1:BlockName}(${2:blockName}Element));\n\nexport type { ${1:BlockName}CustomEvents, ${1:BlockName}, ${1:BlockName}ElementWithComponent }\n\nexport { ${2:blockName}s as default };"
+    ],
+    "description": "Template of BEM multiple block defination"
+  },
+  "BEM single element defination": {
+    "prefix": "bem:se",
+    "scope": "typescript",
+    "body": [
+      "import {\n  BEMComponent,\n  HTMLElementWithComponent,\n} from '@utils/devTools/scripts/ComponentCreationHelper';\n\nimport ${4:parentBlockInstance}s from '..${5:/parent-block-file}';\n\ntype ${1:BlockNameElementName}Element = HTML$3Element;\n\ntype ${1:BlockNameElementName}DOM = {};\n\ntype ${1:BlockNameElementName}HTMLOptions = {};\ntype ${1:BlockNameElementName}State = {};\n\ntype ${1:BlockNameElementName}CustomEvents = {};\n\nclass ${1:BlockNameElementName} extends BEMComponent<${1:BlockNameElementName}Element, ${1:BlockNameElementName}CustomEvents> {\n  protected readonly _DOM: Readonly<${1:BlockNameElementName}DOM>;\n\n  protected readonly _options: ${1:BlockNameElementName}HTMLOptions;\n  protected readonly _state: ${1:BlockNameElementName}State;\n\n  constructor(${2:blockNameElementName}Element: ${1:BlockNameElementName}Element) {\n    super(${2:blockNameElementName}Element);\n\n    this._DOM = this._initDOM();\n\n    this._options = this._initOptionsFromHTML();\n    this._state = this._initState();\n\n    this._bindListeners();\n\n    this._initDisplay();\n  }\n\n  protected _initDOM() { return {}; }\n\n  protected _initOptionsFromHTML(){ return {}; }\n  protected _initState(){ return {}; }\n\n  protected _bindListeners(){ return this; }\n\n  protected _initDisplay(){ return this; }\n}\n\ntype ${1:BlockNameElementName}ElementWithComponent = HTMLElementWithComponent<${1:BlockNameElementName}Element, ${1:BlockNameElementName}CustomEvents, ${1:BlockNameElementName}>;\n\nconst ${2:blockNameElementName}s = ${4:parentBlockInstance}s.map((${4:parentBlockInstance}) => { const ${2:blockNameElementName}Element = ${4:parentBlockInstance}.element.querySelector('.js-${TM_FILENAME_BASE}'); if(${2:blockNameElementName}Element !== null){ return new ${1:BlockNameElementName}(${2:blockNameElementName}Element as ${1:BlockNameElementName}Element); } return null; }).filter((${2:blockNameElementName}) => ${2:blockNameElementName} !== null);\n\nexport type { ${1:BlockNameElementName}CustomEvents, ${1:BlockNameElementName}, ${1:BlockNameElementName}ElementWithComponent }\n\nexport { ${2:blockNameElementName}s as default };"
+    ],
+    "description": "Template of BEM single element defination"
+  },
+  "BEM multiple element defination": {
+    "prefix": "bem:me",
+    "scope": "typescript",
+    "body": [
+      "import {\n  BEMComponent,\n  HTMLElementWithComponent,\n} from '@utils/devTools/scripts/ComponentCreationHelper';\n\nimport ${4:parentBlockInstance}s from '..${5:/parent-block-file}';\n\ntype ${1:BlockNameElementName}Element = HTML$3Element;\n\ntype ${1:BlockNameElementName}DOM = {};\n\ntype ${1:BlockNameElementName}HTMLOptions = {};\ntype ${1:BlockNameElementName}State = {};\n\ntype ${1:BlockNameElementName}CustomEvents = {};\n\nclass ${1:BlockNameElementName} extends BEMComponent<${1:BlockNameElementName}Element, ${1:BlockNameElementName}CustomEvents> {\n  protected readonly _DOM: Readonly<${1:BlockNameElementName}DOM>;\n\n  protected readonly _options: ${1:BlockNameElementName}HTMLOptions;\n  protected readonly _state: ${1:BlockNameElementName}State;\n\n  constructor(${2:blockNameElementName}Element: ${1:BlockNameElementName}Element) {\n    super(${2:blockNameElementName}Element);\n\n    this._DOM = this._initDOM();\n\n    this._options = this._initOptionsFromHTML();\n    this._state = this._initState();\n\n    this._bindListeners();\n\n    this._initDisplay();\n  }\n\n  protected _initDOM() { return {}; }\n\n  protected _initOptionsFromHTML(){ return {}; }\n  protected _initState(){ return {}; }\n\n  protected _bindListeners(){ return this; }\n\n  protected _initDisplay(){ return this; }\n}\n\ntype ${1:BlockNameElementName}ElementWithComponent = HTMLElementWithComponent<${1:BlockNameElementName}Element, ${1:BlockNameElementName}CustomEvents, ${1:BlockNameElementName}>;\n\nconst ${2:blockNameElementName}s = ${4: parentBlockInstance}s.map((${4: parentBlockInstance}) => Array.from(${4: parentBlockInstance}.element.querySelectorAll<${1:BlockNameElementName}Element>('.js-${TM_FILENAME_BASE}'), (${2:blockNameElementName}Element) => new ${1:BlockNameElementName}(${2:blockNameElementName}Element))).flat();\n\nexport type { ${1:BlockNameElementName}CustomEvents, ${1:BlockNameElementName}, ${1:BlockNameElementName}ElementWithComponent }\n\nexport { ${2:blockNameElementName}s as default };"
+    ],
+    "description": "Template of BEM multiple element defination"
+  },
+  "BEM abstract modifier defination": {
+    "prefix": "bem:am",
+    "scope": "typescript",
+    "body": [
+      "import { BEMModifier } from '@utils/devTools/scripts/ComponentCreationHelper';\n\nimport type { ${1:ModifiedComponentName} } from '..${4:/file-of-modified-component}';\n\nabstract class ${1:ModifiedComponentName}${5:ModificatorName}Modifier extends BEMModifier<${1:ModifiedComponentName}> {\n  constructor(${2:modifiedComponentInstance}: ${1:ModifiedComponentName}) {\n    super(${2:modifiedComponentInstance}, '${2:modifiedComponentName}${5:ModificatorName}Modifier');\n  }\n}\n\nexport type { ${1:ModifiedComponentName} };\n\nexport { ${1:ModifiedComponentName}${5:ModificatorName}Modifier as default };"
+    ],
+    "description": "Template of BEM abstract modifier defination"
+  },
+  "BEM concrete modifier defination": {
+    "prefix": "bem:cm",
+    "scope": "typescript",
+    "body": [
+      "import ${2:modifiedComponentInstance}s from '..${4:/file-of-modified-component}';\nimport ${1:ModifiedComponentName}${5:ModificatorName}Modifier, { ${1:ModifiedComponentName} } from './coupling';\n\ntype ${1:ModifiedComponentName}${6:ModificatorValue}${5:ModificatorName}ModifierDOM = {};\n\ntype ${1:ModifiedComponentName}${6:ModificatorValue}${5:ModificatorName}ModifierHTMLOptions = {};\ntype ${1:ModifiedComponentName}${6:ModificatorValue}${5:ModificatorName}ModifierState = {};\n\ntype ${1:ModifiedComponentName}${6:ModificatorValue}${5:ModificatorName}ModifierCustomEvents = {};\n\nclass ${1:ModifiedComponentName}${6:ModificatorValue}${5:ModificatorName}Modifier extends ${1:ModifiedComponentName}${5:ModificatorName}Modifier {\n  protected readonly _DOM: Readonly<${1:ModifiedComponentName}${6:ModificatorValue}${5:ModificatorName}ModifierDOM>;\n\n  protected readonly _options: ${1:ModifiedComponentName}${6:ModificatorValue}${5:ModificatorName}ModifierHTMLOptions;\n  protected readonly _state: ${1:ModifiedComponentName}${6:ModificatorValue}${5:ModificatorName}ModifierState;\n\n  constructor(${2:modifiedComponentInstance}: ${1:ModifiedComponentName}) {\n    super(${2:modifiedComponentInstance});\n\n    this._DOM = this._initDOM();\n\n    this._options = this._initOptionsFromHTML();\n    this._state = this._initState();\n\n    this._bindComponentListeners();\n  }\n\n  protected _initDOM() { return {}; }\n\n  protected _initOptionsFromHTML(){ return {}; }\n  protected _initState(){ return {}; }\n\n  protected _bindComponentListeners() { return this; }\n  protected _componentEventListenerObject = {};\n}\n\nconst ${2:modifiedComponentInstance}${6:ModificatorValue}${5:ModificatorName}Modifiers = ${2:modifiedComponentInstance}s.filter((${2:modifiedComponentInstance}) => ${2:modifiedComponentInstance}.element.classList.contains('js-${TM_FILENAME_BASE}')).map((${2:modifiedComponentInstance}) => new ${1:ModifiedComponentName}${6:ModificatorValue}${5:ModificatorName}Modifier(${2:modifiedComponentInstance}));\n\nexport type { ${1:ModifiedComponentName}${6:ModificatorValue}${5:ModificatorName}ModifierCustomEvents }\n\n export { ${2:modifiedComponentInstance}${6:ModificatorValue}${5:ModificatorName}Modifiers as default };"
+    ],
+    "description": "Template of BEM concrete modifier defination"
+  }
+}

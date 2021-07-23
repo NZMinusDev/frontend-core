@@ -1,0 +1,7 @@
+.registration-card__switcher {
+  grid-area: switcher;
+  display: grid;
+  grid: 'caption-of-redirect-to-entering switch-btn';
+  align-items: center;
+  justify-content: space-between;
+}

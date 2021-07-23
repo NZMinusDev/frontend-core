@@ -1,30 +1,31 @@
-//- id: id of rate buttons' container
-//- class: class for component bem mix: such as positioning functionality
-//- label: text of label
-//- name: name of group
-//- length: number of stars
-//- rate: init rate amount
-//- titles:Array<string> - stars titles(hints)
-//- disabled: same as fieldset disabled (disable all buttons)
-mixin form-rate-button
-  .form-rate-button(id=attributes.id, class=attributes.class)
-    if attributes.label
-      h3.form-label
-        label(for=attributes.id)= attributes.label
+include ~@common.blocks/primitives/heading/heading.pug
+
+//-
+  heading?: see mixin heading
+  headingMarginBottom?: marginBottom in mixin heading
+  name?: string - name of group
+  rate: number - init rate amount
+  length?: number - number of stars
+  titles?: string[] - stars titles(hints)
+  disabled?: boolean - same as fieldset disabled (disable all buttons)
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin form-rate-button({ heading = '', headingMarginBottom = 'large', name = 'rate', rate = 3, length = 5, titles = ['очень плохо', 'плохо', 'нормально', 'хорошо', 'очень хорошо'], disabled = false } = {})
+  .form-rate-button&attributes(attributes)
     -
-      var rateLength = attributes.length;
-      var counter = rateLength;
-      const titles = attributes.titles || ['очень плохо', 'плохо', 'нормально', 'хорошо', 'очень хорошо'];
-    fieldset.form-rate-button__rating(disabled=attributes.disabled)
+      let counter = length;
+    if heading
+      +heading(heading, { marginBottom: headingMarginBottom })
+    fieldset.form-rate-button__rating(disabled=disabled)
       while counter > 0
-        - var checked = counter == attributes.rate ? 'checked' : null;
-        - var currentID = attributes.name + '_' + counter;
+        -
+          const currentID = `${name}-${counter}`;
+          const checked = counter === rate ? 'checked' : undefined;
         input.form-rate-button__button-item(
           id=currentID,
           type="radio",
-          name=attributes.name,
+          name=name,
           checked=checked,
           value=counter
         )
-        label.icon(for=currentID, title=titles[counter - 1])= counter + ' starts'
-        - counter--;
+        label.form-rate-button__icon(for=currentID, tabindex="0", title=titles[counter - 1])= `количество звезд: ${counter}`
+        - counter -= 1;

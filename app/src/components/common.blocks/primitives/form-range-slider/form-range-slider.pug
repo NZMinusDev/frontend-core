@@ -1,43 +1,29 @@
-//- name: name of slider form
-//- range: object of ranges such as { min: 341, max: 15454 }
-//- start: array of init values such as [5000, 10000]
-//- id?: id of slider
-//- class?: class for component bem mix: such as positioning functionality
-//- isFilter?: {boolean} - if true, input change event will reload page with chosen value(get method), default is false
-//- label?: text of label
-//- description: {string} - appended text after slider
-//- step?: {number}
-mixin form-range-slider
-  .form-range-slider(
-    class=attributes.class,
-    isFilter=attributes.isFilter ? attributes.isFilter + '' : null
-  )
-    if attributes.label
-      h3.form-label.form-range-slider__label
-        label(for=attributes.id)= attributes.label
-    input.form-range-slider__input(
-      name=attributes.name + '-from',
-      id=attributes.id ? attributes.id + '-from' : null,
-      type="range",
-      min=attributes.range.min,
-      max=attributes.range.max,
-      value=attributes.start[0],
-      step=attributes.step ? attributes.step : 1
-    )
-    input.form-range-slider__input(
-      name=attributes.name + '-to',
-      id=attributes.id ? attributes.id + '-to' : null,
-      type="range",
-      min=attributes.range.min,
-      max=attributes.range.max,
-      value=attributes.start[1],
-      step=attributes.step ? attributes.step : 1
-    )
-    output.form-range-slider__result(
-      name=attributes.name,
-      id=attributes.id ? attributes.id + '-result' : null,
-      for=attributes.id ? attributes.id + '-from' + ' ' + attributes.id + '-to' : null
-    )
-    .form-range-slider__slider(id=attributes.id)
-    if attributes.description
-      p.form-range-slider__description= attributes.description
+include ~@common.blocks/primitives/heading/heading.pug
+
+//-
+  name?: string - name of slider form
+  range: { min: number, max: number }
+  start: number[]
+  step?: number
+  heading?: see mixin heading
+  description: string - appended text after slider
+  isFilter?: boolean - if true, input change event will reload page with chosen value(get method), default is false
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin form-range-slider({ name = 'range-slider', range = { min: -100, max: 100 }, start = [0, 0], step = undefined, heading = { h3: 'range slider' }, description = '', isFilter = false } = {})
+  .form-range-slider.js-form-range-slider&attributes(attributes)
+    .form-range-slider__label
+      +heading(heading, { marginBottom: 'none' })
+    each val, index in start
+      input.form-range-slider__input.js-form-range-slider__input(
+        name=`${name}-${index}`,
+        type="range",
+        min=range.min,
+        max=range.max,
+        value=val,
+        step=step,
+        data-is-filter=isFilter
+      )
+    output.form-range-slider__result.js-form-range-slider__result(name=name)
+    .form-range-slider__slider.js-form-range-slider__slider
+    if description
+      p.form-range-slider__description= description

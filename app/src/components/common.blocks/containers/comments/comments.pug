@@ -1,47 +1,40 @@
-//- components
+include ~@common.blocks/primitives/heading/heading.pug
+include ~@common.blocks/primitives/picture/picture.pug
 include ~@common.blocks/primitives/form-like-button/form-like-button.pug
 
-//- mixins
-include ~@pug/mixins/picture.pug
+//-
+  heading?: see mixin heading
+  headingMarginBottom?: marginBottom in mixin heading
+  counter?: boolean
+  items: {
+    ['like-btn-name': string]: {
+      personName: string,
+      iconPath: string,
+      date: dateString,
+      dateText: string,
+      content: string,
+      likeButtonCounter: number,
+      isLikeButtonChecked: boolean
+    } 
+  }
+  Tip: mixin also uses 'and attributes'(&attributes)
 
-//- items: {
-  id1:{
-    personName:string,
-    iconPath:string,
-    date:datestring,
-    content:string,
-    likeButtonCounter:number,
-    isLikeButtonChecked
-  },
-  id2:{
-    personName:string,
-    iconPath:string,
-    date:datestring,
-    content:string,
-    likeButtonCounter:number,
-    isLikeButtonChecked
-  },...}
-//- id?: id of comments' container
-//- class?: class for component bem mix: such as positioning functionality
-//- label?: {tag: text}, example: {h2: "my label"}
-
-mixin comments
-  - const labelKey = attributes.label ? Object.keys(attributes.label)[0] : null;
-  .comments(id=attributes.id, class=attributes.class)
-    if labelKey
-      #{labelKey}.form-label
-        label(for=attributes.id)= attributes.label[labelKey]
-    each item, key in attributes.items
-      .comments__item
-        +picture.comments__icon-item(path=item.iconPath, alt="Иконка комментирующего")
-        .comments__source-item
-          h3.comments__name-item= item.personName
-          p.comments__date-item
-            time(datetime=item.date)
-        p.comments__content-item= item.content
-        +form-like-button.comments__like-button-item(
-          id=key + '__like-button',
-          name=key + '__like-button',
-          counter=item.likeButtonCounter,
-          checked=item.isLikeButtonChecked
-        )
+mixin comments({ heading = '', headingMarginBottom = 'large', counter = false, items = {}} = {})
+  .comments&attributes(attributes)
+    if heading
+      .comments__heading
+        +heading(heading, { marginBottom: headingMarginBottom })
+    if counter
+      span.comments__counter= `${Object.keys(items).length.toLocaleString()} отзыва`
+    .comments__items
+      each item, key in items
+        article.comments__item
+          .comments__icon-item
+            +picture(item.iconPath, 'Иконка комментирующего')
+          .comments__source-item
+            h3.comments__name-item= item.personName
+            p.comments__date-item
+              time(datetime=item.date)= item.dateText
+          p.comments__content-item= item.content
+          .comments__like-button-item
+            +form-like-button({ name: `${key}-like-button`, counter: item.likeButtonCounter, checked: item.isLikeButtonChecked })

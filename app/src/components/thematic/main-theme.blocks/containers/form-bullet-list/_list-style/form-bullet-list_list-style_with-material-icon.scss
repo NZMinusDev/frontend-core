@@ -1,0 +1,15 @@
+@use '@utils/devTools/styles/mixins.scss';
+
+@use '@thematic/main-theme.blocks/gradients.scss';
+
+.form-bullet-list_list-style_with-material-icon {
+  .form-bullet-list__item {
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba(var(--color__dark-shade), 0.1);
+    }
+
+    &:before {
+      @include mixins.gradientFont(gradients.primary(1));
+    }
+  }
+}

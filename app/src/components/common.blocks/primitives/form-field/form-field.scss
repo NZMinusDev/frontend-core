@@ -1,15 +1,14 @@
 .form-field {
   position: relative;
-  text-indent: 1.071428571428571em;
+  text-indent: 15px / 14px * 1em;
   min-width: 2em;
   min-height: 2em;
-  height: 3.142857142857143em;
+  height: 44px / 14px * 1em;
   display: flex;
   color: rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(0, 0, 0, 0.5);
 
   &:hover,
-  &:focus,
   &:focus-within {
     color: rgba(0, 0, 0, 1);
     border-color: rgba(0, 0, 0, 1);

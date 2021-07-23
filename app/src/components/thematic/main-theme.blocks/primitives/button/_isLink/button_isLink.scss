@@ -1,9 +1,0 @@
-@use "@thematic/main-theme.blocks/gradients.scss";
-
-.button_isLink {
-  background: gradients.primary(1);
-
-  &:hover {
-    background: gradients.primary(0.5);
-  }
-}

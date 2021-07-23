@@ -1,0 +1,26 @@
+.form-toggle__button {
+  appearance: none;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 40px / 14px * 1em;
+  height: 20px / 14px * 1em;
+  border: 1px solid black;
+  border-radius: 25% / 50%;
+  cursor: pointer;
+
+  &:before {
+    content: '';
+    width: 30%;
+    height: 60%;
+    margin-left: 10%;
+    background-color: black;
+    border-radius: 100%;
+    transition: all 0.3s cubic-bezier(0.2, 0.85, 0.32, 1.2);
+  }
+
+  &:checked:before {
+    margin-left: initial;
+    transform: translateX(200%);
+  }
+}

@@ -1,30 +1,29 @@
+include ~@common.blocks/primitives/heading/heading.pug
+include ~@common.blocks/primitives/icon/icon.pug
 include ~@common.blocks/containers/form-checkbox-buttons/form-checkbox-buttons.pug
-//- label: text of label
-//- buttons: {
-  name1:{
-    id:string,
-    itemLabel:string,
-    checked: 'checked'
-  },
-  name2:{
-    id:string,
-    itemLabel:string,
-    checked: ''
-  },...}
-//- id?: id of expander
-//- class?: class for component bem mix: such as positioning functionality
-//- isFilter?: {boolean} - if true, change event will reload page with chosen value(get method)
-//- checked?: open the list
-//- disabled?: same as fieldset disabled (disable all buttons)
-//- Tip: be careful if use large amount of items: max-height limited by 32em for transition animation
-mixin form-expandable-checkbox-list
-  .form-expandable-checkbox-list(class=attributes.class)
-    h3.form-expandable-checkbox-list__expander
-      label(for=attributes.id)= attributes.label
-      input(id=attributes.id, type="checkbox", checked=attributes.checked)
-      label.icon.form-expandable-checkbox-list__expand-icon(for=attributes.id)
-      +form-checkbox-buttons.form-expandable-checkbox-list__list(
-        buttons=attributes.buttons,
-        isFilter=attributes.isFilter ? attributes.isFilter + '' : null,
-        disabled=attributes.disabled
-      )
+//-
+  heading?: see mixin heading
+  buttons: see mixin form-checkbox-buttons
+  checked?: boolean - open the list
+  disabled?: see mixin form-checkbox-buttons
+  isFilter?: see mixin form-checkbox-buttons
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin form-expandable-checkbox-list({ heading = 'expandable-checkbox-list', buttons = {}, checked = false, disabled = false, isFilter = false } = {})
+  .form-expandable-checkbox-list.js-form-expandable-checkbox-list
+    -
+      const expanderID =
+        Object.keys(buttons).reduce((acc, current) => acc + current) + Math.random();
+    .form-expandable-checkbox-list__title
+      +heading(heading, { isLabel: true, labelJustifyContent: 'spread' })(
+        for=expanderID,
+        tabindex="0"
+      )&attributes(attributes)
+        span.form-expandable-checkbox-list__expand-icon
+          +icon({ content: 'expand_more', width: 'large' })
+    input.form-expandable-checkbox-list__expander-input.js-form-expandable-checkbox-list__expander-input(
+      id=expanderID,
+      type="checkbox",
+      checked=checked
+    )
+    .form-expandable-checkbox-list__list.js-form-expandable-checkbox-list__list
+      +form-checkbox-buttons({ buttons, disabled, isFilter })

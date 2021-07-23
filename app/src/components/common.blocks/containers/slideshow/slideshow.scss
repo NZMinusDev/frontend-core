@@ -1,4 +1,5 @@
 .slideshow {
+  padding-top: 150px / 270px * 100%;
   position: relative;
 
   &:hover {
@@ -10,8 +11,7 @@
         rgba(255, 255, 255, 0) 100%
       );
 
-      //icon
-      &:after {
+      .slideshow__switcher-icon {
         color: white;
       }
     }

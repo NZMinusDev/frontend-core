@@ -1,0 +1,114 @@
+.room-details-layout {
+  display: grid;
+
+  @media (min-width: 0px) {
+    grid:
+      'demo'
+      'content';
+  }
+}
+
+.room-details-layout__demo {
+  grid-area: demo;
+  display: grid;
+
+  $cellHeight: 485px / 14px * 1em / 2;
+  @media (min-width: 0px) {
+    grid:
+      'big-img' #{$cellHeight * 2}
+      'small-img-1' #{$cellHeight * 2}
+      'small-img-2' #{$cellHeight * 2};
+  }
+  @media (min-width: 992px) {
+    $bigImgWidth: 981px / 1440px * 100%;
+    grid:
+      'big-img small-img-1' #{$cellHeight}
+      'big-img small-img-2' #{$cellHeight} / #{$bigImgWidth} 1fr;
+  }
+}
+.room-details-layout__big-img {
+  grid-area: big-img;
+}
+.room-details-layout__small-img-1 {
+  grid-area: small-img-1;
+}
+.room-details-layout__small-img-2 {
+  grid-area: small-img-2;
+}
+
+.room-details-layout__content {
+  display: grid;
+  padding-top: 70px / 14px * 1em;
+  padding-bottom: 70px / 14px * 1em;
+
+  @media print, screen and (min-width: 0px) {
+    grid:
+      'info'
+      'reservation';
+    grid-gap: 70px / 14px * 1em;
+  }
+
+  @media print, screen and (min-width: 1440px) {
+    grid: 'info reservation';
+  }
+}
+.room-details-layout__info {
+  grid-area: info;
+  display: grid;
+
+  @media (min-width: 0px) {
+    grid:
+      'data'
+      'impression'
+      'comments'
+      'rules'
+      'alert';
+    grid-row-gap: 1em;
+  }
+  @media (min-width: 768px) {
+    grid:
+      'data . impression'
+      '. . .' #{35px / 14px * 1em}
+      'comments comments comments'
+      '. . .' #{35px / 14px * 1em}
+      'rules . alert' / #{291px / 14px * 1em} #{70px / 14px * 1em} auto;
+    grid-row-gap: initial;
+  }
+}
+.room-details-layout__data {
+  grid-area: data;
+
+  @media (min-width: 0px) {
+    justify-self: center;
+  }
+  @media (min-width: 768px) {
+    justify-self: left;
+  }
+}
+.room-details-layout__impression {
+  grid-area: impression;
+
+  @media (min-width: 0px) {
+    justify-self: center;
+  }
+  @media (min-width: 1440px) {
+    justify-self: left;
+  }
+}
+.room-details-layout__comments {
+  grid-area: comments;
+}
+.room-details-layout__rules {
+  grid-area: rules;
+}
+.room-details-layout__rules-heading {
+  text-indent: 20px / 14px * 1em;
+}
+.room-details-layout__alert {
+  grid-area: alert;
+}
+
+.room-details-layout__reservation {
+  grid-area: reservation;
+  justify-self: center;
+}

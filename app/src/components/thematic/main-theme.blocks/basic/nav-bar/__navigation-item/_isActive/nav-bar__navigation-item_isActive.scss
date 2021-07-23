@@ -1,9 +1,0 @@
-@use "@utils/devTools/devTools.scss";
-
-.nav-bar__navigation-item_isActive {
-  color: devTools.getColor(color__dark-shade, 0.75);
-
-  & > .nav-bar__expand-icon:after {
-    color: devTools.getColor(color__dark-shade, 0.75);
-  }
-}

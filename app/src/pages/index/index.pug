@@ -7,17 +7,24 @@ block append variables
 
 block header
 block content
-  h1 Добро пожаловать на страницу навигации
-  p Здесь представлены сверстанные страницы, выбирай любую.
-  nav
-    ul
-      a(href="./colors-&-type.html") 
-        li Colors & Type
-      a(href="./form-elements.html") 
-        li Form Elements
-      a(href="./cards.html") 
-        li Cards
-      a(href="./headers-&-footers.html") 
-        li Headers & Footers
-      a(href="./sign-in.html") 
-        li Registration and Sign in
+  main.index__main
+    h1.index__heading Добро пожаловать на страницу навигации
+    p.index__description Здесь представлены сверстанные страницы, выбирай любую.
+    nav.index__pages-navigation
+      ul.index__pages-list
+        li.index__pages-list-item 
+          a(href="./colors-&-type.html") Colors & Type
+        li.index__pages-list-item 
+          a(href="./form-elements.html") Form Elements
+        li.index__pages-list-item 
+          a(href="./cards.html") Cards
+        li.index__pages-list-item 
+          a(href="./headers-&-footers.html") Headers & Footers
+        li.index__pages-list-item 
+          a(href="./landing-page.html") Landing page
+        li.index__pages-list-item 
+          a(href="./search-room.html") Search room
+        li.index__pages-list-item 
+          a(href="./room-details.html") Room details
+        li.index__pages-list-item 
+          a(href="./sign-in.html") Registration and Sign in

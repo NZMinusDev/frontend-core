@@ -1,0 +1,227 @@
+@use 'sass:list';
+@use 'sass:string';
+
+@use '@utils/devTools/styles/functions.scss';
+
+/// Places item to center using position: absolute
+@mixin centerAbsPosition {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+/// Makes text ellipsis
+@mixin ellipsisText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/// Makes text color gradient
+/// @param {*} $background - css gradient
+@mixin gradientFont($background) {
+  color: transparent;
+  background: $background;
+  background-clip: text;
+}
+
+/// @font-face shortcut
+/// @param { string } $family
+/// @param { string } $path
+/// @param {*} $font-weight [normal]
+/// @param {*} $font-style [normal]
+/// @link https://developer.mozilla.org/ru/docs/Learn/CSS/Styling_text/Web_fonts#font-face_%D0%B1%D0%BE%D0%BB%D0%B5%D0%B5_%D0%B4%D0%B5%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE
+@mixin importFont($family, $path, $font-weight: normal, $font-style: normal) {
+  @font-face {
+    $parsedPath: functions.parsePath($path);
+    $filePath: list.nth($parsedPath, 1);
+
+    font-family: $family;
+    //  IE9 Compat Modes
+    src: url($filePath + '.eot');
+    src: local($family),
+      // IE6-IE8
+      url($filePath + '.eot?#iefix') format('embedded-opentype'),
+      //Modern Browsers
+      url($filePath + '.woff2') format('woff2'),
+      url($filePath + '.woff') format('woff'), url($filePath + '.otf') format('opentype'),
+      // Safari, Android, iOS
+      url($filePath + '.ttf') format('truetype'),
+      // Legacy iOS
+      url($filePath + '.svg') format('svg');
+    font-weight: $font-weight;
+    font-style: $font-style;
+  }
+}
+
+/// Adds generated in runtime smaller resolution and optimized versions of images
+/// @param {*} $property - css property for images
+/// @param { string string ... } $imagesPaths - list of images' paths
+/// @param {*} $values... - additional values for $property
+/// @link ./../../../../../configs/webpack.config.js
+/// @todo in the future should be refactored with https://developer.mozilla.org/ru/docs/orphaned/Web/CSS/image-set()
+@mixin optimizedImages($property, $imagesPaths, $values...) {
+  $urls: '';
+  $urls320: '';
+  $urls640: '';
+  $urls960: '';
+  $urls1920: '';
+  $webpUrls: '';
+  $webpUrls320: '';
+  $webpUrls640: '';
+  $webpUrls960: '';
+  $webpUrls1920: '';
+  $index: 0;
+  @each $path in $imagesPaths {
+    $parsedPath: functions.parsePath($path);
+    $filePath: list.nth($parsedPath, 1);
+    $fileExt: list.nth($parsedPath, 2);
+
+    @if $index != 0 {
+      $urls: $urls + ',';
+      $urls320: $urls320 + ',';
+      $urls640: $urls640 + ',';
+      $urls960: $urls960 + ',';
+      $urls1920: $urls1920 + ',';
+      $webpUrls: $webpUrls + ',';
+      $webpUrls320: $webpUrls320 + ',';
+      $webpUrls640: $webpUrls640 + ',';
+      $webpUrls960: $webpUrls960 + ',';
+      $webpUrls1920: $webpUrls1920 + ',';
+    }
+    $urls: $urls + url($path);
+    $urls320: $urls320 + url(functions.resolveUnresolvedAssetPath($path, '-320.' + $fileExt));
+    $urls640: $urls640 + url(functions.resolveUnresolvedAssetPath($path, '-640.' + $fileExt));
+    $urls960: $urls960 + url(functions.resolveUnresolvedAssetPath($path, '-960.' + $fileExt));
+    $urls1920: $urls1920 + url(functions.resolveUnresolvedAssetPath($path, '-1920.' + $fileExt));
+
+    $webpUrls: $webpUrls + url(functions.resolveUnresolvedAssetPath($path, '.webp'));
+    $webpUrls320: $webpUrls320 + url(functions.resolveUnresolvedAssetPath($path, '-320.webp'));
+    $webpUrls640: $webpUrls640 + url(functions.resolveUnresolvedAssetPath($path, '-640.webp'));
+    $webpUrls960: $webpUrls960 + url(functions.resolveUnresolvedAssetPath($path, '-960.webp'));
+    $webpUrls1920: $webpUrls1920 + url(functions.resolveUnresolvedAssetPath($path, '-1920.webp'));
+
+    $index: $index + 1;
+  }
+
+  @media print, screen and (min-width: 0px) {
+    #{$property}: #{$urls320} $values;
+  }
+  @media print, screen and (min-width: 600px) {
+    #{$property}: #{$urls640} $values;
+  }
+  @media print, screen and (min-width: 960px) {
+    #{$property}: #{$urls960} $values;
+  }
+  @media print, screen and (min-width: 1200px) {
+    #{$property}: #{$urls1920} $values;
+  }
+  @supports (background-image: #{$webpUrls}) {
+    @media print, screen and (min-width: 0px) {
+      #{$property}: #{$webpUrls320} $values;
+    }
+    @media print, screen and (min-width: 600px) {
+      #{$property}: #{$webpUrls640} $values;
+    }
+    @media print, screen and (min-width: 960px) {
+      #{$property}: #{$webpUrls960} $values;
+    }
+    @media print, screen and (min-width: 1200px) {
+      #{$property}: #{$webpUrls1920} $values;
+    }
+  }
+}
+
+/// Carousel with rotating images
+/// @param { string string ... } $imagesPaths - scss list using space between img paths
+@mixin backgroundAutoCarousel($imagesPaths) {
+  $backgroundImages: '';
+  $index: 0;
+  @each $path in $imagesPaths {
+    @if $index != 0 {
+      $backgroundImages: $backgroundImages + ',';
+    }
+    $index: $index + 1;
+    $backgroundImages: $backgroundImages + url($path);
+  }
+
+  background: white no-repeat fixed;
+  @include optimizedImages(background-image, $imagesPaths);
+  background-size: cover;
+  animation: change-image #{list.length($imagesPaths) * 6s} linear infinite;
+
+  @media print, screen and (min-width: 0px) {
+    @include _changeImageKeyframes($imagesPaths, 320);
+  }
+  @media print, screen and (min-width: 600px) {
+    @include _changeImageKeyframes($imagesPaths, 640);
+  }
+  @media print, screen and (min-width: 960px) {
+    @include _changeImageKeyframes($imagesPaths, 960);
+  }
+  @media print, screen and (min-width: 1200px) {
+    @include _changeImageKeyframes($imagesPaths, 1920);
+  }
+
+  @supports (
+    background-image: url(functions.resolveUnresolvedAssetPath(list.nth($imagesPaths, 1), '.webp'))
+  ) {
+    @media print, screen and (min-width: 0px) {
+      @include _changeImageKeyframes($imagesPaths, 320, 'webp');
+    }
+    @media print, screen and (min-width: 600px) {
+      @include _changeImageKeyframes($imagesPaths, 640, 'webp');
+    }
+    @media print, screen and (min-width: 960px) {
+      @include _changeImageKeyframes($imagesPaths, 960, 'webp');
+    }
+    @media print, screen and (min-width: 1200px) {
+      @include _changeImageKeyframes($imagesPaths, 1920, 'webp');
+    }
+  }
+}
+@mixin _changeImageKeyframes($imagesPaths, $sizePostfix, $newExt: '') {
+  @keyframes change-image {
+    $index: 0;
+    @each $path in $imagesPaths {
+      $parsedPath: functions.parsePath($path);
+      $filePath: list.nth($parsedPath, 1);
+      $fileExt: list.nth($parsedPath, 2);
+
+      $keyframe: #{100 / list.length($imagesPaths) * $index * 1%};
+
+      #{$keyframe} {
+        @if $newExt == '' {
+          background-image: url(functions.resolveUnresolvedAssetPath(
+            $path,
+            '-#{$sizePostfix}.#{$fileExt}'
+          ));
+        } @else {
+          background-image: url(functions.resolveUnresolvedAssetPath(
+            $path,
+            '-#{$sizePostfix}.#{$newExt}'
+          ));
+        }
+      }
+
+      $index: $index + 1;
+    }
+    100% {
+      $parsedPath: functions.parsePath(list.nth($imagesPaths, 1));
+      $filePath: list.nth($parsedPath, 1);
+      $fileExt: list.nth($parsedPath, 2);
+
+      @if $newExt == '' {
+        background-image: url(functions.resolveUnresolvedAssetPath(
+          list.nth($imagesPaths, 1),
+          '-#{$sizePostfix}.#{$fileExt}'
+        ));
+      } @else {
+        background-image: url(functions.resolveUnresolvedAssetPath(
+          list.nth($imagesPaths, 1),
+          '-#{$sizePostfix}.#{$newExt}'
+        ));
+      }
+    }
+  }
+}

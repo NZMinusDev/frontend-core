@@ -1,0 +1,10 @@
+.entering-card {
+  grid:
+    'title title'
+    'email-field email-field'
+    'password-field password-field'
+    'link-btn link-btn'
+    '. .' #{10px / 14px * 1em}
+    'caption-of-redirect-to-registration switch-btn';
+  gap: 10px / 14px * 1em;
+}

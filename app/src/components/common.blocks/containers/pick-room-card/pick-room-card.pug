@@ -1,0 +1,22 @@
+include ~@common.blocks/primitives/form-dropdown/form-dropdown.pug
+include ~@common.blocks/primitives/button/button.pug
+
+//- 
+  action: string - form action
+  name?: string - name of <form>, also it is used such prefix for names of inner forms
+  method?: 'get' | 'post' - form method
+  datepickerDisabled?: boolean - same as fieldset disabled (disable all dates picking)
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin pick-room-card({ action = '/mock.js', name = 'pick-room-card', method = 'post', datepickerDisabled = false } = {})
+  form.card-base.pick-room-card(name=name, action=action, method=method)&attributes(attributes)
+    h1.pick-room-card__title Найдём номера под ваши пожелания
+    fieldset.pick-room-card__datepicker-fieldset(disabled=datepickerDisabled)
+      .pick-room-card__datepicker
+        .pick-room-card__arrival-date-dropdown
+          +form-dropdown('date', { heading: { h3: 'Прибытие' }, name: `${name}-arrival`, range: true, altFields: `.pick-room-card__departure-date-dropdown [name=${name}-departure]` })
+        .pick-room-card__departure-date-dropdown
+          +form-dropdown('date', { heading: { h3: 'Выезд' }, name: `${name}-departure`, isAltField: true })
+    .pick-room-card__guests-dropdown
+      +form-dropdown('item-quantity', { heading: { h3: 'Гости' }, name: `${name}-guests`, placeholder: 'Сколько гостей', openingMethod: 'applied', groups: { гости: { selectionText: 'гость', textPlural: 'гостя' }, младенцы: { selectionText: 'младенец', textPlural: 'младенцев' } }, list: { взрослые: { default: 0, min: 0, max: 1 / 0, group: 'гости' }, дети: { default: 0, min: 0, max: 1 / 0, group: 'гости' }, младенцы: { default: 0, min: 0, max: 1 / 0 } } })
+    .pick-room-card__submit-btn
+      +button({ appearance: 'like-a-link' })(type="submit", value="Подобрать номер")

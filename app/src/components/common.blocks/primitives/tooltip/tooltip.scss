@@ -1,12 +1,12 @@
 .tooltip {
-  $TOOLTIP_ICON_SIZE: 1.428571428571429em;
-  $TOOLTIP_ARROW_SIZE: 0.3571428571428571em;
+  $tooltipIconSize: 20px / 14px * 1em;
+  $tooltipArrowSize: 5px / 14px * 1em;
 
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: $TOOLTIP_ICON_SIZE;
-  height: $TOOLTIP_ICON_SIZE;
+  width: $tooltipIconSize;
+  height: $tooltipIconSize;
   position: relative;
   border: 1px solid black;
   border-radius: 100%;
@@ -16,20 +16,21 @@
   //Tooltip text container
   &:before {
     content: attr(data-content);
-    top: $TOOLTIP_ARROW_SIZE + $TOOLTIP_ICON_SIZE;
+    top: $tooltipArrowSize + $tooltipIconSize;
     padding: 0.5em 1em;
     color: white;
     background-color: black;
     border-radius: 4px;
+    word-break: normal;
   }
 
   //Tooltip arrow
   &:after {
-    content: "";
-    top: $TOOLTIP_ICON_SIZE;
-    border-bottom: $TOOLTIP_ARROW_SIZE solid black;
-    border-right: $TOOLTIP_ARROW_SIZE solid transparent;
-    border-left: $TOOLTIP_ARROW_SIZE solid transparent;
+    content: '';
+    top: $tooltipIconSize;
+    border-bottom: $tooltipArrowSize solid black;
+    border-right: $tooltipArrowSize solid transparent;
+    border-left: $tooltipArrowSize solid transparent;
   }
 
   //Setting up the transition

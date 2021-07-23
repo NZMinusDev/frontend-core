@@ -1,6 +1,6 @@
 .color-sample {
   display: grid;
-  grid: "sample name" 5em / 5em 1fr;
-  grid-column-gap: 1.428571428571429em;
+  grid: 'sample name' #{70px / 14px * 1em} / #{70px / 14px * 1em} 1fr;
+  grid-column-gap: 40px / 14px * 1em;
   place-items: center left;
 }

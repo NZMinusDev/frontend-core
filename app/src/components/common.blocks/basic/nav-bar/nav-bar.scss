@@ -1,22 +1,19 @@
 .nav-bar {
-  padding-top: 1.071428571428571em;
-  padding-bottom: 1.071428571428571em;
   background-color: white;
 
   @media print, screen and (min-width: 0px) {
-    & {
-      display: grid;
-      grid: "logo" "navigation" "login" auto / auto;
-      grid-row-gap: 1.428571428571429em;
-      justify-items: center;
-    }
+    width: 100%;
+    display: grid;
+    grid: 'logo' 'navigation' 'login' auto / auto;
+    grid-row-gap: 20px / 14px * 1em;
+    justify-items: center;
+    padding-top: 15px / 14px * 1em;
+    padding-bottom: 15px / 14px * 1em;
   }
 
   @media print, screen and (min-width: 992px) {
-    & {
-      grid: "logo navigation login" 1fr / 1fr auto auto;
-      gap: 0 1.428571428571429em;
-      place-items: center normal;
-    }
+    grid: 'logo navigation login' 1fr / 1fr auto auto;
+    gap: 0 #{20px / 14px * 1em};
+    place-items: center normal;
   }
 }

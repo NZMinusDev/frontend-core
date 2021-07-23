@@ -1,0 +1,29 @@
+@use '@thematic/main-theme.blocks/gradients.scss';
+
+.form-bullet-list__item_color_main-theme {
+  &:nth-child(1) {
+    &:before {
+      background: linear-gradient(180deg, #ffe39c 0%, #ffba9c 100%);
+    }
+  }
+  &:nth-child(2) {
+    &:before {
+      background: gradients.secondary(1);
+    }
+  }
+  &:nth-child(3) {
+    &:before {
+      background: gradients.primary(1);
+    }
+  }
+  &:nth-child(4) {
+    &:before {
+      background: linear-gradient(180deg, #919191 0%, #3d4975 100%);
+    }
+  }
+  &:nth-child(5) {
+    &:before {
+      background: linear-gradient(180deg, #ff0000 0%, #460000 100%);
+    }
+  }
+}

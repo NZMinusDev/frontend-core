@@ -11,7 +11,7 @@ block append variables
 
 block content
   main.headers-footers-layout
-    +nav-bar(active="О нас")
-    +nav-bar(active="Соглашение 3-1-1", status="confirmed", personName="Юлий Цезарь")
+    +nav-bar({ active: 'О нас' })
+    +nav-bar({ status: 'confirmed', personName: 'Юлий Цезарь', active: 'Соглашение 3-1-1' })
     +footer
-    +footer(type="creative")
+    +footer({ type: 'creative' })

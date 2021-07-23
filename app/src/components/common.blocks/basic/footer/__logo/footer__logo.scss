@@ -1,18 +1,12 @@
 .footer__logo {
   @media print, screen and (min-width: 0px) {
-    & {
-      grid-area: logo;
-      align-self: self-start;
-      display: flex;
-      align-items: center;
-      font-size: 1.285714285714286em;
-      line-height: 1.285714285714286em;
-
-      .logo {
-        width: 2.222222222222222em;
-        height: 2.222222222222222em;
-        margin-right: 0.6944444444444444em;
-      }
-    }
+    grid-area: logo;
+    align-self: self-start;
+    display: grid;
+    grid: 'logo title';
+    grid-column-gap: 12.5px / 11.66666666656944px * 1em;
+    align-items: center;
+    justify-content: start;
+    font-size: 11.66666666656944px / 14px * 1em;
   }
 }

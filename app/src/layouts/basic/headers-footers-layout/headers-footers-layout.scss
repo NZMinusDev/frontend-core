@@ -1,10 +1,9 @@
 .headers-footers-layout {
   @media print, screen and (min-width: 0px) {
-    & {
-      display: grid;
-      grid: "nav-bar_isUnConfirmed" "nav-bar_isConfirmed" "footer_widgets" "footer_creative";
-      grid-row-gap: 2.857142857142857em;
-      margin-top: 3.928571428571429em;
-    }
+    display: grid;
+    justify-items: center;
+    grid-row-gap: 40px / 14px * 1em;
+    padding-top: 62px / 1440px * 100%;
+    padding-bottom: 140px / 1440px * 100%;
   }
 }

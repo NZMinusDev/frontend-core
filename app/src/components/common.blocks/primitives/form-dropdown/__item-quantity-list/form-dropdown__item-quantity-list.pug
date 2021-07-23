@@ -1,35 +1,49 @@
-mixin form-dropdown__item-quantity-list
+include ~@common.blocks/primitives/apply-control/apply-control.pug
+
+//-
+  name?: string - name of component hidden input
+  placeholder?: string - text of placeholder
+  openingMethod?: 'switchable' | 'folded' | 'applied'
+  groups: { ['group-name': string]: { selectionText: string, textPlural: string } }, example: { guests: { selectionText: 'гость', textPlural: 'гостя' }, младенцы: { selectionText: 'младенец', textPlural: 'младенцев' } }
+  list: { ['item-title': string]: { default: number, min: number, max: number, group?: 'group-name-2' } }, example:{ взрослые: { default: 0, min: 0, max: 1 / 0, group: 'гости' }, дети: { default: 0, min: 0, max: 1 / 0, group: 'гости' }, младенцы: { default: 0, min: 0, max: 1 / 0} }; - if group is unset the itemName will be used instead
+  isFilter?: boolean - if true, input change event will reload page with chosen value(get method)
+  Tip: https://github.com/reservamos/item-quantity-dropdown
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin form-dropdown__item-quantity-list({ name = 'iqList', placeholder = 'placeholder', openingMethod = 'folded', groups = {}, list = {}, isFilter = false } = {})
   -
-    let total = "";
+    let total = '';
     let counter = 0;
-    for (let key in attributes.list){
-      if (counter > 0) total += ",";
-      total+=attributes.list[key].default;
+    Object.values(list).forEach((value) => {
+      if (counter > 0) total += ',';
+      total += value.default;
       counter++;
-    }
-  input.form-dropdown__list-input(
-    name=attributes.name,
-    type="hidden",
-    value=total,
-    isFilter=attributes.isFilter
-  )
-  button.iqdropdown.form-dropdown__item-quantity-list(id=attributes.id, class=attributes.class, type="button")
-    p.iqdropdown-selection(data-placeholder=attributes.placeholder || '')
-    .iqdropdown-menu(data-groups=attributes.groups)
-      each limits, item in attributes.list
-        input.form-dropdown__option-input(
+    });
+  .iqdropdown.form-dropdown__item-quantity-list.js-form-dropdown__item-quantity-list(
+    class=[`form-dropdown__item-quantity-list_opening-method_${openingMethod}`, `js-form-dropdown__item-quantity-list_opening-method_${openingMethod}`]
+  )&attributes(attributes)
+    input.form-dropdown__list-input.js-form-dropdown__list-input(
+      name=name,
+      type="hidden",
+      value=total,
+      data-is-filter=isFilter
+    )
+    p.iqdropdown-selection.js-iqdropdown-selection(data-placeholder=placeholder)
+    .iqdropdown-menu.js-iqdropdown-menu(data-groups=groups)
+      each limits, itemTitle in list
+        input.form-dropdown__option-input.js-form-dropdown__option-input(
           type="hidden",
-          name=attributes.name + '-' + item,
+          name=`${name}-${itemTitle}`,
           value=limits.default
         )
-        .iqdropdown-menu-option(
-          data-id=item,
-          data-defaultcount=limits.default,
-          data-mincount=limits.min,
-          data-maxcount=limits.max,
-          data-group=limits.group
+        .iqdropdown-menu-option.js-iqdropdown-menu-option(
+          data-id=itemTitle,
+          data-defaultcount=`${limits.default}`,
+          data-mincount=`${limits.min}`,
+          data-maxcount=`${limits.max}`,
+          data-group=limits.group || itemTitle
         ) 
           div
-            h3.iqdropdown-itemItem= item
-      if block
-        block
+            h3.iqdropdown-item= itemTitle
+      if openingMethod === 'applied'
+        .form-dropdown__link-btns
+          +apply-control

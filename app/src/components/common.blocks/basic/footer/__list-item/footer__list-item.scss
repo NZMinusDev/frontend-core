@@ -1,0 +1,6 @@
+.footer__list-item {
+  @media print, screen and (min-width: 0px) {
+    width: 100%;
+    line-height: 18px / 14px * 1em;
+  }
+}

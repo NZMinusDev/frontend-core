@@ -1,0 +1,16 @@
+@use '@utils/devTools/styles/mixins.scss';
+
+.form-like-button__counter {
+  width: 3ex;
+  height: 1em;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-size: 10px / 14px * 1em;
+  line-height: 1em;
+  @include mixins.ellipsisText;
+  pointer-events: none;
+}

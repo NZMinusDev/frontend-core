@@ -1,24 +1,27 @@
 .cards-layout {
+  $gap: 40px / 14px * 1em;
+
   @media print, screen and (min-width: 0px) {
-    & {
-      display: grid;
-      grid-row-gap: 2.857142857142857em;
-    }
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    grid-row-gap: $gap;
   }
 
-  @media print, screen and (min-width: 992px) {
-    & {
-      $gap: 2.857142857142857em;
-      grid:
-        "pick-room room-definition calendar"
-        ". room-definition ." $gap
-        "registration room-definition card-luxury-room"
-        "registration . card-luxury-room" $gap
-        "registration entering card-luxury-room"
-        "registration entering ." $gap
-        "registration entering card-common-room";
-      grid-row-gap: initial;
-      grid-column-gap: $gap;
-    }
+  @media print, screen and (min-width: 1440px) {
+    grid:
+      'pick-room room-definition calendar'
+      '. room-definition .' $gap
+      'registration room-definition luxury-room-card' #{100px / 14px * 1em}
+      'registration . luxury-room-card' $gap
+      'registration entering luxury-room-card' #{114px / 14px * 1em}
+      'registration entering .' $gap
+      'registration entering common-room-card';
+    justify-content: initial;
+    justify-items: initial;
+    grid-row-gap: initial;
+    grid-column-gap: $gap;
+    padding-top: 72px / 1440px * 100%;
+    padding-bottom: 140px / 1440px * 100%;
   }
 }

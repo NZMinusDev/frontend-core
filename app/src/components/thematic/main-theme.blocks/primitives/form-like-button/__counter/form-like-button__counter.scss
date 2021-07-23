@@ -1,0 +1,5 @@
+@use '@utils/devTools/styles/functions.scss';
+
+.form-like-button__counter {
+  color: rgba(var(--color__dark-shade), 0.25);
+}

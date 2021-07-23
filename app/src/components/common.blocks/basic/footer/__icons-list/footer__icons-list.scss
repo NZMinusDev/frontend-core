@@ -1,0 +1,8 @@
+.footer__icons-list {
+  @media print, screen and (min-width: 0px) {
+    display: grid;
+    grid-auto-flow: column;
+    grid-column-gap: 20px / 14px * 1em;
+    justify-content: center;
+  }
+}

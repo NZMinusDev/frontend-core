@@ -1,0 +1,69 @@
+.nav-bar__navigation-item_expandable {
+  @media print, screen and (min-width: 0px) {
+    & > .nav-bar__navigation-item-dropdown-checkbox {
+      display: none;
+
+      &:checked + .nav-bar__navigation-item-dropdown-label > .nav-bar__expand-icon {
+        transform: rotate(180deg);
+      }
+
+      & ~ .nav-bar__navigation-list {
+        visibility: hidden;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.2s linear, visibility 0.2s linear;
+        background-color: rgba($color: #ffffff, $alpha: 0.75);
+      }
+      &:checked ~ .nav-bar__navigation-list {
+        visibility: visible;
+      }
+    }
+  }
+
+  @media print, screen and (min-width: 992px) {
+    position: relative;
+
+    .nav-bar__navigation-item {
+      padding-left: 0.5em;
+      padding-right: 0.5em;
+    }
+    .nav-bar__navigation-list,
+    .nav-bar__navigation-item-dropdown-label {
+      width: max-content;
+    }
+
+    & > .nav-bar__navigation-item-dropdown-checkbox ~ .nav-bar__navigation-list {
+      display: flex;
+      flex-flow: column;
+      align-items: flex-start;
+      overflow: initial;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s linear, visibility 0.2s linear;
+
+      & > .nav-bar__navigation-item {
+        margin-right: 0;
+      }
+    }
+
+    &:hover > .nav-bar__navigation-item-dropdown-checkbox ~ .nav-bar__navigation-list,
+    &:focus-within > .nav-bar__navigation-item-dropdown-checkbox ~ .nav-bar__navigation-list {
+      visibility: visible;
+      max-height: fit-content;
+      opacity: 1;
+      z-index: 1;
+    }
+  }
+}
+
+.nav-bar__navigation {
+  @media print, screen and (min-width: 992px) {
+    &
+      > .nav-bar__navigation-list
+      > .nav-bar__navigation-item_expandable
+      > .nav-bar__navigation-item-dropdown-checkbox
+      ~ .nav-bar__navigation-list {
+      position: absolute;
+    }
+  }
+}

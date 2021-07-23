@@ -1,0 +1,16 @@
+.registration-card {
+  $mediumGap: 20px / 14px * 1em;
+  $largeGap: 30px / 14px * 1em;
+  grid:
+    'title title'
+    '. .' #{$mediumGap}
+    'name-fieldset name-fieldset'
+    '. .' #{$mediumGap}
+    'birthday-field birthday-field'
+    '. .' #{$mediumGap}
+    'login-fieldset login-fieldset'
+    '. .' #{$mediumGap}
+    'link-btn link-btn'
+    '. .' #{$largeGap}
+    'switcher switcher' / auto 1fr;
+}

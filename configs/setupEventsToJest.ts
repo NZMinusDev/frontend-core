@@ -23,6 +23,7 @@ if (!global.PointerEvent) {
 
     constructor(type: string, params: PointerEventInit = {}) {
       super(type, params);
+
       // FIXME: mouse props: hard to say why params aren't set by MouseEvent constructor call
       (this.movementX as any) = params.movementX ?? 0;
       (this.movementY as any) = params.movementY ?? 0;

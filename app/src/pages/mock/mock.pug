@@ -1,0 +1,9 @@
+extends ~@layouts/basic/main-layout/main-layout.pug
+
+block append variables
+  -
+    title = 'Заглушка';
+    description = 'Данная страница существует в целях разработки, конечный пользователь не должен иметь к ней доступ.';
+
+block append content
+  main.mock Данная страница не должна быть доступна пользователю, пожалуйста, обратитесь к разработчику.

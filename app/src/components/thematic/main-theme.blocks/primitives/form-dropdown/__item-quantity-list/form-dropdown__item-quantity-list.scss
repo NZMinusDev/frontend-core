@@ -1,25 +1,34 @@
-@use "@utils/devTools/devTools.scss";
+.form-dropdown__item-quantity-list {
+  .iqdropdown-selection {
+    color: rgba(var(--color__dark-shade), 0.75);
+  }
 
-.form-dropdown__item-quantity-list.menu-open {
-  .iqdropdown-menu {
-    border: var(--border-hover);
-    border-radius: 0 0 var(--border-radius-size) var(--border-radius-size);
-
-    button.button-decrement,
-    button.button-increment {
+  &.menu-open {
+    .iqdropdown-menu {
       border: var(--border-hover);
+      border-radius: 0 0 var(--border-radius-size) var(--border-radius-size);
 
-      &.iqdropdown__counter_isDisabled {
-        border: var(--border);
+      button.button-decrement,
+      button.button-increment {
+        border: var(--border-hover);
+
+        &.iqdropdown__counter_isDisabled {
+          border: var(--border);
+        }
+
+        &:before {
+          color: rgba(var(--color__dark-shade), 0.5);
+        }
       }
-
-      &:before {
-        color: devTools.getColor(color__dark-shade, 0.5);
+      .counter {
+        font: var(--font__h3);
+        color: rgba(var(--color__dark-shade), 1);
       }
     }
-    .counter {
-      font-weight: 700;
-      color: devTools.getColor(color__dark-shade, 1);
+
+    .iqdropdown-item {
+      font: var(--font__h3);
+      color: rgba(var(--color__dark-shade), 1);
     }
   }
 }

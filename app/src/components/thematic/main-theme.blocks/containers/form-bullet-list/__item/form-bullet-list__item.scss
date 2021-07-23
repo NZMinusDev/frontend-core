@@ -1,7 +1,5 @@
-@use "@utils/devTools/devTools.scss";
-
 .form-bullet-list__item {
   &:before {
-    background: devTools.getColor(color__dark-shade, 0.25);
+    background: rgba(var(--color__dark-shade), 0.25);
   }
 }

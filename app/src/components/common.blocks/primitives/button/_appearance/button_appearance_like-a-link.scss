@@ -1,0 +1,14 @@
+@use './../variables.scss';
+
+$iconWidth: 44px / 12px * 1em;
+.button_appearance_like-a-link {
+  width: 100%;
+  position: relative;
+  padding-left: $iconWidth + variables.$X_PADDING;
+  padding-right: $iconWidth + variables.$X_PADDING;
+  background: rgba(169, 169, 169, 1);
+
+  &:hover {
+    background: rgba(169, 169, 169, 0.5);
+  }
+}

@@ -1,0 +1,6 @@
+.room-card__room-data {
+  grid-area: room-data;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  padding: #{20px / 14px * 1em} #{16px / 14px * 1em} #{12px / 14px * 1em} #{20px / 14px * 1em};
+}

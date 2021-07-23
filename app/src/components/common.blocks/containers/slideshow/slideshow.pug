@@ -1,34 +1,45 @@
-include ~@pug/mixins/picture.pug
+include ~@common.blocks/primitives/icon/icon.pug
+include ~@common.blocks/primitives/picture/picture.pug
 
-//- id: id of slideshow
-//- class: class for component bem mix: such as positioning functionality
-//- name: {string} - name of radio group
-//- paths: {Array<string>} - paths for images
-mixin slideshow
-  .slideshow(id=attributes.id, class=attributes.class)
+//-
+  name?: string - name of radio group
+  paths: string[] - paths for images
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin slideshow({ name = 'slideshow', paths = [] } = {})
+  .slideshow.js-slideshow&attributes(attributes)
     -
       let pictureID;
-      let labelID = attributes.name + (attributes.paths.length - 1);
+      let labelID = `${name}-${(paths.length - 1)}`;
 
-      const RADIO_CONTAINER_RIGHT_OFFSET = 15;
-      const RADIO_SIZE = 7.5;
-      const RADIO_GAP = 7.5 / 2;
-      let reverseOrderIndex;
-    each path, index in attributes.paths
+      const radioContainerRightOffset = 15;
+      const radioSize = 7.5;
+      const radioGap = 7.5 / 2;
+    each path, index in paths
       -
-        pictureID = attributes.name + index;
+        pictureID = `${name}-${index}`;
 
-        reverseOrderIndex = attributes.paths.length - index - 1;
-        const rightRadioOffset = RADIO_CONTAINER_RIGHT_OFFSET + RADIO_SIZE * reverseOrderIndex + RADIO_GAP * reverseOrderIndex;
+        const reverseOrderIndex = paths.length - index - 1;
+        const rightRadioOffset =
+          radioContainerRightOffset + radioSize * reverseOrderIndex + radioGap * reverseOrderIndex;
       input.slideshow__radio(
         id=pictureID,
         type="radio",
-        name=attributes.name,
-        checked=index == 0 ? 'checked' : null,
+        name=name,
+        checked=index === 0 ? true : false,
         style=`right: ${rightRadioOffset}px`
       )
-      label.icon.slideshow__switcher(for=labelID)= `View ${labelID}`
-      +picture.slideshow__picture(path=path, alt=pictureID)
+      label.slideshow__switcher(
+        for=labelID,
+        title=`К изображению №${index === 0 ? paths.length : index}`
+      )
+        span.slideshow__switcher-icon
+          +icon({ content: 'expand_more' })
+      .slideshow__picture.js-slideshow__picture
+        +picture(path, `Изображение ${index + 1}`, { size: 'contain' })
       - labelID = pictureID;
-    label.icon.slideshow__switcher(for=pictureID)= `View ${pictureID}`
-    label.icon.slideshow__switcher(for=attributes.name + 0)= `View ${attributes.name + 0}`
+    label.slideshow__switcher(for=pictureID, title=`К изображению №${paths.length}`)
+      span.slideshow__switcher-icon
+        +icon({ content: 'expand_more' })
+    label.slideshow__switcher(for=`${name}-0`, title=`К изображению №1`)
+      span.slideshow__switcher-icon
+        +icon({ content: 'expand_more' })

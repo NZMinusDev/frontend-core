@@ -1,0 +1,11 @@
+.footer__list-label-heading {
+  @media print, screen and (min-width: 0px) {
+    display: flex;
+    justify-content: center;
+  }
+
+  @media print, screen and (min-width: 992px) {
+    justify-content: flex-start;
+    margin-top: 4px;
+  }
+}

@@ -1,6 +1,4 @@
-@use "@utils/devTools/devTools.scss";
-
-@use "@thematic/main-theme.blocks/gradients.scss";
+@use '@thematic/main-theme.blocks/gradients.scss';
 
 .form-like-button__button {
   border: var(--border);
@@ -9,20 +7,12 @@
     background: linear-gradient(180deg, white, white) padding-box, gradients.primary(1) border-box;
   }
 
-  &:before,
-  &:after {
-    font-size: 0.4167rem;
-    color: devTools.getColor(color__dark-shade, 0.25);
-  }
   &:before {
-    line-height: 0.354167rem;
-  }
-  &:after {
-    line-height: 0.5rem;
+    color: rgba(var(--color__dark-shade), 0.25);
   }
 
   &:checked:before,
-  &:checked:after {
-    color: devTools.getColor(color__primary, 1);
+  &:checked + .form-like-button__counter {
+    color: rgba(var(--color__primary), 1);
   }
 }

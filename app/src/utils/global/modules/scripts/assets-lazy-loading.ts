@@ -1,34 +1,47 @@
-const images = document.getElementsByTagName("img");
-const sources = document.getElementsByTagName("source");
+const images = document.getElementsByTagName('img');
+const sources = document.getElementsByTagName('source');
 
-window.addEventListener("scroll", showVisible);
-showVisible();
-function isVisible(elem) {
-  let coords = elem.getBoundingClientRect();
-  let windowHeight = document.documentElement.clientHeight;
+const isVisible = (elem: HTMLElement) => {
+  const coords = elem.getBoundingClientRect();
+  const windowHeight = document.documentElement.clientHeight;
 
-  let topVisible = coords.top > 0 && coords.top < windowHeight;
-  let bottomVisible = coords.bottom < windowHeight && coords.bottom > 0;
+  const topVisible = coords.top > 0 && coords.top < windowHeight;
+  const bottomVisible = coords.bottom < windowHeight && coords.bottom > 0;
 
   return topVisible || bottomVisible;
-}
-function showVisible() {
-  for (let img of images) {
-    let realSrc = img.dataset.src;
-    if (!realSrc) continue;
+};
+
+const showVisible = () => {
+  [...images].forEach((img) => {
+    const realSrc = img.dataset.src;
+
+    if (realSrc === undefined || realSrc === '') {
+      return;
+    }
 
     if (isVisible(img)) {
+      // eslint-disable-next-line no-param-reassign
       img.src = realSrc;
-      img.dataset.src = "";
+      // eslint-disable-next-line no-param-reassign
+      img.dataset.src = '';
     }
-  }
-  for (let source of sources) {
-    let realSrcset = source.dataset.srcset;
-    if (!realSrcset) continue;
+  });
+
+  [...sources].forEach((source) => {
+    const realSrcset = source.dataset.srcset;
+
+    if (realSrcset === undefined || realSrcset === '') {
+      return;
+    }
 
     if (isVisible(source)) {
+      // eslint-disable-next-line no-param-reassign
       source.srcset = realSrcset;
-      source.dataset.srcset = "";
+      // eslint-disable-next-line no-param-reassign
+      source.dataset.srcset = '';
     }
-  }
-}
+  });
+};
+
+window.addEventListener('scroll', showVisible);
+showVisible();

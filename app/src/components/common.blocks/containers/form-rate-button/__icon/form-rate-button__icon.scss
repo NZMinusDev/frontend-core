@@ -1,0 +1,25 @@
+.form-rate-button__icon {
+  float: right;
+  width: 1em;
+  height: 1em;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+
+  // default: star_border
+  &:before {
+    font-family: 'Material Icons';
+    content: '\e83a';
+  }
+
+  //after selected by hover: filled
+  &:hover:before,
+  &:hover ~ &:before {
+    content: '\e838';
+  }
+
+  //before selected by hover: filled
+  &:hover ~ .form-rate-button__button-item:checked ~ &:before {
+    content: '\e838';
+  }
+}

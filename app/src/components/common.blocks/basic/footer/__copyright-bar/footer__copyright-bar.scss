@@ -1,17 +1,15 @@
 .footer__copyright-bar {
   @media print, screen and (min-width: 0px) {
-    & {
-      grid-area: copyright-bar;
-      display: grid;
-      grid: "copyright" "icons";
-      padding-top: 1.714285714285714em;
-      padding-bottom: 1.714285714285714em;
-    }
+    grid-area: copyright-bar;
+    display: grid;
+    grid: 'copyright' 'icons';
+    justify-content: center;
+    padding-top: 24px / 14px * 1em;
+    padding-bottom: 16px / 14px * 1em;
   }
+
   @media print, screen and (min-width: 992px) {
-    & {
-      grid: "copyright icons";
-      justify-content: space-between;
-    }
+    grid: 'copyright icons';
+    justify-content: space-between;
   }
 }

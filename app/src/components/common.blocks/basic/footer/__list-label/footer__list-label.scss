@@ -1,0 +1,21 @@
+.footer__list-label {
+  @media print, screen and (min-width: 0px) {
+    display: inline-flex;
+    cursor: pointer;
+
+    &:after {
+      content: '\e5cf';
+      font-family: 'Material Icons';
+      font-size: 2em;
+      color: inherit;
+    }
+  }
+
+  @media print, screen and (min-width: 992px) {
+    cursor: auto;
+
+    &:after {
+      display: none;
+    }
+  }
+}

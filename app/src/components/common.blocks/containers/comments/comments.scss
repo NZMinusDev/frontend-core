@@ -1,0 +1,6 @@
+.comments {
+  display: grid;
+  grid:
+    'heading counter'
+    'items items' / 1fr auto;
+}

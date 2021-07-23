@@ -1,7 +1,5 @@
 .cards-layout__calendar {
-  @media print, screen and (min-width: 992px) {
-    & {
-      grid-area: calendar;
-    }
+  @media print, screen and (min-width: 1440px) {
+    grid-area: calendar;
   }
 }

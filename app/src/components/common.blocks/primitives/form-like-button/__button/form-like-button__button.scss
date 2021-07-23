@@ -1,35 +1,26 @@
-@use "@utils/devTools/devTools.scss";
-
 .form-like-button__button {
   appearance: none;
-  display: flex;
-  width: 2.857142857142857em;
-  height: 1.428571428571429em;
+  width: 40px / 14px * 1em;
+  height: 20px / 14px * 1em;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
   border: 1px black;
   border-radius: 25% / 50%;
   cursor: pointer;
 
-  &:before,
-  &:after {
-    width: 50%;
-    position: relative;
-    top: 0;
-    bottom: 0;
-    margin: auto 0;
-  }
-
   &:before {
-    content: "\e87e";
-    font-family: "Material Icons";
+    content: '\e87e';
+    width: 50%;
+    height: 1em;
+    font-size: 10px / 14px * 1em;
+    line-height: 1em;
     text-align: center;
+    font-family: 'Material Icons';
     color: black;
   }
-  &:checked:before {
-    content: "\e87d";
-  }
 
-  &:after {
-    content: attr(data-counter);
-    @include devTools.ellipsisText;
+  &:checked:before {
+    content: '\e87d';
   }
 }

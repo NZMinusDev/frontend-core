@@ -1,0 +1,45 @@
+extends ~@layouts/basic/toxin-main-layout/toxin-main-layout.pug
+
+//- components
+include ~@common.blocks/primitives/heading/heading.pug
+include ~@common.blocks/primitives/picture/picture.pug
+include ~@common.blocks/primitives/donut-chart/donut-chart.pug
+include ~@common.blocks/containers/room-definition-card/room-definition-card.pug
+include ~@common.blocks/containers/form-bullet-list/form-bullet-list.pug
+include ~@common.blocks/containers/comments/comments.pug
+
+block append variables
+  -
+    title = 'Детали номера';
+    description = 'Страница деталей номера в макете сайта TOXIN';
+
+block content
+  main.room-details-layout
+    .room-details-layout__demo
+      .room-details-layout__big-img
+        +picture(htmlWebpackPlugin ? require('@assets/pictures/contents/rooms/luxury/888/888.jpg').default : undefined, 'Фотография номера № 1', { size: 'contain' })
+      .room-details-layout__small-img-1
+        +picture(htmlWebpackPlugin ? require('@assets/pictures/contents/rooms/luxury/888/888_2.jpg').default : undefined, 'Фотография номера № 2', { size: 'contain' })
+      .room-details-layout__small-img-2
+        +picture(htmlWebpackPlugin ? require('@assets/pictures/contents/rooms/luxury/888/888_3.jpg').default : undefined, 'Фотография номера № 3', { size: 'contain' })
+    .room-details-layout__content.content-container
+      section.room-details-layout__info
+        .room-details-layout__data
+          +form-bullet-list({ heading: { h2: 'Сведения о номере' }, listStyle: 'material-icon', items: { Комфорт: { icon: 'insert_emoticon', description: 'Шумопоглощающие стены' }, Удобство: { icon: 'location_city', description: 'Окно в каждой из спален' }, Уют: { icon: 'whatshot', description: 'Номер оснащен камином' } } })
+        .room-details-layout__impression
+          +donut-chart({ heading: { h2: 'Впечатления от номера' }, items: { Великолепно: 130, Хорошо: 65, Удовлетворительно: 65, Разочарован: 0 }, dataName: 'голосов', list: true })
+        -
+          const msPerDay = 1000 * 60 * 60 * 24;
+          const fiveDaysAgo = new Date(Date.now() - msPerDay * 5).toISOString();
+          const sevenDaysAgo = new Date(Date.now() - msPerDay * 7).toISOString();
+        .room-details-layout__comments
+          +comments({ heading: { h2: 'Отзывы посетителей номера' }, headingMarginBottom: 'medium', counter: true, items: { 'comment-1': { personName: 'Мурад Сарафанов', iconPath: htmlWebpackPlugin ? require('@assets/pictures/contents/personas/1/1.jpg').default : undefined, date: fiveDaysAgo, dateText: '5 дней назад', content: 'Великолепный матрас на кровати в основной спальне! А пуфик вообще потрясающий. И стены, действительно, шумоподавляющие. Выкрикивал комплименты повару — никто не жаловался из соседей.', likeButtonCounter: 12, isLikeButtonChecked: 'checked' }, 'comment-2': { personName: 'Патрисия Стёклышкова', iconPath: htmlWebpackPlugin ? require('@assets/pictures/contents/personas/2/2.jpg').default : undefined, date: sevenDaysAgo, dateText: 'Неделю назад', content: 'Обслуживание на высоте! Всё аккуратно, чисто. Завтраки в номер советую заказать, каждый день новое блюдо и десерт как комплимент', likeButtonCounter: 2 } } })
+        .room-details-layout__rules
+          .room-details-layout__rules-heading
+            +heading({ h2: 'Правила' }, { marginBottom: 'medium' })
+          +form-bullet-list({ items: ['Нельзя с питомцами', 'Без вечеринок и мероприятий', 'Время прибытия — после 13:00, а выезд до 12:00'] })
+        .room-details-layout__alert
+          +heading({ h2: 'Отмена' }, { marginBottom: 'medium' }) 
+          p.room-details-layout__alert-content Бесплатная отмена в течение 48 ч. После этого при отмене не позднее чем за 5 дн. до прибытия вы получите полный возврат за вычетом сбора за услуги.
+      section.room-details-layout__reservation
+        +room-definition-card({ roomNumber: 888, roomGrade: 'Люкс', paymentAmount: 9990, selectedDates: '2019-08-19,2019-08-23', guestsGroups: { гости: { selectionText: 'гость', textPlural: 'гостя' }, младенцы: { selectionText: 'младенец', textPlural: 'младенцев' } }, guestsList: { взрослые: { default: 2, min: 0, max: 1 / 0, group: 'гости' }, дети: { default: 1, min: 0, max: 1 / 0, group: 'гости' }, младенцы: { default: 1, min: 0, max: 1 / 0 } }, servicesPayment: 2179, servicesSale: 2179, additionalServicesPayment: 300 })

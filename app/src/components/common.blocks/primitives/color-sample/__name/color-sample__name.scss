@@ -1,8 +1,4 @@
 .color-sample__name {
   grid-area: name;
-
-  &:after {
-    content: attr(data-color);
-    display: block;
-  }
+  line-height: 30px / 19px * 1em;
 }

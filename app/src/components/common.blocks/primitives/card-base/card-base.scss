@@ -1,13 +1,13 @@
 .card-base {
-  width: 27.14285714285714em;
-  height: fit-content;
+  max-width: 380px / 14px * 1em;
   display: grid;
   align-items: center;
-
-  gap: 1.428571428571429em;
-  padding: 2.142857142857143em;
-  padding-top: 2.857142857142857em;
-
+  padding: 30px / 14px * 1em;
+  padding-top: 40px / 14px * 1em;
   border: 1px solid rgba(0, 0, 0, 0.12);
   background-color: white;
+
+  @media print, screen and (min-width: 600px) {
+    width: 380px / 14px * 1em;
+  }
 }

@@ -1,18 +1,14 @@
-//- id: id of like button
-//- class: class for component bem mix: such as positioning functionality
-//- label: text of label
-//- name: name of like button
-//- counter: number of init likes
-//- checked: same as input checked
-mixin form-like-button
-  .form-like-button(class=attributes.class)
-    if attributes.label
-      h3.form-label
-        label(for=attributes.id)= attributes.label
-    input.form-like-button__button(
-      id=attributes.id,
+//-
+  name?: string - name of like button
+  counter: number - number of init likes
+  checked?: boolean - same as input checked
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin form-like-button({ name = 'like', counter = -1, checked = false } = {})
+  .form-like-button.js-form-like-button&attributes(attributes)
+    input.form-like-button__button.js-form-like-button__button(
       type="checkbox",
-      name=attributes.name,
-      data-counter=attributes.counter,
-      checked=attributes.checked
+      name=name,
+      checked=checked,
+      title="нравится"
     )
+    span.form-like-button__counter.js-form-like-button__counter= counter

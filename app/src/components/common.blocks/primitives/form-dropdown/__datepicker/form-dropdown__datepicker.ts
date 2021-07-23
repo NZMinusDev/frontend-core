@@ -1,193 +1,243 @@
-import { Plugin } from "@utils/devTools/tools/PluginCreationHelper";
-
-import { dropdowns } from "./../form-dropdown";
 import {
-  CardDatepickerElement,
-  CardDatepickerDOM,
-} from "@common.blocks/primitives/card-datepicker/card-datepicker";
+  BEMComponent,
+  HTMLElementWithComponent,
+} from '@utils/devTools/scripts/ComponentCreationHelper';
 
-export interface DatepickerDropdownElement extends HTMLDivElement {
-  datepickerDropdown: DatepickerDropdown;
-}
+import type {
+  DatepickerCardCustomEvents,
+  DatepickerCard,
+  DatepickerCardElementWithComponent,
+} from '@common.blocks/primitives/datepicker-card/datepicker-card';
+import '@common.blocks/primitives/datepicker-card/datepicker-card';
 
-export type DatepickerDropdownDOM = {
-  self: DatepickerDropdownElement;
-  openingButton: HTMLButtonElement;
-  selection: HTMLTimeElement;
-  cardDatepickerDOM: CardDatepickerDOM;
+import formDropdowns, { ExpandableItemCustomEvents } from '../form-dropdown';
+
+type FormDropdownDatepickerElement = HTMLDivElement;
+
+type FormDropdownDatepickerDOM = {
+  selection: HTMLParagraphElement;
+  input: HTMLInputElement;
+  datepickerCard?: DatepickerCardElementWithComponent;
 };
-export interface DatepickerDropdownAPI extends Plugin {
-  readonly dom: DatepickerDropdownDOM;
-}
-export class DatepickerDropdown implements DatepickerDropdownAPI {
-  readonly dom: DatepickerDropdownDOM = {
-    self: null,
-    openingButton: null,
-    selection: null,
-    cardDatepickerDOM: null,
+
+type FormDropdownDatepickerSubComponents = {
+  datepickerCard?: DatepickerCard;
+};
+
+type FormDropdownDatepickerState = {
+  dates?: string[];
+};
+
+type FormDropdownDatepickerHTMLOptions = { placeholder: string };
+
+type FormDropdownDatepickerCustomEvents = DatepickerCardCustomEvents & ExpandableItemCustomEvents;
+
+class FormDropdownDatepicker extends BEMComponent<
+  FormDropdownDatepickerElement,
+  FormDropdownDatepickerCustomEvents
+> {
+  protected readonly _DOM: Readonly<FormDropdownDatepickerDOM>;
+
+  protected readonly _subComponents: Readonly<FormDropdownDatepickerSubComponents>;
+
+  protected readonly _options: FormDropdownDatepickerHTMLOptions;
+  protected readonly _state: FormDropdownDatepickerState;
+
+  constructor(formFormDropdownDatepickerElement: FormDropdownDatepickerElement) {
+    super(formFormDropdownDatepickerElement);
+
+    this._DOM = this._initDOM();
+
+    this._subComponents = this._initSubComponents();
+
+    this._options = this._initOptionsFromHTML();
+    this._state = this._initState();
+
+    this._bindListeners()._bindAltFieldsListeners();
+
+    this._initDisplay();
+  }
+
+  get() {
+    return this._state.dates === undefined ? [] : [...this._state.dates];
+  }
+  show() {
+    this.element.classList.remove('form-dropdown__datepicker_hidden');
+
+    return this;
+  }
+  hide() {
+    this.element.classList.add('form-dropdown__datepicker_hidden');
+
+    return this;
+  }
+
+  protected _initDOM(): FormDropdownDatepickerDOM {
+    const selection = this.element.nextElementSibling as FormDropdownDatepickerDOM['selection'];
+    const input = this.element.querySelector(
+      '.js-form-dropdown__datepicker-input'
+    ) as FormDropdownDatepickerDOM['input'];
+    const datepickerCard =
+      this.element.querySelector('.js-datepicker-card') === null
+        ? undefined
+        : (this.element.querySelector(
+            '.js-datepicker-card'
+          ) as FormDropdownDatepickerDOM['datepickerCard']);
+
+    return {
+      selection,
+      input,
+      datepickerCard,
+    };
+  }
+
+  protected _initSubComponents() {
+    const datepickerCard = this._DOM.datepickerCard?.component;
+
+    return { datepickerCard };
+  }
+
+  protected _initOptionsFromHTML() {
+    const placeholder = this._DOM.selection.dataset.placeholder || '';
+
+    return {
+      placeholder,
+    };
+  }
+  protected _initState() {
+    const dates = this._getDatesFromDatepickerCard();
+
+    return { dates };
+  }
+
+  protected _bindListeners() {
+    this.element.addEventListener('open', this.onOpen);
+    this.element.addEventListener('change', this.onChange);
+
+    return this;
+  }
+  protected onOpen = () => {
+    this.show();
   };
-
-  constructor(datepickerDropdown: DatepickerDropdownElement) {
-    this._initStaticDOM(datepickerDropdown);
-
-    this._init();
-
-    this._initOpenMod();
-    this._initDisplayUpdate();
-
-    this._initAltFieldsBehavior();
-
-    datepickerDropdown.datepickerDropdown = this;
-  }
-
-  protected _initStaticDOM(datepickerDropdown: DatepickerDropdownElement) {
-    this.dom.cardDatepickerDOM = (datepickerDropdown.querySelector(
-      ".card-datepicker"
-    ) as CardDatepickerElement).cardDatepicker.dom;
-
-    this.dom.self = datepickerDropdown;
-    this.dom.openingButton = this.dom.self.querySelector(".form-dropdown__datepicker-btn");
-    this.dom.selection = this.dom.openingButton.querySelector(
-      ".form-dropdown__selection-text time"
-    );
-  }
-  protected _initOpenMod() {
-    this.dom.cardDatepickerDOM.calendar.addEventListener("click", (event) => {
-      event.stopPropagation();
-    });
-    this.dom.openingButton.addEventListener("click", (event) => {
-      this.dom.cardDatepickerDOM.calendar.classList.remove("form-dropdown__calendar_isHidden-js");
-    });
-    this.dom.cardDatepickerDOM.applyBtn.addEventListener("click", (event) => {
-      this.dom.cardDatepickerDOM.calendar.classList.add("form-dropdown__calendar_isHidden-js");
-    });
-  }
-  protected _initDisplayUpdate() {
-    this.dom.cardDatepickerDOM.self.addEventListener("change", (event) => {
-      this._changeValue();
-
-      this.dom.self.dispatchEvent(new CustomEvent("change"));
-    });
-  }
-  protected _initAltFieldsBehavior() {
-    this.dom.cardDatepickerDOM.$altFields.each((index, element) => {
-      const altDatepickerDropdown = new AltDatepickerDropdown(
-        this.dom.self,
-        element.closest(".form-dropdown") as AltDatepickerDropdownElement
-      );
-
-      altDatepickerDropdown.dom.openingButton.addEventListener("click", (event) => {
-        this.dom.cardDatepickerDOM.calendar.classList.remove("form-dropdown__calendar_isHidden-js");
-      });
-
-      const changeValue = () => {
-        const formattedValue = this.dom.cardDatepickerDOM.self.cardDatepicker.lastFormattedDate.split(
-          this.dom.cardDatepickerDOM.self.getAttribute("data-multiple-dates-separator")
-        )[index + 1];
-        const value = this.dom.cardDatepickerDOM.self.cardDatepicker.lastDates[index + 1]
-          ? this.dom.cardDatepickerDOM.self.cardDatepicker.lastDates[index + 1].toISOString()
-          : "";
-
-        altDatepickerDropdown.dom.input.value = value;
-        altDatepickerDropdown.dom.selection.setAttribute("datetime", value);
-        altDatepickerDropdown.dom.selection.textContent =
-          formattedValue || altDatepickerDropdown.dom.selection.getAttribute("placeholder");
-      };
-      changeValue();
-      this.dom.cardDatepickerDOM.self.addEventListener("change", (event) => {
-        changeValue();
-
-        altDatepickerDropdown.dom.self.dispatchEvent(new CustomEvent("change"));
-      });
-      // delete the value set by the datepicker lib plugin
-      this.dom.cardDatepickerDOM.self.addEventListener("select", () => {
-        altDatepickerDropdown.dom.input.value = "";
-      });
-    });
-  }
-
-  private _init() {
+  protected onChange = () => {
     this._changeValue();
 
-    this.dom.cardDatepickerDOM.calendar.classList.add(
-      "form-dropdown__calendar-js",
-      "form-dropdown__calendar_isHidden-js"
-    );
-  }
-  private _changeValue() {
-    if (
-      this.dom.cardDatepickerDOM.self.getAttribute("data-range") &&
-      this.dom.cardDatepickerDOM.self.dataset.altFields
-    ) {
-      this.dom.cardDatepickerDOM.input.value = this.dom.cardDatepickerDOM.input.value.split(",")[0];
-
-      this.dom.selection.setAttribute("datetime", this.dom.cardDatepickerDOM.input.value);
-      this.dom.selection.textContent =
-        this.dom.cardDatepickerDOM.self.cardDatepicker.lastFormattedDate.split(
-          this.dom.cardDatepickerDOM.self.getAttribute("data-multiple-dates-separator")
-        )[0] || this.dom.selection.getAttribute("placeholder");
-    } else {
-      this.dom.selection.setAttribute("datetime", this.dom.cardDatepickerDOM.input.value);
-      this.dom.selection.textContent =
-        this.dom.cardDatepickerDOM.self.cardDatepicker.lastFormattedDate ||
-        this.dom.selection.getAttribute("placeholder");
-    }
-  }
-}
-
-export interface AltDatepickerDropdownElement extends HTMLDivElement {
-  altDatepickerDropdown: AltDatepickerDropdown;
-}
-
-export type AltDatepickerDropdownDOM = {
-  datepickerDropdown: DatepickerDropdownElement;
-  self: AltDatepickerDropdownElement;
-  openingButton: HTMLButtonElement;
-  input: HTMLInputElement;
-  selection: HTMLParagraphElement;
-};
-export interface AltDatepickerDropdownAPI extends Plugin {
-  readonly dom: AltDatepickerDropdownDOM;
-}
-export class AltDatepickerDropdown implements AltDatepickerDropdownAPI {
-  readonly dom = {
-    datepickerDropdown: null,
-    self: null,
-    openingButton: null,
-    input: null,
-    selection: null,
+    this.hide();
   };
 
-  constructor(
-    datepickerDropdown: DatepickerDropdownElement,
-    altDatepickerDropdown: AltDatepickerDropdownElement
-  ) {
-    this._initStaticDOM(datepickerDropdown, altDatepickerDropdown);
+  protected _bindAltFieldsListeners() {
+    const $altFields = this._subComponents.datepickerCard?.get$altFields();
 
-    altDatepickerDropdown.altDatepickerDropdown = this;
+    if ($altFields !== undefined) {
+      $altFields.each((index, input) => {
+        const altDropdown = input.closest('.js-form-dropdown') as HTMLDivElement;
+
+        altDropdown.addEventListener('open', this._altFieldEventListenerObject.handleAltFieldOpen);
+      });
+    }
+
+    return this;
+  }
+  protected _altFieldEventListenerObject = {
+    handleAltFieldOpen: this.onOpen,
+  };
+
+  protected _initDisplay() {
+    this._changeValue();
+
+    return this;
   }
 
-  protected _initStaticDOM(
-    datepickerDropdown: DatepickerDropdownElement,
-    altDatepickerDropdown: AltDatepickerDropdownElement
-  ) {
-    this.dom.datepickerDropdown = datepickerDropdown;
-    this.dom.self = altDatepickerDropdown;
-    this.dom.openingButton = this.dom.self.querySelector(".form-dropdown__datepicker-btn");
-    this.dom.input = this.dom.openingButton.querySelector("input");
-    this.dom.selection = this.dom.openingButton.querySelector(
-      ".form-dropdown__selection-text time"
-    );
+  protected _getDatesFromDatepickerCard() {
+    return this._subComponents.datepickerCard?.getDates().map((date) => date.toISOString());
+  }
+  protected _changeValue() {
+    if (this._subComponents.datepickerCard !== undefined) {
+      const $altFields = this._subComponents.datepickerCard.get$altFields();
+
+      this._state.dates = this._getDatesFromDatepickerCard();
+      const dateTimes = this._subComponents.datepickerCard.getDateTimes();
+
+      if ($altFields !== undefined) {
+        const formattedDates = this._subComponents.datepickerCard.getSplitFormattedDates();
+        const [theFirstDate] = this._state.dates as string[];
+        const [theFirstDatetime] = dateTimes;
+        const [theFirstFormattedDate] = formattedDates;
+
+        this._DOM.input.value = theFirstDate ?? '';
+        this._DOM.selection.innerHTML =
+          theFirstDatetime !== undefined
+            ? `<time datetime="${theFirstDatetime}">${
+                theFirstFormattedDate ?? this._options.placeholder
+              }</time>`
+            : this._options.placeholder;
+
+        this._changeAltFieldsValues(dateTimes, formattedDates);
+      } else {
+        const formattedDate = this._subComponents.datepickerCard.getFormattedDate();
+
+        this._changeRangedValue(dateTimes, formattedDate);
+      }
+    }
+
+    return this;
+  }
+  protected _changeRangedValue(dateTimes: string[], formattedDate: string) {
+    this._DOM.input.value = this._state.dates ? this._state.dates.toString() : '';
+    this._DOM.selection.innerHTML =
+      dateTimes.toString() !== ''
+        ? `<time datetime="${dateTimes.toString()}">${
+            formattedDate || this._options.placeholder
+          }</time>`
+        : this._options.placeholder;
+  }
+  protected _changeAltFieldsValues(dateTimes: string[], formattedDates: string[]) {
+    const $altFields = this._subComponents.datepickerCard?.get$altFields();
+
+    $altFields?.each((index, inputElement) => {
+      const dateIndex = index + 1;
+      const dateTime = dateTimes[dateIndex];
+      const selection = inputElement
+        .closest('.js-form-dropdown')
+        ?.querySelector(
+          '.js-form-dropdown__selection-text'
+        ) as FormDropdownDatepickerDOM['selection'];
+      const placeholder = selection.dataset.placeholder || '';
+
+      // eslint-disable-next-line no-param-reassign
+      inputElement.value = dateTime || '';
+      // eslint-disable-next-line no-param-reassign
+      selection.innerHTML =
+        dateTime !== ''
+          ? `<time datetime="${dateTime}">${formattedDates[dateIndex] || placeholder}</time>`
+          : placeholder;
+    });
+
+    return this;
   }
 }
 
-// init and export our dropdowns
-export const dropdownsWithDatepicker = Array.from(dropdowns).filter((dropdown) => {
-  if (dropdown.querySelector(".form-dropdown__datepicker")) {
-    $(function () {
-      new DatepickerDropdown(dropdown as DatepickerDropdownElement);
-    });
-    return true;
-  }
-  return false;
-});
+type FormDropdownDatepickerElementWithComponent = HTMLElementWithComponent<
+  FormDropdownDatepickerElement,
+  FormDropdownDatepickerCustomEvents,
+  FormDropdownDatepicker
+>;
+
+const formFormDropdownDatepickers = formDropdowns
+  .map((formDropdown) =>
+    Array.from(
+      formDropdown.element.querySelectorAll<FormDropdownDatepickerElement>(
+        '.js-form-dropdown__datepicker'
+      ),
+      (formDropdownDatepickerElement) => new FormDropdownDatepicker(formDropdownDatepickerElement)
+    )
+  )
+  .flat();
+
+export type {
+  FormDropdownDatepickerCustomEvents,
+  FormDropdownDatepicker,
+  FormDropdownDatepickerElementWithComponent,
+};
+
+export { formFormDropdownDatepickers as default };

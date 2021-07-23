@@ -1,0 +1,8 @@
+.room-definition-card__room-number {
+  display: inline-block;
+
+  &:first-letter {
+    font-size: 14px / 24px * 1em;
+    line-height: 17.5px / 24px * 1em;
+  }
+}

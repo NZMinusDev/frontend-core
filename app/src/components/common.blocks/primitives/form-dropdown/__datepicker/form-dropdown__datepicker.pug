@@ -1,24 +1,40 @@
-include ~@common.blocks/primitives/card-datepicker/card-datepicker.pug
+include ~@common.blocks/primitives/datepicker-card/datepicker-card.pug
 
-mixin form-dropdown__datepicker
-  button.form-dropdown__datepicker-btn(id=attributes.id, class=attributes.class, type="button")
-    if !attributes.isAltField
-      +card-datepicker.form-dropdown__datepicker(
-        isFilter=attributes.isFilter,
-        altFields=attributes.altFields,
-        name=attributes.name,
-        selected-dates=attributes['selected-dates'],
-        data-range=attributes['data-range']
-      )
+//-
+  name?: string - name of input
+  range?: boolean - lib argument, enable range functionality
+  selectedDates?: 'ISODateString,ISODateString,...' - initial dates(date), for several values use ','; example: '2020-11-18T21:00:00.000Z' or '2020-11-18T21:00:00.000Z,2020-11-20T21:00:00.000Z';
+  placeholder?: string - text of placeholder
+  altFields?: string - selector of bonded alt fields(input)
+  isAltField?: boolean - mark this as field that uses a different calendar
+  isFilter?: see datepicker-card mixin
+  Tip: mixin also uses 'and attributes'(&attributes)
+
+mixin form-dropdown__datepicker({ name = 'datepicker', range = false, selectedDates = '', placeholder = 'ДД.ММ.ГГГГ', altFields = undefined, isAltField = false, isFilter = false } = {})
+  .form-dropdown__datepicker.js-form-dropdown__datepicker.form-dropdown__datepicker_hidden
+    input.form-dropdown__datepicker-input.js-form-dropdown__datepicker-input(
+      type="hidden",
+      name=name,
+      value=selectedDates
+    )
+    if !isAltField
+      +datepicker-card({ selectedDates, range, altFields, isFilter })&attributes(attributes)
+  -
+    const dataPlaceholder = placeholder || ((range && !altFields) ? 'ДД ММ - ДД ММ' : 'ДД.ММ.ГГГГ');
+    const splitSelectedDates = selectedDates.split(',');
+    let dateTime;
+    if (splitSelectedDates.length > 1) {
+      const msInDay = 24 * 60 * 60 * 1000;
+      const theLastDate = Date.parse(splitSelectedDates[splitSelectedDates.length - 1]);
+      const theFirstDate = Date.parse(splitSelectedDates[0]);
+      dateTime = `P${Math.ceil((theLastDate - theFirstDate) / msInDay)}D`;
+    } else {
+      dateTime = selectedDates || undefined;
+    }
+  p.form-dropdown__selection-text.js-form-dropdown__selection-text(
+    data-placeholder=dataPlaceholder
+  )
+    if dateTime
+      time(datetime=dateTime)= dateTime
     else
-      input(
-        type="hidden",
-        name=attributes.name,
-        value=attributes['selected-dates'],
-        isFilter=attributes.isFilter ? attributes.isFilter + '' : null
-      )
-    p.form-dropdown__selection-text
-      time(
-        datetime=attributes['selected-dates'],
-        placeholder=attributes.placeholder || (attributes['data-range'] && !attributes.altFields) ? 'День месяц - день месяц' : 'ДД.ММ.ГГГГ'
-      )
+      = dataPlaceholder

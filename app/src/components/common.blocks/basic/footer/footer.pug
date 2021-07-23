@@ -1,61 +1,93 @@
 include ~@common.blocks/primitives/form-text-field/form-text-field.pug
+include ~@common.blocks/primitives/icon/icon.pug
 
-//- type?: "creative"
-//- id?: id of component
-//- class?: class for component bem mix: such as positioning functionality
-
-mixin footer
-  -
-    const icons = ["","",""];
-    const copyright = "Copyright © 2018 Toxin отель. Все права зачищены.";
-  case attributes.type
-    when "creative"
-      footer.footer.footer_creative.content-container(id=attributes.id, class=attributes.class)
-        .footer__logo
-          .logo.logo_color-gradient-primary
-          span.logo__title TOXIN
+//- 
+  type?: 'creative' - type of footer
+    when undefined
+      action: string - action of form with subscription
+      name?: string - name of form with subscription
+      method?: 'get' | 'post' - method of form with subscription
+  icons?: { glyph: string, title: string, href: string }[] - icons
+  copyright?: string - copyright text
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin footer({ type = undefined, action = '/mock.js', name = 'footer-subscription', method = 'post', icons = [ { glyph: '&#xf099;', title: 'twitter', href: '/mock.html' }, { glyph: '&#xf082;', title: 'facebook', href: '/mock.html' }, { glyph: '&#xf16d;', title: 'instagram', href: '/mock.html' } ], copyright = 'Copyright © 2018 Toxin отель. Все права зачищены.' } = {})
+  case type
+    when 'creative'
+      footer.footer.footer_type_creative&attributes(attributes)
+        section.footer__logo
+          .logo.logo_color_primary-gradient
+          span.logo__title toxin
         p.footer__copyright= copyright
-        .footer__icons
-          each icon in icons
-            a.icon.icon_color-gradient-primary.footer__brand-icon(href="", data-icon=icon)
+        section.footer__icons
+          ul.footer__icons-list
+            each icon in icons
+              li.footer__icons-list-item
+                +icon({ tag: 'a', fontFamily: 'branded', content: icon.glyph, width: 'medium', height: 'font', color: 'primary-gradient' })(
+                  href=icon.href,
+                  title=icon.title
+                )
     default
-      footer.footer.content-container(id=attributes.id, class=attributes.class)
-        section.footer__widgets
-          .footer__logo
-            .logo.logo_color-gradient-primary
-            span.logo__title TOXIN
+      footer.footer&attributes(attributes)
+        section.footer__widgets.content-container
+          section.footer__logo
+            .logo.logo_color_primary-gradient
+            span.logo__title toxin
           p.footer__description Бронирование номеров в лучшем отеле 2019 года по версии ассоциации «Отельные взгляды»
-          input#footer__navigation-checkbox.footer__list-checkbox(type="checkbox")
-          label.footer__list.footer__navigation(for="footer__navigation-checkbox")
-            h3 Навигация
-            a(href="") О нас
-            a(href="") Новости
-            a(href="") Служба поддержки
-            a(href="") Услуги
-          input#footer__about-checkbox.footer__list-checkbox(type="checkbox")
-          label.footer__list.footer__about(for="footer__about-checkbox")
-            h3 О нас
-            a(href="") О сервисе
-            a(href="") Наша команда
-            a(href="") Вакансии
-            a(href="") Инвесторы
-          input#footer__support-checkbox.footer__list-checkbox(type="checkbox")
-          label.footer__list.footer__support(for="footer__support-checkbox")
-            h3 Служба поддержки
-            a(href="") Соглашения
-            a(href="") Сообщества
-            a(href="") Связь с нами
-          input#footer__subscription-checkbox.footer__list-checkbox(type="checkbox")
-          label.footer__list.footer__subscription(for="footer__subscription-checkbox")
-            h3 Подписка
-            p.footer__description Получайте специальные предложения и новости сервиса
-            +form-text-field#subscription-text-field(
-              type="email",
-              name="subscription-form-text-field",
-              materialIcon="arrow_forward"
-            )
-        section.footer__copyright-bar
+          section.footer__navigation
+            input#footer-navigation-checkbox.footer__list-checkbox(type="checkbox") 
+            h3.footer__list-label-heading
+              label.footer__list-label(for="footer-navigation-checkbox", tabindex="0") Навигация
+            ul.footer__list
+              li.footer__list-item
+                a.footer__link(href="/mock.html") О нас
+              li.footer__list-item
+                a.footer__link(href="/mock.html") Новости
+              li.footer__list-item
+                a.footer__link(href="/mock.html") Служба поддержки
+              li.footer__list-item
+                a.footer__link(href="/mock.html") Услуги
+          section.footer__about-us-section
+            input#footer-about-checkbox.footer__list-checkbox(type="checkbox")
+            h3.footer__list-label-heading
+              label.footer__list-label(for="footer-about-checkbox", tabindex="0") О нас
+            ul.footer__list
+              li.footer__list-item
+                a.footer__link(href="/mock.html") О сервисе
+              li.footer__list-item
+                a.footer__link(href="/mock.html") Наша команда
+              li.footer__list-item
+                a.footer__link(href="/mock.html") Вакансии
+              li.footer__list-item
+                a.footer__link(href="/mock.html") Инвесторы
+          section.footer__support
+            input#footer-support-checkbox.footer__list-checkbox(type="checkbox")
+            h3.footer__list-label-heading
+              label.footer__list-label(for="footer-support-checkbox", tabindex="0") Служба поддержки
+            ul.footer__list
+              li.footer__list-item
+                a.footer__link(href="/mock.html") Соглашения
+              li.footer__list-item
+                a.footer__link(href="/mock.html") Сообщества
+              li.footer__list-item
+                a.footer__link(href="/mock.html") Связь с нами
+          section.footer__subscription
+            input#footer-subscription-checkbox.footer__list-checkbox(type="checkbox")
+            h3.footer__list-label-heading
+              label.footer__list-label(for="footer-subscription-checkbox", tabindex="0") Подписка
+            ul.footer__list
+              li.footer__list-item
+                p.footer__description
+                  span.footer__description-aligner Получайте специальные предложения и новости сервиса
+              li.footer__list-item
+                form(name=name, action=action, method=method) 
+                  +form-text-field({ name: 'subscription-form-text-field', type: 'email', materialIcon: 'arrow_forward'})
+        section.footer__copyright-bar.content-container
           p.footer__copyright= copyright
           .footer__icons
-            each icon in icons
-              a.icon.icon_color-gradient-primary.footer__brand-icon(href="", data-icon=icon)
+            ul.footer__icons-list
+              each icon in icons
+                li.footer__icons-list-item
+                  +icon({ tag: 'a', fontFamily: 'branded', content: icon.glyph, width: 'medium',height: 'font', color: 'primary-gradient' })(
+                    href=icon.href,
+                    title=icon.title
+                  )

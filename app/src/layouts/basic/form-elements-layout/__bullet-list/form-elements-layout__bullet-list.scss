@@ -1,9 +1,7 @@
 .form-elements-layout__bullet-list {
-  @media print, screen and (min-width: 992px) {
-    & {
-      grid-area: bullet-list;
-      width: 292px/320px * 100%;
-      margin-top: 26px/320px * 100%;
-    }
+  @media print, screen and (min-width: 1200px) {
+    grid-area: bullet-list;
+    width: 292px / 320px * 100%;
+    margin-top: 26px / 320px * 100%;
   }
 }

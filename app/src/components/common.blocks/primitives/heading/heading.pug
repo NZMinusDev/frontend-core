@@ -1,0 +1,20 @@
+//-
+  heading: { [tag: string]: text }, example: { h3: 'awesome heading' }
+  description?: string - description text
+  isLabel?: boolean - if true, add nested label tag and take a block of pug
+    labelJustifyContent?: 'spread'(space-between) - justify-content of label inside heading
+  marginBottom?: 'medium'(12px) | 'large'(16px) | 'extra-large'(20px) | 'none' - bottom margin
+  Tip: mixin also uses 'and attributes'(&attributes)
+mixin heading(heading, { description = '', isLabel = false, labelJustifyContent = '', marginBottom = '' } = {})
+  -
+    const headingTag = Object.keys(heading)[0];
+    const labelJustifyContentClass = labelJustifyContent ? `heading__label_justify-content_${labelJustifyContent}` : undefined;
+    const marginBottomCLass = marginBottom ? `heading_margin-bottom_${marginBottom}` : undefined;
+  if isLabel
+    #{headingTag}.heading(class=[marginBottomCLass])
+      label.heading__label(class=[labelJustifyContentClass])&attributes(attributes)= heading[headingTag]
+        block
+      if description
+        label.heading__description= description
+  else
+    #{headingTag}.heading(class=[marginBottomCLass])= heading[headingTag]

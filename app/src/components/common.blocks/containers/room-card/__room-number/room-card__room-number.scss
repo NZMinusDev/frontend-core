@@ -1,0 +1,7 @@
+.room-card__room-number {
+  line-height: 24px / 19px * 1em;
+
+  &:first-letter {
+    font-size: 14px / 19px * 1em;
+  }
+}

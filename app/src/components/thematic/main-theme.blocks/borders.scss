@@ -1,7 +1,5 @@
-@use "@utils/devTools/devTools.scss";
-
 :root {
-  --border: 1px solid #{devTools.getColor(color__dark-shade, 0.25)};
-  --border-hover: 1px solid #{devTools.getColor(color__dark-shade, 0.5)};
+  --border: 1px solid #{rgba(var(--color__dark-shade), 0.25)};
+  --border-hover: 1px solid #{rgba(var(--color__dark-shade), 0.5)};
   --border-radius-size: 4px;
 }

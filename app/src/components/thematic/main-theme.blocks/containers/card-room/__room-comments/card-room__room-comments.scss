@@ -1,8 +1,0 @@
-@use "@utils/devTools/devTools.scss";
-
-.card-room__room-comments {
-  &,
-  & .normal-weight-text {
-    color: devTools.getColor(color__dark-shade, 0.5);
-  }
-}

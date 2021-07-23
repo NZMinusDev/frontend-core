@@ -1,0 +1,5 @@
+.nav-bar__navigation-item_expandable {
+  .nav-bar__navigation-item-dropdown-checkbox:checked + .nav-bar__navigation-item-dropdown-label {
+    color: rgba(var(--color__dark-shade), 0.75);
+  }
+}

@@ -59,6 +59,11 @@ module.exports = {
     // https://github.com/airbnb/javascript#arrows--implicit-return
     'arrow-body-style': ['error', 'as-needed'],
 
+    /*
+     * TODO: here should be rule like as 'method-void-implicit-error'
+     * https://github.com/airbnb/javascript#constructors--chaining
+     */
+
     // https://github.com/airbnb/javascript#comments--multiline
     'multiline-comment-style': ['error', 'starred-block'],
 
@@ -83,9 +88,10 @@ module.exports = {
     'padding-line-between-statements': [
       'error',
       { blankLine: 'always', prev: ['block-like'], next: '*' },
-      { blankLine: 'any', prev: ['case'], next: 'case' },
+      { blankLine: 'always', prev: ['const', 'let'], next: ['block-like'] },
       { blankLine: 'always', prev: '*', next: ['return', 'break', 'debugger'] },
       { blankLine: 'always', prev: '*', next: 'export' },
+      { blankLine: 'any', prev: ['case'], next: 'case' },
     ],
 
     // Disallow use of loops (for, for-in, while, do-while, for-of) - we have forEach, map etc.
@@ -123,9 +129,11 @@ module.exports = {
     'import/resolver': {
       alias: {
         map: [
-          ['@pug', './app/src/pug'],
           ['@layouts', './app/src/layouts'],
+          ['@library.blocks', './app/src/components/library.blocks'],
           ['@common.blocks', './app/src/components/common.blocks/'],
+          ['@thematic', './app/src/components/thematic'],
+          ['@experimental', './app/src/components/experimental'],
           ['@utils', './app/src/utils/'],
           ['@assets', './app/src/assets/'],
         ],

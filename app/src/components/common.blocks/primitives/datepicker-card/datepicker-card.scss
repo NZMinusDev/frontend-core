@@ -1,0 +1,60 @@
+/* lib redefinition */
+.datepicker-card {
+  .datepicker-inline {
+    width: 320px / 14px * 1em;
+  }
+
+  .datepicker {
+    width: initial;
+    font: inherit;
+    padding: 20px / 14px * 1em;
+  }
+
+  .datepicker--nav,
+  .datepicker--content {
+    padding: 0;
+  }
+
+  .datepicker--nav {
+    border-bottom: 0;
+    min-height: initial;
+  }
+  .datepicker--nav-title i {
+    color: inherit;
+  }
+  .datepicker--nav-action {
+    width: initial;
+    border-radius: 0;
+    font-family: 'Material Icons';
+    font-size: 24px / 14px * 1em;
+  }
+
+  .datepicker--content {
+    margin-top: 30px / 14px * 1em;
+  }
+  .datepicker--days-names {
+    margin: 0;
+  }
+  .datepicker--cell,
+  .datepicker--day-name {
+    height: 40px / 12px * 1em;
+    font: inherit;
+  }
+  .datepicker--cell {
+    &.-range-from-:before,
+    &.-range-to-:before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      bottom: 0;
+      width: 50%;
+    }
+    &.-range-from-:before {
+      right: 0;
+    }
+    &.-range-to-:before {
+      left: 0;
+    }
+  }
+}
