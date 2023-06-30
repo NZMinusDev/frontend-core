@@ -33,10 +33,10 @@ module.exports = {
   plugins: ['no-loops', 'promise', 'fsd'],
   rules: {
     // FIXME: if you know how to make it works with chaining calls of several methods use['error', { allowAfterThis: true }]
-    'no-underscore-dangle': 0,
+    'no-underscore-dangle': 'off',
 
-    'lines-between-class-members': 0,
-    '@typescript-eslint/explicit-module-boundary-types': 0,
+    'lines-between-class-members': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
 
     // https://github.com/airbnb/javascript#destructuring--object
     'prefer-destructuring': [
@@ -95,7 +95,7 @@ module.exports = {
     ],
 
     // Disallow use of loops (for, for-in, while, do-while, for-of) - we have forEach, map etc.
-    'no-loops/no-loops': 2,
+    'no-loops/no-loops': 'error',
 
     /**
      * Enforce best practices for JavaScript promises.

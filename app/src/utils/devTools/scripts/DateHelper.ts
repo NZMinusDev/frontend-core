@@ -2,6 +2,7 @@ const MS_IN_A_SECOND = 1000;
 const MS_IN_A_MINUTE = 60 * MS_IN_A_SECOND;
 const MS_IN_A_HOUR = 60 * MS_IN_A_MINUTE;
 const MS_IN_A_DAY = 24 * MS_IN_A_HOUR;
+const MS_IN_A_WEEK = 7 * MS_IN_A_DAY;
 
 /**
  * Calculates date range
@@ -10,6 +11,13 @@ const MS_IN_A_DAY = 24 * MS_IN_A_HOUR;
  * @returns milliseconds
  */
 const getDatePeriod = (date1: Date, date2: Date) => date2.getTime() - date1.getTime();
+
+/**
+ * Converts datestring to milliseconds
+ * @param datestring - iso date string: YYYY-MM-DDTHH:mm:ss.sssZ
+ * @returns milliseconds
+ */
+const getTimestamp = (datestring: string) => new Date(datestring).getTime();
 
 /**
  * Converts iso date string to period datetime attribute of html <time> tag
@@ -88,6 +96,8 @@ export {
   MS_IN_A_MINUTE,
   MS_IN_A_HOUR,
   MS_IN_A_DAY,
+  MS_IN_A_WEEK,
   getDatePeriod,
+  getTimestamp,
   formatToPeriodDateTime,
 };

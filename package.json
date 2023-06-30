@@ -36,11 +36,12 @@
   "license": "MIT",
   "devDependencies": {
     "@prettier/plugin-pug": "^1.15.2",
-    "@types/jest": "^26.0.20",
     "@types/inputmask": "^5.0.1",
+    "@types/jest": "^26.0.20",
     "@types/jquery": "^3.5.2",
     "@types/js-cookie": "^2.2.6",
     "@types/lodash-es": "^4.17.4",
+    "@types/webpack": "^5.28.0",
     "@typescript-eslint/eslint-plugin": "^4.1.0",
     "@typescript-eslint/parser": "^4.1.0",
     "@zerollup/ts-transform-paths": "^1.7.18",

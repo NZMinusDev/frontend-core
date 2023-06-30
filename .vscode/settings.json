@@ -74,6 +74,7 @@
     "browserslist",
     "btns",
     "camelcase",
+    "datestring",
     "datetime",
     "devtool",
     "doiuse",
@@ -103,7 +104,7 @@
     "valuenow",
     "valuetext",
     "webp",
-    "ГГГГ",
+    "ГГГГ"
   ],
   "cSpell.ignoreWords": ["import", "import normalize", "normalize"],
   "path-autocomplete.extensionOnImport": true,
